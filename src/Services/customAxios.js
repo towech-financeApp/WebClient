@@ -14,7 +14,7 @@ import jwtDecode from 'jwt-decode';
 async function getAuthToken(tokenDispatch) {
   try {
     const res = await axios.post(`${process.env.REACT_APP_USERSERVICE}/refresh`, null, { withCredentials: true });
-    tokenDispatch({ type: 'LOGIN', payload: res.data.token });
+    tokenDispatch({ type: 'LOGIN', payload: res.data });
     return res.data.token;
   }
   catch (err) { throw err }

@@ -32,6 +32,11 @@ const setIntoStorage = (storageLocation, content, forceLocal = false) => {
   }
 }
 
+const removeFromStorage = (storageLocation) => {
+  sessionStorage.removeItem(storageLocation);
+  localStorage.removeItem(storageLocation);
+}
+
 export const useToken = (storageLocation) => {
   // Retrieves the token from the browser storage, if not provided is null
   const initialState = getFromStorage(storageLocation);
@@ -47,7 +52,7 @@ export const useToken = (storageLocation) => {
         return { token: action.payload.token, ...deco };
       case 'LOGOUT':
         //console.log('logout');
-        setIntoStorage(setIntoStorage, null, true);
+        removeFromStorage(storageLocation);
         return '';
       default:
         return state;
