@@ -33,7 +33,8 @@ const Login = (props) => {
   async function loginCallback() {
     try {
       const res = await userService.login(loginForm.values, null);
-      dispatchAuthToken({type: 'LOGIN', payload: res.data.token});
+      
+      dispatchAuthToken({type: 'LOGIN', payload: {...res.data, keepSession: loginForm.values.keepSession}});
       props.history.push("/home");
     }
     catch (err) {

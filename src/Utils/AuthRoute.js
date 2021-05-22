@@ -15,11 +15,13 @@ const AuthRoute = ({ component: Component, notAuth, ...rest }) => {
 
   // Checks the notAuth flag, if present, redirects when logged in
   const Comp = notAuth ? (
+    // Unauthenticated Route
     <Route
       {...rest}
       render={props => authToken ? <Redirect to="/home" /> : <Component {...props} />}
     />
   ) : (
+      // Authenticated Route
       <Route
         {...rest}
         render={props => authToken ? <Component {...props} /> : <Redirect to="/" />}

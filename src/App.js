@@ -14,6 +14,7 @@ import './App.css';
 // Pages
 import Home from './Pages/Home';
 import Login from './Pages/Login';
+import Wallet from './Pages/Wallet';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -33,7 +34,7 @@ const userService = new UserService();
 
 function App() {
   // Hooks
-  const [authToken, dispatchAuthToken] = useToken();
+  const [authToken, dispatchAuthToken] = useToken('authToken');
   const [loaded, setLoaded] = useState(false);
 
 
@@ -44,7 +45,7 @@ function App() {
         setLoaded(true);
         userService.refreshToken()
           .then(res => {
-            dispatchAuthToken({ type: 'LOGIN', payload: res.data.token });
+            dispatchAuthToken({ type: 'LOGIN', payload: res.data });
           })
           .catch(err => {
             //console.log(err.response);
@@ -68,6 +69,7 @@ function App() {
               <AuthRoute notAuth exact path='/' component={Login} />
               {/*Routes that can be accessed only while being logged in*/}
               <AuthRoute exact path='/home' component={Home} />
+              <AuthRoute exact path='/wallet/:walletid' component={Wallet} />
               {/*TODO: Settings Page*/}
               {/* 404 - not found route*/}
               <Route component={NotFound} />
