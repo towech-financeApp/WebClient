@@ -57,7 +57,6 @@ const WalletPage = (props: any): JSX.Element => {
             setTransactions(res.data.transactions);
           })
           .catch((err) => {
-            console.log(err.response);
             // If it is a forbidden error, goes back to home
             if (err.response.status === 403) {
               props.history.push('/home');
@@ -72,7 +71,6 @@ const WalletPage = (props: any): JSX.Element => {
   // Callbacks
   async function newTransactionCallback() {
     try {
-      console.log(newTransactionForm.values);
       const res = await transactionService.newTransaction(newTransactionForm.values);
 
       newTransactionForm.clear();

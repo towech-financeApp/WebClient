@@ -62,7 +62,7 @@ const Home = (props: any): JSX.Element => {
     try {
       await authService.logout();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
     dispatchAuthToken({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
@@ -76,7 +76,7 @@ const Home = (props: any): JSX.Element => {
       setWallets([...wallets, res.data]);
     } catch (err) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      console.log(err.response);
+      // console.log(err.response);
     }
   }
 

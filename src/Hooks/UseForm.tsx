@@ -36,7 +36,7 @@ const UseForm = (callback: any, initialState: any) => {
         setValues({ ...values, [data.target.name]: data.target.value });
         break;
       default:
-        console.log(`No onChange routine for type: ${data.target.type}`);
+        // console.log(`No onChange routine for type: ${data.target.type}`);
     }
   };
 

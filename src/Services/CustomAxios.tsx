@@ -62,7 +62,7 @@ const mAxios = (token: string, tokenDispatch?: React.Dispatch<TokenAction>): Axi
         return config;
       },
       (error) => {
-        console.log('api-request-error');
+        // console.log('api-request-error');
         return Promise.reject(error);
       },
     );
