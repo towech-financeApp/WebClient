@@ -1,7 +1,7 @@
 /** index.js
  * Copyright (c) 2021, Jose Tow
  * All rights reserved.
- * 
+ *
  * Main file for the Web-client
  */
 import React from 'react';
@@ -14,7 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

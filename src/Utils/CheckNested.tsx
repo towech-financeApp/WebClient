@@ -5,16 +5,20 @@
  * checks an object for the existance of a nested key without throwing errors
  * e.g. (
  *  foo = {level1: {level2: {level3: 'bar'}}}
- *  
+ *
  *  if( foo.level1.level2.foo) returns exception
  *  checkNested(foo, 'level1', 'level2', 'foo') returns false
  * )
  */
 
-function checkNested(obj, level, ...rest) {
-  if(obj === undefined) return false;
-  if(rest.length === 0 && obj.hasOwnProperty(level)) return true;
-  return checkNested(obj[level], ...rest);
-}
+const CheckNested = (obj: any, level: string, ...rest: string[]): boolean => {
+  if (obj === undefined) return false;
+  if (rest.length === 0 && Object.prototype.hasOwnProperty.call(obj, level)) return true;
 
-export default checkNested;
+  const nuLevel = rest[0];
+  rest.shift();
+
+  return CheckNested(obj[level], nuLevel, ...rest);
+};
+
+export default CheckNested;

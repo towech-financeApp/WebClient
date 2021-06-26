@@ -1,40 +1,40 @@
 /** Home.js
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
- * 
+ *
  * Home Page for the App
-*/
-import React, { useContext, useEffect, useState, } from 'react';
+ */
+import { useContext, useEffect, useState } from 'react';
 
 // hooks
-import { AuthenticationTokenStore, } from '../Hooks/ContextStore';
+import { AuthenticationTokenStore } from '../Hooks/ContextStore';
+import UseForm from '../Hooks/UseForm';
+
+// Models
+import { Wallet } from '../models';
 
 // Services
-import UserService from '../Services/UserService';
+import AuthenticationService from '../Services/AuthenticationService';
 import TransactionService from '../Services/TransactionService';
 
 // Utilities
-import { useForm } from '../Hooks/useForm';
-import checkNested from '../Utils/checkNested';
+import CheckNested from '../Utils/CheckNested';
 
-// TODO: Build page
-
-const Home = (props) => {
+const Home = (props: any): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
-  // Services
-  const userService = new UserService();
-  const transactionService = new TransactionService(authToken.token, dispatchAuthToken);
+  // Starts the services
+  const authService = new AuthenticationService();
+  const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [errors, setErrors] = useState({});
+  const [wallets, setWallets] = useState([] as Wallet[]);
 
-  const [wallets, setWallets] = useState([]);
-
-  // Create Wallet form
-  const newWalletForm = useForm(newWalletCallback, {
+  // Create wallet form
+  const newWalletForm = UseForm(newWalletCallback, {
     name: '',
     money: 0,
   });
@@ -44,13 +44,14 @@ const Home = (props) => {
     const firstLoad = async () => {
       if (!loaded) {
         setLoaded(true);
-        transactionService.getWallets()
-          .then(res => {
+        transactionService
+          .getWallets()
+          .then((res) => {
             setWallets(res.data);
           })
-          .catch(err => {
-            console.log(err.response);
-          })
+          .catch(() => {
+            // console.log(err.response);
+          });
       }
     };
     firstLoad();
@@ -59,24 +60,25 @@ const Home = (props) => {
   // Callbacks
   async function logoutCallback() {
     try {
-      await userService.logout();
-    } catch (err) { console.log(err); }
+      await authService.logout();
+    } catch (err) {
+      console.log(err);
+    }
 
-    dispatchAuthToken({ type: 'LOGOUT' })
-  };
+    dispatchAuthToken({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
+  }
 
   async function newWalletCallback() {
     try {
-      const res = await transactionService.newWallet(newWalletForm.values, null);
+      const res = await transactionService.newWallet(newWalletForm.values);
 
       newWalletForm.clear();
       setWallets([...wallets, res.data]);
-    }
-    catch (err) {
-      if (checkNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+    } catch (err) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       console.log(err.response);
     }
-  };
+  }
 
   return (
     <>
@@ -84,30 +86,30 @@ const Home = (props) => {
       <button onClick={logoutCallback}>Logout</button>
       <br />
       <h4>Wallets</h4>
-      {wallets.map(wallet => (
-        <div key={wallet.walletid}>
+      {wallets.map((wallet: Wallet) => (
+        <div key={wallet._id}>
           <p>
             {wallet.name} Money:{wallet.money}
-            <button onClick={() => props.history.push(`/wallet/${wallet.walletid}`)}>Open</button>
+            <button onClick={() => props.history.push(`/wallet/${wallet._id}`)}>Open</button>
           </p>
         </div>
       ))}
       <h4>Create Wallet</h4>
       <form onSubmit={newWalletForm.onSubmit}>
         <input
-          label='Name'
-          placeholder='Name'
-          name='name'
-          type='text'
+          // label='Name'
+          placeholder="Name"
+          name="name"
+          type="text"
           value={newWalletForm.values.name}
           //error={errors.name ? true : false}
           onChange={newWalletForm.onChange}
         />
         <input
-          label='Amount'
-          placeholder='0'
-          name='money'
-          type='text'
+          // label='Amount'
+          placeholder="0"
+          name="money"
+          type="text"
           value={newWalletForm.values.money}
           //error={errors.money ? true : false}
           onChange={newWalletForm.onChange}
@@ -118,14 +120,14 @@ const Home = (props) => {
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
           <ul className="list">
-            {Object.values(errors).map(value => (
+            {Object.values(errors).map((value: any) => (
               <li key={value}>{value}</li>
             ))}
           </ul>
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
