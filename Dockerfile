@@ -1,20 +1,29 @@
-#### DEV image -----------------------------
-FROM node:16-alpine3.11 as dev
+# Base stage -----------------------------------------------------------------------
+FROM node:16-alpine3.13 as base
+WORKDIR /usr/app
+COPY package*.json ./
 
-WORKDIR /work/
-
-COPY ./package.json /work/package.json
-COPY ./.eslintrc /work/.eslintrc
-COPY ./.eslintignore /work/.eslintignore
-COPY ./.prettierrc /work/.prettierrc
-COPY ./tsconfig.json /work/package.json
-RUN cd /work
+#  Dev stage -----------------------------------------------------------------------
+FROM base as dev
 RUN npm install
-RUN npm install react-scripts@3.4.1 -g
-
-COPY ./src /work/src
-COPY ./public /work/public
-
+COPY . .
 EXPOSE 3000
+CMD npm run start
 
-ENTRYPOINT ["npm", "run", "start"]
+# Build stage ----------------------------------------------------------------------
+FROM base as build
+RUN npm ci
+
+ARG REACT_APP_WEBAPI
+ENV REACT_APP_WEBAPI=${REACT_APP_WEBAPI}
+
+COPY . .
+RUN npm run build
+
+# PROD stage -----------------------------------------------------------------------
+FROM nginx:1.20-alpine as prod
+COPY --from=build /usr/app/build /usr/share/nginx/html
+
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

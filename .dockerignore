@@ -1,8 +1,11 @@
 #environments
-.env
+**.env
 
 #logs
 /logs/**
+
+# production
+/build/**
 
 #dependencies
 /node_modules
