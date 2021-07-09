@@ -63,6 +63,17 @@ const Wallets = (props: any): JSX.Element => {
   });
 
   // Callbacks
+  async function deleteWalletCallback(id: string) {
+    try {
+      await transactionService.deleteWallet(id);
+
+      setWallets(wallets.filter((wallet) => wallet._id !== id));
+    } catch (err) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      // console.log(err.response);
+    }
+  }
+
   async function newWalletCallback() {
     try {
       const res = await transactionService.newWallet(newWalletForm.values);
@@ -80,7 +91,7 @@ const Wallets = (props: any): JSX.Element => {
     <>
       <div className="Header">
         <NavBar />
-        <h1>Transactions</h1>
+        <h1>Wallets</h1>
       </div>
       <div className="contents">
         {/* List Wallets */}
@@ -93,6 +104,7 @@ const Wallets = (props: any): JSX.Element => {
                 <p>
                   {wallet.name} Money:{wallet.money}
                   <button onClick={() => props.history.push(`/home?wallet=${wallet._id}`)}>Open</button>
+                  <button onClick={() => deleteWalletCallback(wallet._id)}>Delete</button>
                 </p>
               </div>
             ))}

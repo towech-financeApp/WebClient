@@ -27,6 +27,10 @@ export default class TransactionService {
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
   }
 
+  async deleteWallet(id: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+    return await this.instance.delete(`${this.ROOT_URL}/wallets/${id}`, loading);
+  }
+
   async getWallets(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     return await this.instance.get(`${this.ROOT_URL}/wallets`, loading);
   }
