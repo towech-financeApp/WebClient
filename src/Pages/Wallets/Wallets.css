@@ -1,0 +1,16 @@
+.Header {
+  display: flex;
+  background-color: aqua;
+}
+
+.contents {
+  background-color: transparent;
+}
+
+.contents__addForm {
+  visibility: hidden;
+}
+
+.contents__addForm.active {
+  visibility: visible;
+}

@@ -8,7 +8,6 @@ import { useContext, useEffect, useState } from 'react';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
-import UseForm from '../../Hooks/UseForm';
 
 // Models
 import { Wallet } from '../../models';
@@ -19,14 +18,11 @@ import NavBar from '../../Components/NavBar';
 // Services
 import TransactionService from '../../Services/TransactionService';
 
-// Utilities
-import CheckNested from '../../Utils/CheckNested';
-
 // Styles
 import './Home.css';
 import { Link } from 'react-router-dom';
 
-const Home = (props: any): JSX.Element => {
+const Home = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -35,14 +31,7 @@ const Home = (props: any): JSX.Element => {
 
   // Hooks
   const [loaded, setLoaded] = useState(false);
-  const [errors, setErrors] = useState({});
   const [wallets, setWallets] = useState([] as Wallet[]);
-
-  // Create wallet form
-  const newWalletForm = UseForm(newWalletCallback, {
-    name: '',
-    money: 0,
-  });
 
   // Main API call
   useEffect(() => {
@@ -62,19 +51,6 @@ const Home = (props: any): JSX.Element => {
     firstLoad();
   });
 
-  // Callbacks
-  async function newWalletCallback() {
-    try {
-      const res = await transactionService.newWallet(newWalletForm.values);
-
-      newWalletForm.clear();
-      setWallets([...wallets, res.data]);
-    } catch (err) {
-      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      // console.log(err.response);
-    }
-  }
-
   return (
     <>
       <div className="Header">
@@ -85,7 +61,7 @@ const Home = (props: any): JSX.Element => {
         {wallets.length == 0 ? (
           <div>
             <p>
-              You have no wallets, add one in <Link to="Wallets">Wallets</Link>
+              You have no wallets, add one in <Link to="wallets">Wallets</Link>
             </p>
           </div>
         ) : (

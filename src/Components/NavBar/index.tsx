@@ -66,6 +66,12 @@ const NavBar = (): JSX.Element => {
               <span>Transactions</span>
             </Link>
           </li>
+          <li key="wallets" onClick={() => setSidebar(false)}>
+            <Link to="/wallets">
+              <FaIcons.FaWallet />
+              <span>Wallets</span>
+            </Link>
+          </li>
           <li key="logout">
             <button onClick={logoutCallback}>
               <FaIcons.FaUserTimes />

@@ -13,7 +13,8 @@ import './App.css';
 // TODO: Pages
 import Home from './Pages/Home';
 import Login from './Pages/Login';
-import Wallet from './Pages/Wallet';
+import Wallets from './Pages/Wallets';
+// import Wallet from './Pages/Wallet';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -65,7 +66,8 @@ function App(): JSX.Element {
             <AuthRoute notAuth exact path="/" Component={Login} />
             {/*Routes that can be accessed only while being logged in*/}
             <AuthRoute exact path="/home" Component={Home} />
-            <AuthRoute exact path="/wallet/:walletid" Component={Wallet} />
+            <AuthRoute exact path="/wallets" Component={Wallets} />
+            {/* <AuthRoute exact path="/wallet/:walletid" Component={Wallet} /> */}
             {/*TODO: Settings Page*/}
             {/* 404 - not found route*/}
             <Route component={NotFound} />
