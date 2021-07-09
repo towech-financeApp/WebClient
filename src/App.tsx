@@ -6,7 +6,6 @@
  */
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
@@ -56,9 +55,9 @@ function App(): JSX.Element {
   });
 
   return (
-    <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
-      <Router>
-        <Container>
+    <div className="App">
+      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
+        <Router>
           <Switch>
             {/*Routes that can be accessed with or without credentials*/}
             {/*TODO: PasswordReset Pages*/}
@@ -71,9 +70,9 @@ function App(): JSX.Element {
             {/* 404 - not found route*/}
             <Route component={NotFound} />
           </Switch>
-        </Container>
-      </Router>
-    </AuthenticationTokenStore.Provider>
+        </Router>
+      </AuthenticationTokenStore.Provider>
+    </div>
   );
 }
 

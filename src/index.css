@@ -1,13 +1,18 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/** index.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved.
+ *
+ * Styles for the whole app
+ */
+@import url('https://fonts.googleapis.com/css?family=Raleway:wght@400;700&display=swap');
+
+:root {
+  --background-color: #DDD;
+  --navBar-color: #00B0F0;
+  --navBar-font: #fff;
+  --highlight-color: #00658a;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html *{
+  font-family: 'Raleway', serif;
 }
