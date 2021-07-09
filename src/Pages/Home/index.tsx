@@ -7,25 +7,30 @@
 import { useContext, useEffect, useState } from 'react';
 
 // hooks
-import { AuthenticationTokenStore } from '../Hooks/ContextStore';
-import UseForm from '../Hooks/UseForm';
+import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import UseForm from '../../Hooks/UseForm';
 
 // Models
-import { Wallet } from '../models';
+import { Wallet } from '../../models';
+
+// Components
+import NavBar from '../../Components/NavBar';
 
 // Services
-import AuthenticationService from '../Services/AuthenticationService';
-import TransactionService from '../Services/TransactionService';
+import TransactionService from '../../Services/TransactionService';
 
 // Utilities
-import CheckNested from '../Utils/CheckNested';
+import CheckNested from '../../Utils/CheckNested';
+
+// Styles
+import './Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = (props: any): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
   // Starts the services
-  const authService = new AuthenticationService();
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
@@ -58,16 +63,6 @@ const Home = (props: any): JSX.Element => {
   });
 
   // Callbacks
-  async function logoutCallback() {
-    try {
-      await authService.logout();
-    } catch (err) {
-      // console.log(err);
-    }
-
-    dispatchAuthToken({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
-  }
-
   async function newWalletCallback() {
     try {
       const res = await transactionService.newWallet(newWalletForm.values);
@@ -82,10 +77,22 @@ const Home = (props: any): JSX.Element => {
 
   return (
     <>
-      <h3>Home</h3>
-      <button onClick={logoutCallback}>Logout</button>
-      <br />
-      <h4>Wallets</h4>
+      <div className="Header">
+        <NavBar />
+        <h1>Transactions</h1>
+      </div>
+      <div className="contents">
+        {wallets.length == 0 ? (
+          <div>
+            <p>
+              You have no wallets, add one in <Link to="Wallets">Wallets</Link>
+            </p>
+          </div>
+        ) : (
+          <div>TODO: Transaction controller</div>
+        )}
+      </div>
+      {/* <h4>Wallets</h4>
       {wallets.map((wallet: Wallet) => (
         <div key={wallet._id}>
           <p>
@@ -116,7 +123,7 @@ const Home = (props: any): JSX.Element => {
         />
         <input type="submit" value="Create" />
       </form>
-      {/* Error box */}
+      {/* Error box * /}
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
           <ul className="list">
@@ -125,7 +132,7 @@ const Home = (props: any): JSX.Element => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
     </>
   );
 };
