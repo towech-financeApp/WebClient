@@ -1,0 +1,74 @@
+/** NavBar.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved.
+ *
+ * Navigation bar styles
+ */
+@import url("../../index.css");
+
+span {
+  margin-left: 16px;
+}
+
+.navBar {
+  background-color: var(--navBar-color);
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.navBar__selector {
+  margin-left: 2rem;
+  font-size: 2rem;
+  background: none;
+  color: var(--navBar-font);
+}
+
+.navBar__Menu {
+  background-color: var(--navBar-color);
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  transition: 850ms;
+}
+
+.navBar__Menu.active {
+  left: 0;
+  transition: 350ms;
+}
+
+.navBar__Menu__items {
+  width: 100%;
+  color: var(--navBar-font);
+}
+
+.navBar__Menu__items > li{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 0px 8px 16px;
+  list-style: none;
+  height: 60px;
+}
+
+.navBar__Menu__items a {
+  text-decoration: none;
+  color: var(--navBar-font);
+  font-size: 18px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 4px;
+}
+
+.navBar__Menu__items a:hover {
+  background-color: var(--highlight-color);
+}
