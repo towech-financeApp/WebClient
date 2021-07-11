@@ -10,13 +10,17 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Models
-import { Wallet } from '../../models';
+import { Transaction, Wallet } from '../../models';
 
 // Components
 import NavBar from '../../Components/NavBar';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
+
+// Utilities
+import UseForm from '../../Hooks/UseForm';
+import CheckNested from '../../Utils/CheckNested';
 
 // Styles
 import './Home.css';
@@ -32,6 +36,18 @@ const Home = (): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [wallets, setWallets] = useState([] as Wallet[]);
+  const [modal, setModal] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [transactions, setTransactions] = useState([] as Transaction[]);
+  const [reports, setReports] = useState({ earnings: 0, expenses: 0 });
+
+  // Create transaction form
+  const newTransactionForm = UseForm(newTransactionCallback, {
+    wallet_id: '',
+    concept: '',
+    amount: 0,
+    transactionDate: '',
+  });
 
   // Main API call
   useEffect(() => {
@@ -42,6 +58,7 @@ const Home = (): JSX.Element => {
           .getWallets()
           .then((res) => {
             setWallets(res.data);
+            loadTransactions('-1');
           })
           .catch(() => {
             // console.log(err.response);
@@ -51,11 +68,63 @@ const Home = (): JSX.Element => {
     firstLoad();
   });
 
+  // Callbacks
+  async function newTransactionCallback() {
+    try {
+      const res = await transactionService.newTransaction(newTransactionForm.values);
+
+      newTransactionForm.clear();
+
+      setTransactions([...transactions, res.data]);
+    } catch (err) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      // console.log(err.response);
+    }
+  }
+
+  // functions
+  const calculateTotal = (): number => {
+    let total = 0;
+
+    wallets.map((wallet) => (total += wallet.money));
+
+    return total;
+  };
+
+  const loadTransactions = async (walletId: string): Promise<void> => {
+    const res = await transactionService.getWalletTransactions(walletId);
+    setTransactions(res.data.transactions);
+
+    setReport(res.data.transactions);
+  };
+
+  const setReport = (transArr: Transaction[]): void => {
+    let earnings = 0;
+    let expenses = 0;
+
+    transArr.map((transaction) => {
+      if (transaction.amount > 0) {
+        earnings += transaction.amount;
+      } else {
+        expenses += transaction.amount;
+      }
+    });
+
+    setReports({ earnings, expenses });
+  };
+
   return (
     <>
       <div className="Header">
         <NavBar />
-        <h1>Transactions</h1>
+        <div>
+          <div>Total: {calculateTotal()}</div>
+          {wallets.map((wallet) => (
+            <div key={wallet._id}>
+              {wallet.name}: {wallet.money}
+            </div>
+          ))}
+        </div>
       </div>
       <div className="contents">
         {wallets.length == 0 ? (
@@ -65,50 +134,91 @@ const Home = (): JSX.Element => {
             </p>
           </div>
         ) : (
-          <div>TODO: Transaction controller</div>
+          <>
+            {/*Report of the month*/}
+            <div>
+              in: {reports.earnings}
+              <br />
+              out: {reports.expenses}
+            </div>
+            <br />
+            {/*Transactions*/}
+            <div>
+              {transactions.map((transaction) => (
+                <div key={transaction._id}>
+                  {transaction.concept}: {transaction.amount}
+                  <br />
+                  wallet: {transaction.wallet_id}
+                </div>
+              ))}
+            </div>
+            <br />
+            {/*Add transaction button*/}
+            <button onClick={() => setModal(true)}>Add Transaction</button>
+            {/*Create wallet form*/}
+            {/*TODO: Make form a modal*/}
+            <div className={modal ? 'contents__addForm active' : 'contents__addForm'}>
+              <button
+                onClick={() => {
+                  setErrors([]);
+                  setModal(false);
+                }}
+              >
+                Close
+              </button>
+              <form onSubmit={newTransactionForm.onSubmit}>
+                <input
+                  //label='Concept'
+                  placeholder="Concept"
+                  name="concept"
+                  type="text"
+                  value={newTransactionForm.values.concept}
+                  //error={errors.concept ? true : false}
+                  onChange={newTransactionForm.onChange}
+                />
+                <input
+                  //label='Amount'
+                  placeholder="0"
+                  name="amount"
+                  type="text"
+                  value={newTransactionForm.values.amount}
+                  //error={errors.amount ? true : false}
+                  onChange={newTransactionForm.onChange}
+                />
+                <input
+                  //label='Amount'
+                  placeholder="WalletId"
+                  name="wallet_id"
+                  type="text"
+                  value={newTransactionForm.values.wallet_id}
+                  //error={errors.amount ? true : false}
+                  onChange={newTransactionForm.onChange}
+                />
+                <input
+                  //label='Date'
+                  placeholder="YYYY-MM-DD"
+                  name="transactionDate"
+                  type="text"
+                  value={newTransactionForm.values.transactionDate}
+                  //error={errors.transactionDate ? true : false}
+                  onChange={newTransactionForm.onChange}
+                />
+                <input type="submit" value="Create" />
+              </form>
+              {/* Error box */}
+              {Object.keys(errors).length > 0 && (
+                <div className="ui error message">
+                  <ul className="list">
+                    {Object.values(errors).map((value: any) => (
+                      <li key={value}>{value}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
-      {/* <h4>Wallets</h4>
-      {wallets.map((wallet: Wallet) => (
-        <div key={wallet._id}>
-          <p>
-            {wallet.name} Money:{wallet.money}
-            <button onClick={() => props.history.push(`/wallet/${wallet._id}`)}>Open</button>
-          </p>
-        </div>
-      ))}
-      <h4>Create Wallet</h4>
-      <form onSubmit={newWalletForm.onSubmit}>
-        <input
-          // label='Name'
-          placeholder="Name"
-          name="name"
-          type="text"
-          value={newWalletForm.values.name}
-          //error={errors.name ? true : false}
-          onChange={newWalletForm.onChange}
-        />
-        <input
-          // label='Amount'
-          placeholder="0"
-          name="money"
-          type="text"
-          value={newWalletForm.values.money}
-          //error={errors.money ? true : false}
-          onChange={newWalletForm.onChange}
-        />
-        <input type="submit" value="Create" />
-      </form>
-      {/* Error box * /}
-      {Object.keys(errors).length > 0 && (
-        <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value: any) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
     </>
   );
 };
