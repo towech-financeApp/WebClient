@@ -1,0 +1,67 @@
+/** NavBar.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved.
+ *
+ * Login page styles
+ */
+.Login {
+  background-color: var(--color-accent);
+  border: 3px solid var(--color-dark);
+  border-radius: 5px;
+  padding: 15px;
+  position: relative;
+}
+
+.Login__loading {
+  position: absolute;
+  z-index: 1000;
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
+}
+
+.Login__spinner {
+  --spinner-size: 80px;
+  --color: #888;
+
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+}
+
+.Login__bottomRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Login__submit {
+  background-color: var(--color-dark);
+  border: 3px solid var(--color-dark);
+  border-radius: 4px;
+  color: var(--color-light);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+h1 {
+  font-weight: 800;
+}
+
+.loading {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+@media screen and (min-width: 320px) {
+  .Login {
+    margin: 10px;
+    width: auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .Login {
+    margin: 45px auto;
+    max-width: 500px;
+  }
+}
