@@ -4,7 +4,6 @@
  *
  * Custom input component
  */
-import React from 'react';
 
 // Styles
 import './Input.css';
@@ -17,7 +16,7 @@ interface Props {
   name?: string;
   onChange?: any;
   placeholder?: string;
-  type?: string;
+  type?: "text" | "password";
   value?: any;
 }
 

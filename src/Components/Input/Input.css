@@ -36,8 +36,9 @@
   background: var(--background-color);
   color: var(--text-color);
   font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.3;
   padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+  pointer-events: none;
   margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * 0.5);
   white-space: nowrap;
 
@@ -53,6 +54,8 @@
   box-sizing: border-box;
   color: var(--text-color);
   display: block;
+  font-size: 16px;
+  font-weight: 700;
   padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
   width: 100%;
 }
