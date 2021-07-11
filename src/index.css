@@ -4,15 +4,22 @@
  *
  * Styles for the whole app
  */
-@import url('https://fonts.googleapis.com/css?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;800&display=swap');
 
 :root {
-  --background-color: #DDD;
-  --navBar-color: #00B0F0;
+  --background-color: #ddd;
+  --navBar-color: #00b0f0;
   --navBar-font: #fff;
   --highlight-color: #00658a;
+
+  --color-light: #fff;
+  --color-dark: #212121;
+  --color-accent: #fab700;
+
+  --color-error: #d82222;
 }
 
-html *{
+html * {
   font-family: 'Raleway', serif;
+  color: var(--color-dark);
 }

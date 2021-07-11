@@ -4,7 +4,7 @@
  *
  * Navigation bar styles
  */
-@import url("../../index.css");
+@import url('../../index.css');
 
 span {
   margin-left: 16px;
@@ -48,7 +48,7 @@ span {
   color: var(--navBar-font);
 }
 
-.navBar__Menu__items > li{
+.navBar__Menu__items > li {
   display: flex;
   justify-content: flex-start;
   align-items: center;
