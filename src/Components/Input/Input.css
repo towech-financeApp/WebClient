@@ -1,0 +1,76 @@
+/** Input.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved
+ *
+ * Styles for the input component
+ */
+.input {
+  position: relative;
+  margin: 20px 5px;
+
+  --size-bezel: 0.5rem;
+  --size-radius: 4px;
+
+  --background-color: var(--color-light);
+  --text-color: var(--color-dark);
+  --accent: var(--color-accent);
+}
+
+.input.accent {
+  --background-color: var(--color-accent);
+  --text-color: var(--color-dark);
+  --accent: var(--color-light);
+}
+
+.input.dark {
+  --background-color: var(--color-dark);
+  --text-color: var(--color-light);
+  --accent: var(--color-accent);
+}
+
+.input__label {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  background: var(--background-color);
+  color: var(--text-color);
+  font-weight: bold;
+  line-height: 1.2;
+  padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+  margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * 0.5);
+  white-space: nowrap;
+
+  transform: translate(0, 0);
+  transform-origin: 0 0;
+  transition: transform 120ms ease-in;
+}
+
+.input__field {
+  background-color: var(--background-color);
+  border: 3px solid var(--text-color);
+  border-radius: var(--size-radius);
+  box-sizing: border-box;
+  color: var(--text-color);
+  display: block;
+  padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+  width: 100%;
+}
+
+.input__field:focus {
+  outline: none;
+}
+
+.input__field:focus + .input__label,
+.input__field:not(:placeholder-shown) + .input__label {
+  transform: translate(0.25rem, -65%) scale(0.8);
+  color: var(--accent);
+}
+
+.input.error .input__field {
+  border: 3px solid var(--color-error);
+}
+
+.input.error .input__label {
+  color: var(--color-error);
+}
