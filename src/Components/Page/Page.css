@@ -1,0 +1,63 @@
+.Page {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: var(--header-size) 1fr;
+  grid-template-rows: var(--header-size) 1fr;
+
+
+  --color-background: var(--color-light);
+  --color-text: var(--color-dark);
+}
+
+.Page > :nth-child(1) {
+  grid-area: nav;
+}
+
+.Page > :nth-child(2) {
+  background-color: var(--color-background);
+  border: 3px solid var(--color-text);
+  display: flex;
+  align-items: center;
+  grid-area: header;
+}
+
+.Page > :nth-child(3) {
+  grid-area: pageContent;
+}
+
+.Page > :nth-child(4) {
+  position: fixed;
+  z-index: 1000;
+  top: calc(50vh - 75px);
+  left: calc(50% - 75px);
+}
+
+.Page__spinner {
+  --spinner-size: 150px;
+  --color: var(--color-dark);
+
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+}
+
+@media screen and (min-width: 320px) {
+  .Page {
+    grid-template-areas: 
+    "nav header"
+    "pageContent pageContent";
+  }
+
+  .Page > :nth-child(2) {
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    padding: 10px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .Page {
+    grid-template-areas: 
+    "nav header"
+    "nav pageContent";
+  }
+}

@@ -17,9 +17,17 @@
   --color-accent: #fab700;
 
   --color-error: #d82222;
+
+  --header-size: 60px;
 }
 
-html * {
-  font-family: 'Raleway', serif;
+body {
+  background-color: var(--background-color);
   color: var(--color-dark);
+  font-family: 'Raleway', serif;
+}
+
+.loading {
+  pointer-events: none;
+  opacity: 0.4;
 }

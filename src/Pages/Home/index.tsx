@@ -5,6 +5,7 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -13,7 +14,7 @@ import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 import { Transaction, Wallet } from '../../models';
 
 // Components
-import NavBar from '../../Components/NavBar';
+import Page from '../../Components/Page';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -24,7 +25,6 @@ import CheckNested from '../../Utils/CheckNested';
 
 // Styles
 import './Home.css';
-import { Link } from 'react-router-dom';
 
 const Home = (): JSX.Element => {
   // Context
@@ -113,19 +113,19 @@ const Home = (): JSX.Element => {
     setReports({ earnings, expenses });
   };
 
-  return (
-    <>
-      <div className="Header">
-        <NavBar />
-        <div>
-          <div>Total: {calculateTotal()}</div>
-          {wallets.map((wallet) => (
-            <div key={wallet._id}>
-              {wallet.name}: {wallet.money}
-            </div>
-          ))}
+  const header = (
+    <div>
+      <div>Total: {calculateTotal()}</div>
+      {wallets.map((wallet) => (
+        <div key={wallet._id}>
+          {wallet.name}: {wallet.money}
         </div>
-      </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <Page header={header}>
       <div className="contents">
         {wallets.length == 0 ? (
           <div>
@@ -219,7 +219,7 @@ const Home = (): JSX.Element => {
           </>
         )}
       </div>
-    </>
+    </Page>
   );
 };
 

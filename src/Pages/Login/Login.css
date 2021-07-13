@@ -5,7 +5,7 @@
  * Login page styles
  */
 .Login {
-  background-color: var(--color-accent);
+  background-color: var(--color-light);
   border: 3px solid var(--color-dark);
   border-radius: 5px;
   padding: 15px;
@@ -45,11 +45,6 @@
 
 h1 {
   font-weight: 800;
-}
-
-.loading {
-  pointer-events: none;
-  opacity: 0.4;
 }
 
 @media screen and (min-width: 320px) {

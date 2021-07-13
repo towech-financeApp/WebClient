@@ -66,7 +66,6 @@ const Login = (): JSX.Element => {
         {/*Login form*/}
         <form onSubmit={loginForm.onSubmit}>
           <Input
-            accent
             error={errors.login ? true : false}
             label="Email"
             name="username"
@@ -75,7 +74,6 @@ const Login = (): JSX.Element => {
             onChange={loginForm.onChange}
           />
           <Input
-            accent
             error={errors.login ? true : false}
             label="Password"
             name="password"
@@ -85,7 +83,6 @@ const Login = (): JSX.Element => {
           />
           <div className="Login__bottomRow">
             <Checkbox
-              accent
               label="Keep me logged in"
               name="keepSession"
               checked={loginForm.values.keepSession}

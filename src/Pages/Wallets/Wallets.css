@@ -1,11 +1,4 @@
-.Header {
-  display: flex;
-  background-color: aqua;
-}
-
-.contents {
-  background-color: transparent;
-}
+@import url('../../App.css');
 
 .contents__addForm {
   visibility: hidden;

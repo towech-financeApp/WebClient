@@ -1,4 +1,4 @@
-/** Home.js
+/** Wallets.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
@@ -14,7 +14,7 @@ import UseForm from '../../Hooks/UseForm';
 import { Wallet } from '../../models';
 
 // Components
-import NavBar from '../../Components/NavBar';
+import Page from '../../Components/Page';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -88,12 +88,8 @@ const Wallets = (props: any): JSX.Element => {
   }
 
   return (
-    <>
-      <div className="Header">
-        <NavBar />
-        <h1>Wallets</h1>
-      </div>
-      <div className="contents">
+    <Page header={<h1>Wallets</h1>}>
+      <div>
         {/* List Wallets */}
         {wallets.length == 0 ? (
           <div>No Wallets</div>
@@ -158,7 +154,7 @@ const Wallets = (props: any): JSX.Element => {
           )}
         </div>
       </div>
-    </>
+    </Page>
   );
 };
 
