@@ -15,10 +15,12 @@
   --color-light: #fff;
   --color-dark: #212121;
   --color-accent: #fab700;
-
   --color-error: #d82222;
 
   --header-size: 60px;
+
+  --hover-light: #ddd;
+  --hover-dark: #ddd;
 }
 
 body {

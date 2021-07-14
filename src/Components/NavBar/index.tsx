@@ -5,7 +5,6 @@
  * Navigation bar component
  */
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 
 // Hooks
@@ -16,8 +15,23 @@ import AuthenticationService from '../../Services/AuthenticationService';
 
 // Styles
 import './NavBar.css';
+import MenuItem from './MenuItem';
 
-const NavBar = (): JSX.Element => {
+interface Props {
+  accent?: boolean;
+  dark?: boolean;
+  selected?: string;
+}
+
+const NavBar = (props: Props): JSX.Element => {
+  // Checks the the alternate theme flags and applies it with following hierarchy
+  // Accent
+  // Dark
+  // Light
+  let theme = 'navBar';
+  if (props.dark) theme = 'navBar dark';
+  if (props.accent) theme = 'navBar accent';
+
   // Context
   const { dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -52,33 +66,37 @@ const NavBar = (): JSX.Element => {
   }
 
   return (
-    <div className="navBar">
+    <div className={theme}>
       {/* Menu bar*/}
       <div className="navBar__selector" onClick={() => setSidebar(true)}>
         <FaIcons.FaBars />
       </div>
       {/*Navigation bar*/}
       <nav ref={menuRef} className={sidebar ? 'navBar__Menu active' : 'navBar__Menu'}>
-        <ul className="navBar__Menu__items">
-          <li key="transactions" onClick={() => setSidebar(false)}>
-            <Link to="/home">
-              <FaIcons.FaWallet />
-              <span>Transactions</span>
-            </Link>
-          </li>
-          <li key="wallets" onClick={() => setSidebar(false)}>
-            <Link to="/wallets">
-              <FaIcons.FaWallet />
-              <span>Wallets</span>
-            </Link>
-          </li>
-          <li key="logout">
-            <button onClick={logoutCallback}>
-              <FaIcons.FaUserTimes />
-              Logout
-            </button>
-          </li>
-        </ul>
+        <MenuItem
+          link="/home"
+          label="Transactions"
+          onClick={() => setSidebar(false)}
+          accent={props.accent}
+          dark={props.dark}
+          selected={props.selected === 'Transactions'}
+        >
+          <FaIcons.FaWallet />
+        </MenuItem>
+        <MenuItem
+          link="/wallets"
+          label="Wallets"
+          onClick={() => setSidebar(false)}
+          accent={props.accent}
+          dark={props.dark}
+          selected={props.selected === 'Wallets'}
+        >
+          <FaIcons.FaWallet />
+        </MenuItem>
+
+        <MenuItem label="Logout" onClick={logoutCallback} accent={props.accent} dark={props.dark}>
+          <FaIcons.FaUserTimes />
+        </MenuItem>
       </nav>
     </div>
   );

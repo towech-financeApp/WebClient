@@ -10,16 +10,28 @@ import './Page.css';
 
 interface Props {
   accent?: any;
-  dark?: any;
-  loading?: boolean;
-  header?: JSX.Element | string;
   children?: JSX.Element | string;
+  dark?: any;
+  header?: JSX.Element | string;
+  loading?: boolean;
+  selected?: string;
 }
 
 const Page = (props: Props): JSX.Element => {
+  // Checks the the alternate theme flags and applies it with following hierarchy
+  // Accent
+  // Dark
+  // Light
+  let theme = 'Page';
+  if (props.dark) theme = 'Page dark';
+  if (props.accent) theme = 'Page accent';
+
+  // If this item is selected, adds the color
+  if (props.loading) theme += ' loading';
+
   return (
-    <div className={props.loading ? 'Page loading' : 'Page'}>
-      <NavBar />
+    <div className={theme}>
+      <NavBar accent={props.accent} dark={props.dark} selected={props.selected} />
       <div>{props.header}</div>
       <div>{props.children}</div>
       {props.loading && <Loading className="Page__spinner" />}

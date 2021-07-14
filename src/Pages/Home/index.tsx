@@ -125,7 +125,7 @@ const Home = (): JSX.Element => {
   );
 
   return (
-    <Page header={header}>
+    <Page header={header} selected="Transactions">
       <div className="contents">
         {wallets.length == 0 ? (
           <div>

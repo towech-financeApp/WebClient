@@ -88,7 +88,7 @@ const Wallets = (props: any): JSX.Element => {
   }
 
   return (
-    <Page header={<h1>Wallets</h1>}>
+    <Page header={<h1>Wallets</h1>} selected="Wallets">
       <div>
         {/* List Wallets */}
         {wallets.length == 0 ? (
