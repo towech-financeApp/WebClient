@@ -7,16 +7,16 @@
 
   display: inline-block;
   width: var(--spinner-size);
-  height:var(--spinner-size);
+  height: var(--spinner-size);
 }
 .lds-dual-ring:after {
-  content: " ";
+  content: ' ';
   display: block;
-  width: calc(var(--spinner-size)*4/5);
-  height: calc(var(--spinner-size)*4/5);
-  margin: calc(var(--spinner-size)/10);
+  width: calc(var(--spinner-size) * 4 / 5);
+  height: calc(var(--spinner-size) * 4 / 5);
+  margin: calc(var(--spinner-size) / 10);
   border-radius: 50%;
-  border: calc(var(--spinner-size)/10) solid var(--color);
+  border: calc(var(--spinner-size) / 10) solid var(--color);
   border-color: var(--color) transparent var(--color) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }

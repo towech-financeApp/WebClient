@@ -35,7 +35,11 @@ const Checkbox = (props: Props): JSX.Element => {
         onChange={props.onChange}
         type="checkbox"
       />
-      {props.label && <label className="checkbox__label" htmlFor={props.name}>{props.label}</label>}
+      {props.label && (
+        <label className="checkbox__label" htmlFor={props.name}>
+          {props.label}
+        </label>
+      )}
     </div>
   );
 };
