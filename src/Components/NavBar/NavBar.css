@@ -46,7 +46,7 @@ span {
 
 .navBar__Menu.active {
   left: 0;
-  transition: 350ms;
+  transition: left 350ms;
 }
 
 .navBar__Menu > div {
@@ -76,7 +76,7 @@ span {
     padding-top: 15px;
     position: fixed;
     top: 0;
-    transition: 850ms;
+    transition: left 850ms;
     width: 230px;
   }
 }
@@ -97,12 +97,12 @@ span {
     height: 100vh;
     margin-top: var(--header-size);
     position: static;
-    transition: 0;
+    transition: left 0;
     width: 100%;
   }
 
   .navBar__Menu.active {
     left: 0;
-    transition: 0;
+    transition: left 0;
   }
 }
