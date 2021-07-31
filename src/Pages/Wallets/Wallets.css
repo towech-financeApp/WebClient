@@ -1,9 +1,15 @@
 @import url('../../App.css');
 
-.contents__addForm {
-  visibility: hidden;
+.NoWallets {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--color-mid);
 }
 
-.contents__addForm.active {
-  visibility: visible;
+@media screen and (min-width: 320px) {
+  .NoWallets {
+    padding: 150px 50px;
+  }
 }

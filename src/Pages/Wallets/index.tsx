@@ -14,6 +14,7 @@ import UseForm from '../../Hooks/UseForm';
 import { Wallet } from '../../models';
 
 // Components
+import NoWalletsCard from './NoWalletsCard';
 import Page from '../../Components/Page';
 
 // Services
@@ -89,8 +90,9 @@ const Wallets = (props: any): JSX.Element => {
 
   return (
     <Page header={<h1>Wallets</h1>} selected="Wallets">
-      <div>
-        {/* List Wallets */}
+      {wallets.length == 0 ? <NoWalletsCard /> : <div>SHOW WALLETS</div>}
+      {/* <div>
+        {/* List Wallets * /}
         {wallets.length == 0 ? (
           <div>No Wallets</div>
         ) : (
@@ -107,11 +109,11 @@ const Wallets = (props: any): JSX.Element => {
           </div>
         )}
 
-        {/*Add wallet button */}
+        {/*Add wallet button * /}
         <button onClick={() => setModal(true)}>Add Wallet</button>
 
-        {/*Create wallet form*/}
-        {/*TODO: Make form a modal*/}
+        {/*Create wallet form* /}
+        {/*TODO: Make form a modal* /}
         <div className={modal ? 'contents__addForm active' : 'contents__addForm'}>
           <button
             onClick={() => {
@@ -142,7 +144,7 @@ const Wallets = (props: any): JSX.Element => {
             />
             <input type="submit" value="Create" />
           </form>
-          {/* Error box */}
+          {/* Error box * /}
           {Object.keys(errors).length > 0 && (
             <div className="ui error message">
               <ul className="list">
@@ -153,7 +155,7 @@ const Wallets = (props: any): JSX.Element => {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </Page>
   );
 };
