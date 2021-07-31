@@ -44,10 +44,16 @@ const Login = (): JSX.Element => {
   async function loginCallback() {
     try {
       setErrors({});
+
+      // trims the email and changes to lowercase
+      loginForm.values.username = loginForm.values.username.trim().toLowerCase();
       const res = await authService.login(loginForm.values, setLoading);
 
       dispatchAuthToken({ type: 'LOGIN', payload: { ...res.data, keepSession: loginForm.values.keepSession } });
     } catch (error: any) {
+      // If any error happens, clears the password field
+      loginForm.values.password = '';
+
       if (CheckNested(error, 'response', 'data', 'errors')) setErrors(error.response.data.errors);
     }
   }
