@@ -5,6 +5,7 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -25,6 +26,7 @@ import CheckNested from '../../Utils/CheckNested';
 
 // Styles
 import './Wallets.css';
+import Button from '../../Components/Button';
 
 const Wallets = (props: any): JSX.Element => {
   // Context
@@ -89,8 +91,26 @@ const Wallets = (props: any): JSX.Element => {
   }
 
   return (
-    <Page header={<h1>Wallets</h1>} selected="Wallets">
-      {wallets.length == 0 ? <NoWalletsCard /> : <div>SHOW WALLETS</div>}
+    <Page
+      loading={!loaded}
+      selected="Wallets"
+      header={
+        <div className="Wallets__Header">
+          <div>
+            <h1>Wallets</h1>
+          </div>
+          <Button accent className="Wallets__AddTop"  onClick={() => setModal(true)}>
+            Add Wallet
+          </Button>
+        </div>
+      }
+    >
+      <>
+        <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
+          <FaIcons.FaPlus />
+        </Button>
+        {wallets.length == 0 ? <NoWalletsCard /> : <div>SHOW WALLETS</div>}
+      </>
       {/* <div>
         {/* List Wallets * /}
         {wallets.length == 0 ? (

@@ -8,8 +8,39 @@
   color: var(--color-mid);
 }
 
+.Wallets__Header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.Wallets__AddTop {
+  margin-left: auto;
+  visibility: hidden;
+}
+
+.Wallets__AddFloat {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+}
+
 @media screen and (min-width: 320px) {
   .NoWallets {
     padding: 150px 50px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .Wallets__Header{
+    margin-left: 25px;
+  }
+  
+  .Wallets__AddTop {
+    visibility: visible;
+  }
+
+  .Wallets__AddFloat {
+    visibility: hidden;
   }
 }
