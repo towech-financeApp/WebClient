@@ -8,6 +8,7 @@
 import { useContext, useState } from 'react';
 
 // Components
+import Button from '../../Components/Button';
 import Checkbox from '../../Components/Checkbox';
 import Input from '../../Components/Input';
 import Loading from '../../Components/Loading';
@@ -94,7 +95,7 @@ const Login = (): JSX.Element => {
               checked={loginForm.values.keepSession}
               onChange={loginForm.onChange}
             />
-            <input className="Login__submit" type="submit" value="Submit" />
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </div>

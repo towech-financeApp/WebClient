@@ -32,17 +32,6 @@
   justify-content: space-between;
 }
 
-.Login__submit {
-  background-color: var(--color-dark);
-  border: 3px solid var(--color-dark);
-  border-radius: 4px;
-  color: var(--color-light);
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  margin: 0 5px;
-  padding: 5px 10px;
-}
-
 h1 {
   font-weight: 800;
 }
