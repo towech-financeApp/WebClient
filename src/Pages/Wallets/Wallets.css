@@ -6,6 +6,7 @@
   height: 100%;
   text-align: center;
   color: var(--color-mid);
+  z-index: 1;
 }
 
 .Wallets__Header {
@@ -21,8 +22,29 @@
 
 .Wallets__AddFloat {
   position: absolute;
+  z-index: 1;
   bottom: 25px;
   right: 25px;
+}
+
+.NewWalletForm__Amount {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 35px;
+  margin-bottom: 15px;
+}
+
+.NewWalletForm__Amount__Label {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.3;
+  margin-left: auto;
+  padding-right: 5px;
+}
+
+.NewWalletForm__Amount__Input {
+  width: 50%;
 }
 
 @media screen and (min-width: 320px) {
@@ -32,10 +54,10 @@
 }
 
 @media screen and (min-width: 768px) {
-  .Wallets__Header{
+  .Wallets__Header {
     margin-left: 25px;
   }
-  
+
   .Wallets__AddTop {
     visibility: visible;
   }

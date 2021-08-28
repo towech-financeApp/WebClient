@@ -9,7 +9,6 @@ import * as FaIcons from 'react-icons/fa';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
-import UseForm from '../../Hooks/UseForm';
 
 // Models
 import { Wallet } from '../../models';
@@ -21,14 +20,12 @@ import Page from '../../Components/Page';
 // Services
 import TransactionService from '../../Services/TransactionService';
 
-// Utilities
-import CheckNested from '../../Utils/CheckNested';
-
 // Styles
 import './Wallets.css';
 import Button from '../../Components/Button';
+import NewWalletForm from './NewWalletForm';
 
-const Wallets = (props: any): JSX.Element => {
+const Wallets = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -38,14 +35,8 @@ const Wallets = (props: any): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [modal, setModal] = useState(false);
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
   const [wallets, setWallets] = useState([] as Wallet[]);
-
-  // Create wallet form
-  const newWalletForm = UseForm(newWalletCallback, {
-    name: '',
-    money: 0,
-  });
 
   // Main API call
   useEffect(() => {
@@ -66,29 +57,20 @@ const Wallets = (props: any): JSX.Element => {
   });
 
   // Callbacks
-  async function deleteWalletCallback(id: string) {
-    try {
-      await transactionService.deleteWallet(id);
+  // async function deleteWalletCallback(id: string) {
+  //   try {
+  //     await transactionService.deleteWallet(id);
 
-      setWallets(wallets.filter((wallet) => wallet._id !== id));
-    } catch (err) {
-      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      // console.log(err.response);
-    }
-  }
+  //     setWallets(wallets.filter((wallet) => wallet._id !== id));
+  //   } catch (err) {
+  //     if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+  //     // console.log(err.response);
+  //   }
+  // }
 
-  async function newWalletCallback() {
-    try {
-      const res = await transactionService.newWallet(newWalletForm.values);
-
-      newWalletForm.clear();
-      setWallets([...wallets, res.data]);
-      setModal(false);
-    } catch (err) {
-      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      // console.log(err.response);
-    }
-  }
+  const addWallet = (wallet: Wallet): void => {
+    setWallets([...wallets, wallet]);
+  };
 
   return (
     <Page
@@ -99,7 +81,7 @@ const Wallets = (props: any): JSX.Element => {
           <div>
             <h1>Wallets</h1>
           </div>
-          <Button accent className="Wallets__AddTop"  onClick={() => setModal(true)}>
+          <Button accent className="Wallets__AddTop" onClick={() => setModal(true)}>
             Add Wallet
           </Button>
         </div>
@@ -109,7 +91,8 @@ const Wallets = (props: any): JSX.Element => {
         <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
           <FaIcons.FaPlus />
         </Button>
-        {wallets.length == 0 ? <NoWalletsCard /> : <div>SHOW WALLETS</div>}
+        <NewWalletForm state={modal} set={setModal} addWallet={addWallet} />
+        {wallets.length == 0 ? <NoWalletsCard /> : <div>TODO: SHOW WALLETS</div>}
       </>
       {/* <div>
         {/* List Wallets * /}
@@ -131,50 +114,6 @@ const Wallets = (props: any): JSX.Element => {
 
         {/*Add wallet button * /}
         <button onClick={() => setModal(true)}>Add Wallet</button>
-
-        {/*Create wallet form* /}
-        {/*TODO: Make form a modal* /}
-        <div className={modal ? 'contents__addForm active' : 'contents__addForm'}>
-          <button
-            onClick={() => {
-              setErrors([]);
-              setModal(false);
-            }}
-          >
-            Close
-          </button>
-          <form onSubmit={newWalletForm.onSubmit}>
-            <input
-              // label='Name'
-              placeholder="Name"
-              name="name"
-              type="text"
-              value={newWalletForm.values.name}
-              //error={errors.name ? true : false}
-              onChange={newWalletForm.onChange}
-            />
-            <input
-              // label='Amount'
-              placeholder="0"
-              name="money"
-              type="text"
-              value={newWalletForm.values.money}
-              //error={errors.money ? true : false}
-              onChange={newWalletForm.onChange}
-            />
-            <input type="submit" value="Create" />
-          </form>
-          {/* Error box * /}
-          {Object.keys(errors).length > 0 && (
-            <div className="ui error message">
-              <ul className="list">
-                {Object.values(errors).map((value: any) => (
-                  <li key={value}>{value}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
       </div> */}
     </Page>
   );
