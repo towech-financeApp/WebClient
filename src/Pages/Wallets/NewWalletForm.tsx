@@ -40,7 +40,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
-  const [errors, setErrors] = useState({name: "Test"} as any);
+  const [errors, setErrors] = useState({} as any);
 
   // Creates the new walletForm
   const newWalletForm = UseForm(newWalletCallback, {
@@ -71,7 +71,10 @@ const NewWalletForm = (props: Props): JSX.Element => {
         title="New Wallet"
         accept="Create"
         onAccept={newWalletCallback}
-        onClose={() => {newWalletForm.clear(); setErrors([])}}
+        onClose={() => {
+          newWalletForm.clear();
+          setErrors([]);
+        }}
       >
         <form onSubmit={newWalletForm.onSubmit}>
           <Input

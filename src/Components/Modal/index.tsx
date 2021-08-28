@@ -33,7 +33,7 @@ const Modal = (props: Props): JSX.Element => {
   const closeModal = () => {
     if (props.onClose) props.onClose();
     props.setModal(false);
-  }
+  };
 
   // Function that handles the closing of the modal using ref
   const closeModalRef = (e: any) => {
