@@ -96,7 +96,8 @@
 
   .Modal {
     border-radius: 10px;
-    height: 500px;
+    margin-top: 60px;
+    max-height: 700px;
     width: 800px;
   }
 }
