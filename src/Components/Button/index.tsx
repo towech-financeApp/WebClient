@@ -27,7 +27,7 @@ const Button = (props: Props): JSX.Element => {
   if (props.accent) theme = 'button accent';
 
   // Sets the roundness of the button
-  if (props.round) theme+= ' round';
+  if (props.round) theme += ' round';
 
   return (
     <div className={props.className}>

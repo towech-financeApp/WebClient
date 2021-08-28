@@ -32,7 +32,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 3px 15px 30px -5px #000B;
+  box-shadow: 3px 15px 30px -5px #000b;
 }
 
 .button {
@@ -42,5 +42,5 @@
   font-weight: bold;
   letter-spacing: 0.5px;
   margin: 0 5px;
-  padding: 5px 10px; 
+  padding: 5px 10px;
 }

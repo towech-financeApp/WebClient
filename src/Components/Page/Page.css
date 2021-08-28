@@ -50,6 +50,11 @@
   height: var(--spinner-size);
 }
 
+.Page__content {
+  position: relative;
+  height: 100%;
+}
+
 @media screen and (min-width: 320px) {
   .Page {
     grid-template-areas:

@@ -33,7 +33,7 @@ const Page = (props: Props): JSX.Element => {
     <div className={theme}>
       <NavBar accent={props.accent} dark={props.dark} selected={props.selected} />
       <div>{props.header}</div>
-      <div>{props.children}</div>
+      <div className="Page__content">{props.children}</div>
       {props.loading && <Loading className="Page__spinner" />}
     </div>
   );
