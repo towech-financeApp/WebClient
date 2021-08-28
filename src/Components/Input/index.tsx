@@ -16,7 +16,7 @@ interface Props {
   name?: string;
   onChange?: any;
   placeholder?: string;
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'number';
   value?: any;
 }
 
