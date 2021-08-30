@@ -9,13 +9,10 @@
   --color-background: var(--color-light);
   --color-text: var(--color-dark);
 
-  background: var(--color-background);
-  box-shadow: none;
-  border-radius: 0;
-  color: var(--color-text);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000000000000;
 }
 
 .Modal.dark {
@@ -35,7 +32,16 @@
   justify-content: center;
   position: fixed;
   width: 100%;
-  z-index: 1000000000000;
+  height: 100vh;
+}
+
+.Modal__Content {
+  background: var(--color-background);
+  box-shadow: none;
+  border-radius: 0;
+  color: var(--color-text);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .Modal__header {
@@ -77,11 +83,8 @@
 }
 
 @media screen and (min-width: 320px) {
-  .Modal__background {
-    height: calc(100% - 60px);
-  }
-
-  .Modal {
+  .Modal__Content {
+    margin-top: 45px;
     border-radius: 4px 4px 0 0;
     max-height: calc(100% - 45px);
     width: 100%;
@@ -90,13 +93,12 @@
 
 @media screen and (min-width: 768px) {
   .Modal__background {
-    height: 100%;
     align-items: flex-start;
   }
 
-  .Modal {
+  .Modal__Content {
     border-radius: 10px;
-    margin-top: 60px;
+    margin-top: 120px;
     max-height: 700px;
     width: 800px;
   }

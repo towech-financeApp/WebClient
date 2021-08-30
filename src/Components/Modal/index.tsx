@@ -11,7 +11,7 @@ import Button from '../Button';
 
 interface Props {
   accept?: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: string | JSX.Element | JSX.Element[];
   showModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   onAccept?: any;
@@ -66,10 +66,10 @@ const Modal = (props: Props): JSX.Element => {
   }, [keyPress]);
 
   return (
-    <>
+    <div className="Modal">
       {props.showModal ? (
         <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
-          <animated.div style={animation} className="Modal">
+          <animated.div style={animation} className="Modal__Content">
             <div className="Modal__header">
               <div>
                 <h1>{props.title ? props.title : ''}</h1>
@@ -89,7 +89,7 @@ const Modal = (props: Props): JSX.Element => {
           </animated.div>
         </div>
       ) : null}
-    </>
+    </div>
   );
 };
 
