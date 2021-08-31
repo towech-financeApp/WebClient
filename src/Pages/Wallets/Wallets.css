@@ -68,6 +68,7 @@
 }
 
 .WalletCard {
+  align-items: center;
   display: flex;
   margin: 12px;
 }
