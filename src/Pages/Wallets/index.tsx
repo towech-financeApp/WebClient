@@ -61,6 +61,18 @@ const Wallets = (props: RouteComponentProps): JSX.Element => {
     setWallets([...wallets, wallet]);
   };
 
+  const editWallet = (wallet: Wallet): void => {
+    const editedWallets = wallets;
+
+    for (const i in editedWallets) {
+      if (editedWallets[i]._id == wallet._id) {
+        editedWallets[i] = wallet;
+        break;
+      }
+    }
+    setWallets([...editedWallets]);
+  };
+
   const deleteWallet = (wallet: Wallet): void => {
     setWallets(wallets.filter((o) => o._id !== wallet._id));
   };
@@ -91,7 +103,13 @@ const Wallets = (props: RouteComponentProps): JSX.Element => {
           <div className="Wallets__Container">
             <div className="Wallets__Container__Section">
               {wallets.map((wallet) => (
-                <WalletCard key={wallet._id} wallet={wallet} deleteWallet={deleteWallet} {...props} />
+                <WalletCard
+                  key={wallet._id}
+                  wallet={wallet}
+                  editWallet={editWallet}
+                  deleteWallet={deleteWallet}
+                  {...props}
+                />
               ))}
             </div>
           </div>

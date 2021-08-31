@@ -31,6 +31,13 @@ export default class TransactionService {
     return await this.instance.delete(`${this.ROOT_URL}/wallets/${id}`, loading);
   }
 
+  async editWallet(
+    wallet: Wallet,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.patch(`${this.ROOT_URL}/wallets/${wallet._id}`, wallet, loading);
+  }
+
   async getWallets(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     return await this.instance.get(`${this.ROOT_URL}/wallets`, loading);
   }
