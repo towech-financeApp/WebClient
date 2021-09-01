@@ -77,21 +77,19 @@ const Wallets = (props: RouteComponentProps): JSX.Element => {
     setWallets(wallets.filter((o) => o._id !== wallet._id));
   };
 
+  const header = (
+    <div className="Wallets__Header">
+      <div>
+        <h1>Wallets</h1>
+      </div>
+      <Button accent className="Wallets__AddTop" onClick={() => setModal(true)}>
+        Add Wallet
+      </Button>
+    </div>
+  );
+
   return (
-    <Page
-      loading={!loaded}
-      selected="Wallets"
-      header={
-        <div className="Wallets__Header">
-          <div>
-            <h1>Wallets</h1>
-          </div>
-          <Button accent className="Wallets__AddTop" onClick={() => setModal(true)}>
-            Add Wallet
-          </Button>
-        </div>
-      }
-    >
+    <Page loading={!loaded} selected="Wallets" header={header}>
       <div className="Wallets">
         <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
           <FaIcons.FaPlus />
