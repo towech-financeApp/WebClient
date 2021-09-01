@@ -5,7 +5,6 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -15,6 +14,7 @@ import { Transaction, Wallet } from '../../models';
 
 // Components
 import Page from '../../Components/Page';
+import RedirectToWallets from './RedirectToWallets';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -115,19 +115,22 @@ const Home = (): JSX.Element => {
 
   const header = (
     <div>
-      <div>Total: {calculateTotal()}</div>
+      TODO
+      {/* <div>Total: {calculateTotal()}</div>
       {wallets.map((wallet) => (
         <div key={wallet._id}>
           {wallet.name}: {wallet.money}
         </div>
-      ))}
+      ))} */}
     </div>
   );
 
   return (
     <Page header={header} selected="Transactions">
-      <div className="contents">
-        {wallets.length == 0 ? (
+      <div className="Transactions">
+        {wallets.length == 0 ? <RedirectToWallets /> : <p>TODO</p>}
+
+        {/* {wallets.length == 0 ? (
           <div>
             <p>
               You have no wallets, add one in <Link to="wallets">Wallets</Link>
@@ -135,28 +138,28 @@ const Home = (): JSX.Element => {
           </div>
         ) : (
           <>
-            {/*Report of the month*/}
+            {/*Report of the month * /}
             <div>
               in: {reports.earnings}
               <br />
               out: {reports.expenses}
             </div>
             <br />
-            {/*Transactions*/}
-            <div>
-              {transactions.map((transaction) => (
-                <div key={transaction._id}>
-                  {transaction.concept}: {transaction.amount}
-                  <br />
-                  wallet: {transaction.wallet_id}
-                </div>
-              ))}
+            {/*Transactions* /}
+        <div>
+          {transactions.map((transaction) => (
+            <div key={transaction._id}>
+              {transaction.concept}: {transaction.amount}
+              <br />
+              wallet: {transaction.wallet_id}
             </div>
-            <br />
-            {/*Add transaction button*/}
+          ))}
+        </div>
+        <br />
+        {/*Add transaction button* /}
             <button onClick={() => setModal(true)}>Add Transaction</button>
             {/*Create wallet form*/}
-            {/*TODO: Make form a modal*/}
+        {/*TODO: Make form a modal* /}
             <div className={modal ? 'contents__addForm active' : 'contents__addForm'}>
               <button
                 onClick={() => {
@@ -205,7 +208,7 @@ const Home = (): JSX.Element => {
                 />
                 <input type="submit" value="Create" />
               </form>
-              {/* Error box */}
+              {/* Error box * /}
               {Object.keys(errors).length > 0 && (
                 <div className="ui error message">
                   <ul className="list">
@@ -217,7 +220,7 @@ const Home = (): JSX.Element => {
               )}
             </div>
           </>
-        )}
+        )} */}
       </div>
     </Page>
   );
