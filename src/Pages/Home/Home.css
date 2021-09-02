@@ -3,3 +3,54 @@
   --text-color: var(--color-dark);
   --accent: var(--color-accent);
 }
+
+.Transactions__Content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 15px;
+}
+
+.Transactions__Totals {
+  background-color: var(--background-color);
+  border: 3px solid var(--color-dark);
+  border-radius: 4px;
+  display: flex;
+  font-size: 16pt;
+  padding: 8px 15px;
+  line-height: 1.5;
+}
+
+.Transactions__Totals__Items {
+  width: 50%;
+}
+
+.Transactions__Totals__Numbers {
+  text-align: right;
+  width: 50%;
+}
+
+.Transactions__Totals__Numbers div:nth-last-child(2) {
+  border-bottom: 1px solid var(--color-dark);
+}
+
+.Transactions__Totals__Numbers__In {
+  color: #00b0f0;
+}
+
+.Transactions__Totals__Numbers__Out {
+  color: #e43b07;
+}
+
+.Transactions__Viewer {
+  .Transactions__Totals {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .Transactions__Totals {
+    width: 75%;
+  }
+}

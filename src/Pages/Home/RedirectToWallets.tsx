@@ -1,4 +1,4 @@
-/** NoWalletsCard.tsx
+/** RedirectToWallets.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *

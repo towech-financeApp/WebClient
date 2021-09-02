@@ -1,10 +1,11 @@
-/** Home.js
+/** Home.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -22,11 +23,13 @@ import TransactionService from '../../Services/TransactionService';
 // Utilities
 import UseForm from '../../Hooks/UseForm';
 import CheckNested from '../../Utils/CheckNested';
+import GetParameters from '../../Utils/GetParameters';
 
 // Styles
 import './Home.css';
+import WalletTotals from './walletTotals';
 
-const Home = (): JSX.Element => {
+const Home = (props: RouteComponentProps): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -39,7 +42,7 @@ const Home = (): JSX.Element => {
   const [modal, setModal] = useState(false);
   const [errors, setErrors] = useState({});
   const [transactions, setTransactions] = useState([] as Transaction[]);
-  const [reports, setReports] = useState({ earnings: 0, expenses: 0 });
+  const [totals, setTotals] = useState({ earnings: 0, expenses: 0 });
 
   // Create transaction form
   const newTransactionForm = UseForm(newTransactionCallback, {
@@ -54,11 +57,17 @@ const Home = (): JSX.Element => {
     const firstLoad = async () => {
       if (!loaded) {
         setLoaded(true);
+
+        // Gets the id of the requested wallet (if none will get all)
+        const selectedWallet = GetParameters(props.location.search, 'wallet');
+
+        // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
+            // Gets the transactions for the selected wallet
             setWallets(res.data);
-            loadTransactions('-1');
+            loadTransactions(selectedWallet ? selectedWallet : '-1');
           })
           .catch(() => {
             // console.log(err.response);
@@ -110,12 +119,12 @@ const Home = (): JSX.Element => {
       }
     });
 
-    setReports({ earnings, expenses });
+    setTotals({ earnings, expenses });
   };
 
   const header = (
     <div>
-      TODO
+      TODO: Transaction Header
       {/* <div>Total: {calculateTotal()}</div>
       {wallets.map((wallet) => (
         <div key={wallet._id}>
@@ -128,21 +137,27 @@ const Home = (): JSX.Element => {
   return (
     <Page header={header} selected="Transactions">
       <div className="Transactions">
-        {wallets.length == 0 ? <RedirectToWallets /> : <p>TODO</p>}
+        {wallets.length == 0 ? (
+          <RedirectToWallets />
+        ) : (
+          <div className="Transactions__Content">
+            <WalletTotals totals={totals} />
+          </div>
+        )}
 
         {/* {wallets.length == 0 ? (
           <div>
             <p>
-              You have no wallets, add one in <Link to="wallets">Wallets</Link>
+              You have no wallets, add one in
             </p>
           </div>
         ) : (
           <>
             {/*Report of the month * /}
             <div>
-              in: {reports.earnings}
+              in: {totals.earnings}
               <br />
-              out: {reports.expenses}
+              out: {totals.expenses}
             </div>
             <br />
             {/*Transactions* /}
@@ -219,7 +234,7 @@ const Home = (): JSX.Element => {
                 </div>
               )}
             </div>
-          </>
+          </><         
         )} */}
       </div>
     </Page>
