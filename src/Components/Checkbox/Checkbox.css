@@ -1,0 +1,78 @@
+/** Checkbox.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved
+ *
+ * Styles for the checkbox component
+ */
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  margin: 0 5px;
+
+  --size-radius: 4px;
+
+  --background-color: var(--color-light);
+  --background-checked: var(--color-light);
+  --check-color: var(--color-dark);
+  --text-color: var(--color-dark);
+}
+
+.checkbox.accent {
+  --background-color: var(--color-accent);
+  --background-checked: var(--color-dark);
+  --check-color: var(--color-light);
+  --text-color: var(--color-dark);
+}
+
+.checkbox.dark {
+  --background-color: var(--color-dark);
+  --background-checked: var(--color-dark);
+  --check-color: var(--color-accent);
+  --text-color: var(--color-light);
+}
+
+.checkbox__field {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 18px;
+  width: 18px;
+
+  background-color: var(--background-color);
+  border: 3px solid var(--text-color);
+  border-radius: var(--size-radius);
+  margin-right: 5px;
+  cursor: pointer;
+  outline: none;
+}
+
+.checkbox__field:after {
+  color: var(--check-color);
+  content: '\f00c';
+  display: none;
+  font-family: FontAwesome, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.checkbox__field:checked {
+  background-color: var(--background-checked);
+}
+
+.checkbox__field:checked:after {
+  display: block;
+}
+
+.checkbox__label {
+  color: var(--text-color);
+  cursor: pointer;
+  font-weight: bold;
+}

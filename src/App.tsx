@@ -6,7 +6,6 @@
  */
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
@@ -14,7 +13,8 @@ import './App.css';
 // TODO: Pages
 import Home from './Pages/Home';
 import Login from './Pages/Login';
-import Wallet from './Pages/Wallet';
+import Wallets from './Pages/Wallets';
+// import Wallet from './Pages/Wallet';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -56,9 +56,9 @@ function App(): JSX.Element {
   });
 
   return (
-    <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
-      <Router>
-        <Container>
+    <div className="App">
+      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
+        <Router>
           <Switch>
             {/*Routes that can be accessed with or without credentials*/}
             {/*TODO: PasswordReset Pages*/}
@@ -66,14 +66,15 @@ function App(): JSX.Element {
             <AuthRoute notAuth exact path="/" Component={Login} />
             {/*Routes that can be accessed only while being logged in*/}
             <AuthRoute exact path="/home" Component={Home} />
-            <AuthRoute exact path="/wallet/:walletid" Component={Wallet} />
+            <AuthRoute exact path="/wallets" Component={Wallets} />
+            {/* <AuthRoute exact path="/wallet/:walletid" Component={Wallet} /> */}
             {/*TODO: Settings Page*/}
             {/* 404 - not found route*/}
             <Route component={NotFound} />
           </Switch>
-        </Container>
-      </Router>
-    </AuthenticationTokenStore.Provider>
+        </Router>
+      </AuthenticationTokenStore.Provider>
+    </div>
   );
 }
 

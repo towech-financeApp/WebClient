@@ -1,0 +1,71 @@
+.MenuItem {
+  --color-background: var(--color-light);
+  --color-text: var(--color-dark);
+  --color-hover: var(--hover-light);
+  --accent: var(--color-accent);
+
+  background-color: var(--color-background);
+  display: flex;
+  align-items: center;
+}
+
+.MenuItem.accent {
+  --color-background: var(--color-accent);
+  --color-text: var(--color-dark);
+  --color-hover: var(--hover-light);
+  --accent: var(--color-light);
+}
+
+.MenuItem.dark {
+  --color-background: var(--color-dark);
+  --color-text: var(--color-light);
+  --color-hover: var(--hover-dark);
+  --accent: var(--color-accent);
+}
+
+.MenuItem.selected {
+  pointer-events: none;
+}
+
+.MenuItem:hover {
+  background-color: var(--color-hover);
+}
+
+.MenuItem > * {
+  color: var(--color-text);
+}
+
+.MenuItem.selected > * {
+  color: var(--accent);
+}
+
+@media screen and (min-width: 320px) {
+  .MenuItem {
+    flex-direction: row;
+    padding: 15px;
+  }
+
+  .MenuItem > :first-child {
+    font-size: 22px;
+  }
+
+  .MenuItem > p {
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 15px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .MenuItem {
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .MenuItem > p {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 0;
+  }
+}

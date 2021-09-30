@@ -1,0 +1,109 @@
+/** NavBar.css
+ * Copyright (c) 2021, Jose Tow
+ * All rights reserved.
+ *
+ * Navigation bar styles
+ */
+@import url('../../index.css');
+
+span {
+  margin-left: 16px;
+}
+
+.navBar {
+  --background-color: var(--color-light);
+  --text-color: var(--color-dark);
+  --accent: var(--color-accent);
+
+  background-color: var(--background-color);
+  border: 3px solid var(--text-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.navBar.dark {
+  --background-color: var(--color-dark);
+  --text-color: var(--color-light);
+  --accent: var(--color-accent);
+}
+
+.navBar.accent {
+  --background-color: var(--color-accent);
+  --text-color: var(--color-dark);
+  --accent: var(--color-light);
+}
+
+.navBar__selector {
+  color: var(--text-color);
+  font-size: 1.5rem;
+}
+
+.navBar__Menu {
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.navBar__Menu.active {
+  left: 0;
+  transition: left 350ms;
+}
+
+.navBar__Menu > div {
+  display: block;
+  width: 100%;
+}
+
+.navBar__Menu > div:last-child {
+  margin-top: auto;
+}
+
+@media screen and (min-width: 320px) {
+  .navBar {
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    align-items: center;
+    justify-content: center;
+    height: var(--header-size);
+  }
+
+  .navBar__Menu {
+    border: 3px solid var(--color-text);
+    border-radius: 4px;
+    height: calc(92vh - 10px);
+    left: -100%;
+    margin-top: 10px;
+    padding-top: 15px;
+    position: fixed;
+    top: 0;
+    transition: left 850ms;
+    width: 230px;
+    z-index: 2147483640;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .navBar {
+    border: 3px solid var(--text-color);
+    border-radius: 4px;
+    height: auto;
+  }
+
+  .navBar__selector {
+    display: none;
+  }
+
+  .navBar__Menu {
+    border: none;
+    height: 100vh;
+    margin-top: var(--header-size);
+    position: static;
+    transition: left 0;
+    width: 100%;
+  }
+
+  .navBar__Menu.active {
+    left: 0;
+    transition: left 0;
+  }
+}
