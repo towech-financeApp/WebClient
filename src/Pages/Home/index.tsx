@@ -6,6 +6,7 @@
  */
 import { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import * as FaIcons from 'react-icons/fa';
 
 // hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -14,20 +15,21 @@ import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 import { Transaction, Wallet } from '../../models';
 
 // Components
+import Button from '../../Components/Button';
 import Page from '../../Components/Page';
 import RedirectToWallets from './RedirectToWallets';
+import TransactionViewer from './TransactionViewer';
+import WalletTotals from './walletTotals';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
 
 // Utilities
-import UseForm from '../../Hooks/UseForm';
-import CheckNested from '../../Utils/CheckNested';
 import GetParameters from '../../Utils/GetParameters';
 
 // Styles
 import './Home.css';
-import WalletTotals from './walletTotals';
+import NewTransactionForm from './NewTransactionForm';
 
 const Home = (props: RouteComponentProps): JSX.Element => {
   // Context
@@ -36,21 +38,15 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
+  
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [wallets, setWallets] = useState([] as Wallet[]);
-  const [modal, setModal] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(props.location.search, 'wallet') || '-1');
+  const [headerTotal, setHeaderTotal] = useState(0);
+  const [addModal, setAddModal] = useState(false);
   const [transactions, setTransactions] = useState([] as Transaction[]);
-  const [totals, setTotals] = useState({ earnings: 0, expenses: 0 });
-
-  // Create transaction form
-  const newTransactionForm = UseForm(newTransactionCallback, {
-    wallet_id: '',
-    concept: '',
-    amount: 0,
-    transactionDate: '',
-  });
+  const [monthTotals, setMonthTotals] = useState({ earnings: 0, expenses: 0 });
 
   // Main API call
   useEffect(() => {
@@ -58,16 +54,14 @@ const Home = (props: RouteComponentProps): JSX.Element => {
       if (!loaded) {
         setLoaded(true);
 
-        // Gets the id of the requested wallet (if none will get all)
-        const selectedWallet = GetParameters(props.location.search, 'wallet');
-
         // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
             // Gets the transactions for the selected wallet
             setWallets(res.data);
-            loadTransactions(selectedWallet ? selectedWallet : '-1');
+
+            loadTransactions(selectedWallet_id);
           })
           .catch(() => {
             // console.log(err.response);
@@ -77,41 +71,43 @@ const Home = (props: RouteComponentProps): JSX.Element => {
     firstLoad();
   });
 
-  // Callbacks
-  async function newTransactionCallback() {
-    try {
-      const res = await transactionService.newTransaction(newTransactionForm.values);
+  // Code that is run everytime the Wallets or the Transactions change
+  useEffect(() => {
+    setReport();
+  }, [wallets, transactions]);
 
-      newTransactionForm.clear();
+  // Code that is run everytime the selectedWalletId changes
+  useEffect(() => {
+    loadTransactions(selectedWallet_id);
+  }, [selectedWallet_id])
 
-      setTransactions([...transactions, res.data]);
-    } catch (err) {
-      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      // console.log(err.response);
-    }
-  }
-
-  // functions
-  const calculateTotal = (): number => {
-    let total = 0;
-
-    wallets.map((wallet) => (total += wallet.money));
-
-    return total;
+  // Adds a transaction to the list and recalculates the totals
+  const addTransaction = (transaction: Transaction): void => {
+    setTransactions([...transactions, transaction]);
   };
 
+  // Edits a transaction from the list and recalculates the totals
+  const editTransaction = (transaction: Transaction): void => {
+    console.log('edit');
+  };
+
+  // Removes a transaction from the list
+  const deleteTransaction = (transaction: Transaction): void => {
+    setTransactions(transactions.filter((o) => o._id !== transaction._id));
+  };
+
+  // Gets the transactions from the API of the selected wallet
   const loadTransactions = async (walletId: string): Promise<void> => {
     const res = await transactionService.getWalletTransactions(walletId);
     setTransactions(res.data.transactions);
-
-    setReport(res.data.transactions);
   };
 
-  const setReport = (transArr: Transaction[]): void => {
+  // Reads the transactions and separates the income and expenses as well as the total in the header
+  const setReport = (): void => {
     let earnings = 0;
     let expenses = 0;
 
-    transArr.map((transaction) => {
+    transactions.map((transaction) => {
       if (transaction.amount > 0) {
         earnings += transaction.amount;
       } else {
@@ -119,123 +115,73 @@ const Home = (props: RouteComponentProps): JSX.Element => {
       }
     });
 
-    setTotals({ earnings, expenses });
+    setMonthTotals({ earnings, expenses });
+
+    if (selectedWallet_id !== '-1') {
+      setHeaderTotal(wallets.find((w) => w._id === selectedWallet_id)?.money || 0);
+    } else {
+      let nHeaderTotal = 0;
+      wallets.map((w) => {
+        nHeaderTotal += w.money;
+      });
+
+      setHeaderTotal(nHeaderTotal);
+    }
   };
 
+  // Redirects to the wallet when the header selector changes
+  const changeSelectedWallet = (data: any): void => {
+    if (data.target.options[data.target.selectedIndex].value !== selectedWallet_id) {
+      props.history.push(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
+      setSelectedWalletId(data.target.options[data.target.selectedIndex].value);
+    }
+  };
+
+  // Extracted HTML components
   const header = (
-    <div>
-      TODO: Transaction Header
-      {/* <div>Total: {calculateTotal()}</div>
-      {wallets.map((wallet) => (
-        <div key={wallet._id}>
-          {wallet.name}: {wallet.money}
-        </div>
-      ))} */}
+    <div className="Transactions__Header">
+      <div>
+        <select
+          name="selected_wallet"
+          onChange={changeSelectedWallet}
+          value={selectedWallet_id}
+        >
+          <option value="-1">Total</option>
+          {wallets.map((wallet: Wallet) => (
+            <option value={wallet._id} key={wallet._id}>
+              {wallet.name}
+            </option>
+          ))}
+        </select>
+        <div>{headerTotal}</div>
+      </div>
+      <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
+        Add Wallet
+      </Button>
     </div>
   );
 
   return (
     <Page header={header} selected="Transactions">
       <div className="Transactions">
+        <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
+          <FaIcons.FaPlus />
+        </Button>
+        <NewTransactionForm
+          state={addModal}
+          setState={setAddModal}
+          addTransaction={addTransaction}
+          wallets={wallets}
+          selectedWallet={selectedWallet_id}
+        />
         {wallets.length == 0 ? (
           <RedirectToWallets />
         ) : (
           <div className="Transactions__Content">
-            <WalletTotals totals={totals} />
+            <WalletTotals totals={monthTotals} />
+            <TransactionViewer transactions={transactions} edit={editTransaction} delete={deleteTransaction} />
           </div>
         )}
-
-        {/* {wallets.length == 0 ? (
-          <div>
-            <p>
-              You have no wallets, add one in
-            </p>
-          </div>
-        ) : (
-          <>
-            {/*Report of the month * /}
-            <div>
-              in: {totals.earnings}
-              <br />
-              out: {totals.expenses}
-            </div>
-            <br />
-            {/*Transactions* /}
-        <div>
-          {transactions.map((transaction) => (
-            <div key={transaction._id}>
-              {transaction.concept}: {transaction.amount}
-              <br />
-              wallet: {transaction.wallet_id}
-            </div>
-          ))}
-        </div>
-        <br />
-        {/*Add transaction button* /}
-            <button onClick={() => setModal(true)}>Add Transaction</button>
-            {/*Create wallet form*/}
-        {/*TODO: Make form a modal* /}
-            <div className={modal ? 'contents__addForm active' : 'contents__addForm'}>
-              <button
-                onClick={() => {
-                  setErrors([]);
-                  setModal(false);
-                }}
-              >
-                Close
-              </button>
-              <form onSubmit={newTransactionForm.onSubmit}>
-                <input
-                  //label='Concept'
-                  placeholder="Concept"
-                  name="concept"
-                  type="text"
-                  value={newTransactionForm.values.concept}
-                  //error={errors.concept ? true : false}
-                  onChange={newTransactionForm.onChange}
-                />
-                <input
-                  //label='Amount'
-                  placeholder="0"
-                  name="amount"
-                  type="text"
-                  value={newTransactionForm.values.amount}
-                  //error={errors.amount ? true : false}
-                  onChange={newTransactionForm.onChange}
-                />
-                <input
-                  //label='Amount'
-                  placeholder="WalletId"
-                  name="wallet_id"
-                  type="text"
-                  value={newTransactionForm.values.wallet_id}
-                  //error={errors.amount ? true : false}
-                  onChange={newTransactionForm.onChange}
-                />
-                <input
-                  //label='Date'
-                  placeholder="YYYY-MM-DD"
-                  name="transactionDate"
-                  type="text"
-                  value={newTransactionForm.values.transactionDate}
-                  //error={errors.transactionDate ? true : false}
-                  onChange={newTransactionForm.onChange}
-                />
-                <input type="submit" value="Create" />
-              </form>
-              {/* Error box * /}
-              {Object.keys(errors).length > 0 && (
-                <div className="ui error message">
-                  <ul className="list">
-                    {Object.values(errors).map((value: any) => (
-                      <li key={value}>{value}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </><         
-        )} */}
       </div>
     </Page>
   );

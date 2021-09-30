@@ -1,4 +1,4 @@
-/** NoWalletsCard.tsx
+/** NewWalletForm.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
@@ -57,7 +57,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
       newWalletForm.clear();
       props.addWallet(res.data);
       props.set(false);
-    } catch (err) {
+    } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       // console.log(err.response);
     }

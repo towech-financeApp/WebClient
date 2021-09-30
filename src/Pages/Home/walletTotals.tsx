@@ -20,8 +20,8 @@ const WalletTotals = (props: Props): JSX.Element => {
       </div>
       <div className="Transactions__Totals__Numbers">
         <div className="Transactions__Totals__Numbers__In"> + {props.totals.earnings.toFixed(2)}</div>
-        <div className="Transactions__Totals__Numbers__Out"> - {props.totals.expenses.toFixed(2)} </div>
-        <div> {(props.totals.earnings - props.totals.expenses).toFixed(2)}</div>
+        <div className="Transactions__Totals__Numbers__Out"> - {Math.abs(props.totals.expenses).toFixed(2)} </div>
+        <div> {(props.totals.earnings + props.totals.expenses).toFixed(2)}</div>
       </div>
     </div>
   );

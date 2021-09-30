@@ -60,7 +60,7 @@ const WalletCard = (props: Props): JSX.Element => {
       // Sets the wallet and closes the modal
       props.editWallet(res.data);
       setEdit(false);
-    } catch (err) {
+    } catch (err: any) {
       // If there is a 304 status, then the modal is closed
       if (err.response.status == 304) setEdit(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setEditErrors(err.response.data.errors);

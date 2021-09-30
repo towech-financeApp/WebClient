@@ -5,6 +5,9 @@
 WebClient for the Towech FinanceApp, it is created using reactJS and when used inside
 a docker container, it utilizes nginx for serving it.
 
+This webClient is created using as few component libraries as possible, the intention of this 
+is to learn to create frontend apps entirely from scratch.
+
 # Table of Contents
 1. [Environment](#Environment)
 2. [Installation](#Installation)
