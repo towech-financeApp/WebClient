@@ -26,7 +26,7 @@ const TransactionViewer = (props: Props): JSX.Element => {
       ) : (
         <div className="Transactions__Viewer__List">
           {props.transactions.map((transaction: Transaction) => (
-            <TransactionCard key={transaction._id} transaction={transaction} edit={props.edit} delete={props.delete}/>
+            <TransactionCard key={transaction._id} transaction={transaction} edit={props.edit} delete={props.delete} />
           ))}
         </div>
       )}

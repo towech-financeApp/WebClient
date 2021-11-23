@@ -5,7 +5,6 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
@@ -27,7 +26,7 @@ import Button from '../../Components/Button';
 import NewWalletForm from './NewWalletForm';
 import WalletCard from './WalletCard';
 
-const Wallets = (props: RouteComponentProps): JSX.Element => {
+const Wallets = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -106,7 +105,6 @@ const Wallets = (props: RouteComponentProps): JSX.Element => {
                   wallet={wallet}
                   editWallet={editWallet}
                   deleteWallet={deleteWallet}
-                  {...props}
                 />
               ))}
             </div>

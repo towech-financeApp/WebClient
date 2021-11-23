@@ -46,7 +46,7 @@ const TransactionCard = (props: Props): JSX.Element => {
 
   async function deleteTransaction(): Promise<void> {
     try {
-      await  transactionService.deleteTransaction(props.transaction._id);
+      await transactionService.deleteTransaction(props.transaction._id);
 
       props.delete(props.transaction);
     } catch (err: any) {

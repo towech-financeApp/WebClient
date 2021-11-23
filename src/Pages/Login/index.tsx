@@ -5,7 +5,8 @@
  * Login Page for the App
  * Based from: https://codepen.io/meodai/pen/rNedxBa
  */
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Components
 import Button from '../../Components/Button';
@@ -29,11 +30,13 @@ import './Login.css';
 const Login = (): JSX.Element => {
   // Declares the service
   const authService = new AuthenticationService();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Hooks
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
-  const { dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
   // State for the form
   const loginForm = UseForm(loginCallback, {
@@ -41,6 +44,12 @@ const Login = (): JSX.Element => {
     password: '',
     keepSession: false,
   });
+
+  useEffect(() => {
+    if (authToken.token) {
+      navigate(location.state ? location.state.path : '/home');
+    }
+  }, [authToken]);
 
   async function loginCallback() {
     try {

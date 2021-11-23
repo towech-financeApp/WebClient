@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 // TODO: 404 Error page
 
-const NotFound = () => {
+const NotFound = (): JSX.Element => {
   return (
     <>
       <h1>404 - Not Found!</h1>

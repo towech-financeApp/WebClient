@@ -5,7 +5,7 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
@@ -31,18 +31,19 @@ import GetParameters from '../../Utils/GetParameters';
 import './Home.css';
 import NewTransactionForm from './NewTransactionForm';
 
-const Home = (props: RouteComponentProps): JSX.Element => {
+const Home = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
-  
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [wallets, setWallets] = useState([] as Wallet[]);
-  const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(props.location.search, 'wallet') || '-1');
+  const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
   const [headerTotal, setHeaderTotal] = useState(0);
   const [addModal, setAddModal] = useState(false);
   const [transactions, setTransactions] = useState([] as Transaction[]);
@@ -79,7 +80,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   // Code that is run everytime the selectedWalletId changes
   useEffect(() => {
     loadTransactions(selectedWallet_id);
-  }, [selectedWallet_id])
+  }, [selectedWallet_id]);
 
   // Adds a transaction to the list and recalculates the totals
   const addTransaction = (transaction: Transaction): void => {
@@ -132,7 +133,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   // Redirects to the wallet when the header selector changes
   const changeSelectedWallet = (data: any): void => {
     if (data.target.options[data.target.selectedIndex].value !== selectedWallet_id) {
-      props.history.push(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
+      navigate(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
       setSelectedWalletId(data.target.options[data.target.selectedIndex].value);
     }
   };
@@ -141,11 +142,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   const header = (
     <div className="Transactions__Header">
       <div>
-        <select
-          name="selected_wallet"
-          onChange={changeSelectedWallet}
-          value={selectedWallet_id}
-        >
+        <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
           <option value="-1">Total</option>
           {wallets.map((wallet: Wallet) => (
             <option value={wallet._id} key={wallet._id}>

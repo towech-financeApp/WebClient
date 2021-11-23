@@ -5,7 +5,7 @@
  * Component that shows the Wallet elements
  */
 import { useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as HiIcons from 'react-icons/hi';
 
 // Hooks
@@ -26,7 +26,7 @@ import CheckNested from '../../Utils/CheckNested';
 // Services
 import TransactionService from '../../Services/TransactionService';
 
-interface Props extends RouteComponentProps {
+interface Props /*extends RouteComponentProps*/ {
   wallet: Wallet;
   editWallet: (wallet: Wallet) => void;
   deleteWallet: (wallet: Wallet) => void;
@@ -35,6 +35,7 @@ interface Props extends RouteComponentProps {
 const WalletCard = (props: Props): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const navigate = useNavigate();
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
@@ -85,7 +86,7 @@ const WalletCard = (props: Props): JSX.Element => {
 
   return (
     <div className="WalletCard">
-      <div className="WalletCard__Name" onClick={() => props.history.push(`/home?wallet=${props.wallet._id}`)}>
+      <div className="WalletCard__Name" onClick={() => navigate(`/home?wallet=${props.wallet._id}`)}>
         {props.wallet.name}
       </div>
       <Button onClick={() => setEdit(true)}>
