@@ -14,6 +14,7 @@ import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
 import { Transaction, Wallet } from '../models';
+import React from 'react';
 
 export default class TransactionService {
   private token: TokenState;
@@ -36,6 +37,14 @@ export default class TransactionService {
 
   async deleteWallet(id: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     return await this.instance.delete(`${this.ROOT_URL}/wallets/${id}`, loading);
+  }
+
+  async editTransaction(
+    transactionId: string,
+    transaction: Transaction,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.patch(`${this.ROOT_URL}/transactions/${transactionId}`, transaction, loading);
   }
 
   async editWallet(

@@ -29,6 +29,7 @@ interface Props {
   state: boolean;
   wallets: Wallet[];
   selectedWallet: string | null;
+  initialTransaction?: Transaction;
 }
 
 const NewTransactionForm = (props: Props): JSX.Element => {
@@ -42,19 +43,22 @@ const NewTransactionForm = (props: Props): JSX.Element => {
   const [errors, setErrors] = useState({} as any);
 
   const newTransactionForm = UseForm(newTransactionCallback, {
-    wallet_id: props.selectedWallet || '',
-    concept: '',
-    amount: 0,
-    transactionDate: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${new Date().getDate().toString().padStart(2, '0')}`,
+    wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
+    concept: props.initialTransaction?.concept || '',
+    amount: props.initialTransaction?.amount || 0,
+    transactionDate:
+      props.initialTransaction?.transactionDate?.toString().substr(0, 10) ||
+      `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date()
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`,
   });
 
   // Functions
   async function newTransactionCallback() {
     try {
       // If no wallet was entered, returns an error
-      if (newTransactionForm.values.wallet_id === '') {
+      if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
         setErrors({ wallet_id: 'Select a wallet' });
         return;
       }
@@ -70,7 +74,30 @@ const NewTransactionForm = (props: Props): JSX.Element => {
       props.setState(false);
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-      //else console.log(err.response); //eslint-disable-line no-console
+      else console.log(err); //eslint-disable-line no-console
+    }
+  }
+
+  async function editTransactionCallback() {
+    try {
+      // If no wallet was entered, returns an error
+      if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
+        setErrors({ wallet_id: 'Select a wallet' });
+        return;
+      }
+
+      // Sends the transaction to the API
+      const res = await transactionService.editTransaction(
+        props.initialTransaction?._id || '',
+        newTransactionForm.values,
+      );
+
+      props.setState(false);
+
+      if (res.status !== 304) props.addTransaction(res.data);
+    } catch (err: any) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      else console.log(err.response); //eslint-disable-line no-console
     }
   }
 
@@ -79,9 +106,11 @@ const NewTransactionForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.setState}
-        title="NewTransaction"
-        accept="Create"
-        onAccept={newTransactionCallback}
+        title={props.initialTransaction ? 'Edit Transaction' : 'New Transaction'}
+        accept={props.initialTransaction ? 'Save' : 'Create'}
+        onAccept={() => {
+          props.initialTransaction ? editTransactionCallback() : newTransactionCallback();
+        }}
         onClose={() => {
           newTransactionForm.clear();
           setErrors([]);
@@ -112,7 +141,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               onChange={newTransactionForm.onChange}
               defaultValue={newTransactionForm.values.wallet_id}
             >
-              <option value="" disabled hidden>
+              <option value="-1" disabled>
                 Select Wallet
               </option>
               {props.wallets.map((wallet: Wallet) => (

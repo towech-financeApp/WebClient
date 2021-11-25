@@ -21,6 +21,7 @@ import DataMonthSelector from './DataMonthSelector';
 import RedirectToWallets from './RedirectToWallets';
 import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
+import NewTransactionForm from './NewTransactionForm';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -31,7 +32,6 @@ import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Home.css';
-import NewTransactionForm from './NewTransactionForm';
 
 const Home = (): JSX.Element => {
   // Context
@@ -89,7 +89,19 @@ const Home = (): JSX.Element => {
 
   // Edits a transaction from the list and recalculates the totals
   const editTransaction = (transaction: Transaction): void => {
-    console.log('edit');
+    // First, filters out the transaction
+    let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
+
+    // Then adds it back if it is in the selected wallets and in the dataMonth
+    if (
+      (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
+      dataMonth ===
+        `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+    ) {
+      editedTransactions = [...editedTransactions, transaction];
+    }
+
+    setTransactions(editedTransactions);
   };
 
   // Removes a transaction from the list
@@ -177,7 +189,12 @@ const Home = (): JSX.Element => {
           <div className="Transactions__Content">
             <WalletTotals totals={monthTotals} />
             <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
-            <TransactionViewer transactions={transactions} edit={editTransaction} delete={deleteTransaction} />
+            <TransactionViewer
+              wallets={wallets}
+              transactions={transactions}
+              edit={editTransaction}
+              delete={deleteTransaction}
+            />
           </div>
         )}
       </div>
