@@ -51,9 +51,10 @@ export default class TransactionService {
 
   async getWalletTransactions(
     walletid: string,
+    dataMonth: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/wallets/${walletid}/transactions`, loading);
+    return await this.instance.get(`${this.ROOT_URL}/wallets/${walletid}/transactions?datamonth=${dataMonth}`, loading);
   }
 
   async newTransaction(

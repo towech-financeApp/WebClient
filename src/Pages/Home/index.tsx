@@ -17,6 +17,7 @@ import { Transaction, Wallet } from '../../models';
 // Components
 import Button from '../../Components/Button';
 import Page from '../../Components/Page';
+import DataMonthSelector from './DataMonthSelector';
 import RedirectToWallets from './RedirectToWallets';
 import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
@@ -26,6 +27,7 @@ import TransactionService from '../../Services/TransactionService';
 
 // Utilities
 import GetParameters from '../../Utils/GetParameters';
+import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Home.css';
@@ -44,6 +46,7 @@ const Home = (): JSX.Element => {
   const [loaded, setLoaded] = useState(false);
   const [wallets, setWallets] = useState([] as Wallet[]);
   const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
+  const [dataMonth, setDataMonth] = useState(ParseDataMonth(GetParameters(location.search, 'month')));
   const [headerTotal, setHeaderTotal] = useState(0);
   const [addModal, setAddModal] = useState(false);
   const [transactions, setTransactions] = useState([] as Transaction[]);
@@ -52,17 +55,14 @@ const Home = (): JSX.Element => {
   // Main API call
   useEffect(() => {
     const firstLoad = async () => {
-      if (!loaded) {
+      if (!loaded && authToken.token) {
         setLoaded(true);
-
         // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
-            // Gets the transactions for the selected wallet
+            // Sets the available wallets, the transactions are fetched later
             setWallets(res.data);
-
-            loadTransactions(selectedWallet_id);
           })
           .catch(() => {
             // console.log(err.response);
@@ -70,7 +70,7 @@ const Home = (): JSX.Element => {
       }
     };
     firstLoad();
-  });
+  }, []);
 
   // Code that is run everytime the Wallets or the Transactions change
   useEffect(() => {
@@ -79,8 +79,8 @@ const Home = (): JSX.Element => {
 
   // Code that is run everytime the selectedWalletId changes
   useEffect(() => {
-    loadTransactions(selectedWallet_id);
-  }, [selectedWallet_id]);
+    loadTransactions(selectedWallet_id, dataMonth);
+  }, [selectedWallet_id, dataMonth]);
 
   // Adds a transaction to the list and recalculates the totals
   const addTransaction = (transaction: Transaction): void => {
@@ -98,8 +98,8 @@ const Home = (): JSX.Element => {
   };
 
   // Gets the transactions from the API of the selected wallet
-  const loadTransactions = async (walletId: string): Promise<void> => {
-    const res = await transactionService.getWalletTransactions(walletId);
+  const loadTransactions = async (walletId: string, dataMonth: string): Promise<void> => {
+    const res = await transactionService.getWalletTransactions(walletId, dataMonth);
     setTransactions(res.data.transactions);
   };
 
@@ -153,7 +153,7 @@ const Home = (): JSX.Element => {
         <div>{headerTotal}</div>
       </div>
       <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
-        Add Wallet
+        Add Transaction
       </Button>
     </div>
   );
@@ -176,6 +176,7 @@ const Home = (): JSX.Element => {
         ) : (
           <div className="Transactions__Content">
             <WalletTotals totals={monthTotals} />
+            <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
             <TransactionViewer transactions={transactions} edit={editTransaction} delete={deleteTransaction} />
           </div>
         )}

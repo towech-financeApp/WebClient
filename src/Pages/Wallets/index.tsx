@@ -100,12 +100,7 @@ const Wallets = (): JSX.Element => {
           <div className="Wallets__Container">
             <div className="Wallets__Container__Section">
               {wallets.map((wallet) => (
-                <WalletCard
-                  key={wallet._id}
-                  wallet={wallet}
-                  editWallet={editWallet}
-                  deleteWallet={deleteWallet}
-                />
+                <WalletCard key={wallet._id} wallet={wallet} editWallet={editWallet} deleteWallet={deleteWallet} />
               ))}
             </div>
           </div>

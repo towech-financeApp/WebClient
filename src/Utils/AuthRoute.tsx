@@ -14,7 +14,11 @@ const AuthRoute = ({ children }: any): JSX.Element => {
   const { authToken } = useContext(AuthenticationTokenStore);
 
   // Checks the notAuth flag, if present, redirects when logged in
-  return authToken.token ? children : <Navigate to="/" replace state={{ path: location.pathname }} />;
+  return authToken.token ? (
+    children
+  ) : (
+    <Navigate to="/" replace state={{ path: `${location.pathname}${location.search}` }} />
+  );
 };
 
 export default AuthRoute;
