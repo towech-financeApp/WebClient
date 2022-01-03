@@ -57,7 +57,9 @@ const mAxios = (token: string, tokenDispatch?: React.Dispatch<TokenAction>): Axi
         }
 
         // sets the token as header
-        config.headers.Authorization = `Bearer ${nuToken}`;
+        config.headers = {
+          Authorization: `Bearer ${nuToken}`,
+        };
 
         return config;
       },

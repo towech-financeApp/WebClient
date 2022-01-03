@@ -81,7 +81,7 @@ const NavBar = (props: Props): JSX.Element => {
           dark={props.dark}
           selected={props.selected === 'Transactions'}
         >
-          <FaIcons.FaWallet />
+          <FaIcons.FaMoneyCheckAlt />
         </MenuItem>
         <MenuItem
           link="/wallets"

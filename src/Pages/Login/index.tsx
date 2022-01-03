@@ -47,7 +47,7 @@ const Login = (): JSX.Element => {
 
   useEffect(() => {
     if (authToken.token) {
-      navigate(location.state ? location.state.path : '/home');
+      navigate(location.state ? (location.state as any).path : '/home');
     }
   }, [authToken]);
 

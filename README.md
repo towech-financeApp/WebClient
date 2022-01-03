@@ -47,6 +47,7 @@ For production
 
 ## Future_Improvements
 - [ ] Create a functional UI
+- [ ] Create a decent looking UI
 
 ## Credits
 - Jose Tow [[@Tow96](https://github.com/Tow96)]
