@@ -6,6 +6,7 @@
  * - Manages Wallet creation and administration
  * - Manages Transaction administration
  */
+import React from 'react';
 import { AxiosResponse } from 'axios';
 import CustomAxios from './CustomAxios';
 
@@ -14,7 +15,6 @@ import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
 import { Transaction, Wallet } from '../models';
-import React from 'react';
 
 export default class TransactionService {
   private token: TokenState;

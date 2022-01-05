@@ -13,6 +13,7 @@ import './App.css';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Wallets from './Pages/Wallets';
+import Settings from './Pages/Settings';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -74,6 +75,14 @@ function App(): JSX.Element {
               element={
                 <AuthRoute>
                   <Wallets />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/settings/"
+              element={
+                <AuthRoute>
+                  <Settings />
                 </AuthRoute>
               }
             />
