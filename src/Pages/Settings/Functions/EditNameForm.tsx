@@ -31,7 +31,7 @@ const EditNameForm = (props: Props): JSX.Element => {
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
   // Starts the services
-  const userService = new UserService(authToken, dispatchAuthToken)
+  const userService = new UserService(authToken, dispatchAuthToken);
 
   // Hooks
   const [errors, setErrors] = useState({} as any);
@@ -52,11 +52,10 @@ const EditNameForm = (props: Props): JSX.Element => {
 
       // Sends the edit to the API
       const res = await userService.editUser(authToken._id, editNameForm.values);
-      
+
       props.setState(false);
 
       if (res.status !== 304) props.resultState();
-
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console

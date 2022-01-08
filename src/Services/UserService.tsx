@@ -7,14 +7,14 @@
  * - Allows an admin to manage other user accounts
  */
 import React from 'react';
-import { AxiosResponse } from "axios";
+import { AxiosResponse } from 'axios';
 import CustomAxios from './CustomAxios';
 
 // Stores
-import { TokenAction, TokenState } from "../Hooks/UseToken";
+import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-import { User } from "../models";
+import { User } from '../models';
 
 export default class UserService {
   private token: TokenState;
@@ -28,11 +28,21 @@ export default class UserService {
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
   }
 
+  async changePassword (
+    values: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.put(`${this.ROOT_URL}/users/password`, values, loading);
+  }
+
   /** editUser
    * Sends a patch request that edits the user
    */
-  async editUser(id: string, user: User, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+  async editUser(
+    id: string,
+    user: User,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.ROOT_URL}/users/${id}`, user, loading);
   }
-
 }

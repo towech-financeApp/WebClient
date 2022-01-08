@@ -150,6 +150,22 @@ export default class CustomAxios {
     }
   }
 
+  async put(
+    url: string,
+    payload: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    if (loading) loading(true);
+    try {
+      const res = await mAxios(this.token.token, this.tokenDispatch).put(url, payload);
+      if (loading) loading(false);
+      return res;
+    } catch (err) {
+      if (loading) loading(false);
+      throw err;
+    }
+  }
+
   async delete(url: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     if (loading) loading(true);
     try {

@@ -12,10 +12,7 @@ interface Props {
 
 const SettingCard = (props: Props): JSX.Element => {
   return (
-    <div
-      className="Settings__Card"
-      onClick={props.onClick}
-    >
+    <div className="Settings__Card" onClick={props.onClick}>
       {props.title}
     </div>
   );

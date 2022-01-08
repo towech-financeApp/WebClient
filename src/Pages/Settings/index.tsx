@@ -19,6 +19,7 @@ import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 // Styles
 import './Settings.css';
 import EditNameForm from './Functions/EditNameForm';
+import ChangePasswordForm from './Functions/ChangePasswordForm';
 
 const Settings = (): JSX.Element => {
   // Context
@@ -26,6 +27,7 @@ const Settings = (): JSX.Element => {
 
   // Hooks
   const [editNameModal, setEditNameModal] = useState(false);
+  const [changePassModal, setChangePassModal] = useState(false);
 
   // Functions
 
@@ -40,31 +42,35 @@ const Settings = (): JSX.Element => {
     <Page header={header} selected="Settings">
       <div className="Settings">
         <div className="Settings__Container">
-          <SettingCard 
+          <SettingCard
             title="Change name"
-            onClick={() => {setEditNameModal(true); }}
+            onClick={() => {
+              setEditNameModal(true);
+            }}
           />
-          <SettingCard 
-            title="Change email" 
-            onClick={() => { console.log("Change email"); }}
+          <SettingCard
+            title="Change email"
+            onClick={() => {
+              console.log('Change email');
+            }}
           />
-          <SettingCard 
-            title="Change password" 
-            onClick={() => { console.log("Change password"); }}
+          <SettingCard
+            title="Change password"
+            onClick={() => {
+              setChangePassModal(true);
+            }}
           />
-          {
-            authToken.role === 'admin' && 
-              <SettingCard 
-                title="Manage users"
-                onClick={() => { console.log("Manage users"); }} 
+          {authToken.role === 'admin' && (
+            <SettingCard
+              title="Manage users"
+              onClick={() => {
+                console.log('Manage users');
+              }}
             />
-          }
+          )}
         </div>
-        <EditNameForm 
-          state={editNameModal}
-          setState={setEditNameModal}
-          resultState={editUser}
-        />
+        <EditNameForm state={editNameModal} setState={setEditNameModal} resultState={editUser} />
+        <ChangePasswordForm state={changePassModal} setState={setChangePassModal}  resultState={editUser}/>
       </div>
     </Page>
   );
