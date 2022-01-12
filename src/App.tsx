@@ -27,6 +27,7 @@ import AuthenticationService from './Services/AuthenticationService';
 
 // Utils
 import AuthRoute from './Utils/AuthRoute';
+import PasswordReset from './Pages/PasswordReset/PasswordReset';
 
 function App(): JSX.Element {
   // Declares the service
@@ -60,8 +61,6 @@ function App(): JSX.Element {
       <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
         <Router>
           <Routes>
-            {/*TODO: PasswordReset Pages*/}
-            {/*TODO: Settings Page*/}
             <Route
               path="/home"
               element={
@@ -86,6 +85,7 @@ function App(): JSX.Element {
                 </AuthRoute>
               }
             />
+            <Route path="/reset" element={<PasswordReset.sendTokenPage />} />
             <Route path="/" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -6,7 +6,7 @@
  * Based from: https://codepen.io/meodai/pen/rNedxBa
  */
 import { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
 import Button from '../../Components/Button';
@@ -107,6 +107,7 @@ const Login = (): JSX.Element => {
             <Button type="submit">Submit</Button>
           </div>
         </form>
+        <Link to="/reset">Forgot password?</Link>
       </div>
     </div>
   );

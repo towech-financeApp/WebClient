@@ -49,19 +49,6 @@ const ChangePasswordForm = (props: Props): JSX.Element => {
       await userService.changePassword(changePasswordForm.values);
 
       props.setState(false);
-
-      // if (editNameForm.values.name.trim() === '' || editNameForm.values.name.trim() === authToken.name) {
-      //   clearModal();
-      //   props.setState(false);
-      //   return;
-      // }
-
-      // // Sends the edit to the API
-      // const res = await userService.editUser(authToken._id, editNameForm.values);
-
-      // props.setState(false);
-
-      // if (res.status !== 304) props.resultState();
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console

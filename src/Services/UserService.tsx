@@ -28,7 +28,7 @@ export default class UserService {
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
   }
 
-  async changePassword (
+  async changePassword(
     values: any,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
@@ -44,5 +44,15 @@ export default class UserService {
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.ROOT_URL}/users/${id}`, user, loading);
+  }
+
+  /** generateResetPassword Token
+   * Sends the email of the uaser that wants to reset their password
+   */
+  async generateResetPasswordToken(
+    email: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.post(`${this.ROOT_URL}/users/reset`, { username: email }, loading);
   }
 }

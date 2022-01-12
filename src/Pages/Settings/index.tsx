@@ -70,7 +70,7 @@ const Settings = (): JSX.Element => {
           )}
         </div>
         <EditNameForm state={editNameModal} setState={setEditNameModal} resultState={editUser} />
-        <ChangePasswordForm state={changePassModal} setState={setChangePassModal}  resultState={editUser}/>
+        <ChangePasswordForm state={changePassModal} setState={setChangePassModal} resultState={editUser} />
       </div>
     </Page>
   );
