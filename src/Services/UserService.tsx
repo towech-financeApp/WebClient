@@ -55,4 +55,25 @@ export default class UserService {
   ): Promise<AxiosResponse<any>> {
     return await this.instance.post(`${this.ROOT_URL}/users/reset`, { username: email }, loading);
   }
+
+  /** validateResetPasswordToken
+   * Sends an api call to verify if a resetToken is valid
+   */
+  async validateResetPasswordToken(
+    token: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.get(`${this.ROOT_URL}/users/reset/${token}`, loading);
+  }
+
+  /** setResetNewPassword
+   * Sets a new password using a resetPasswordToken
+   */
+  async setResetNewPassword(
+    token: string,
+    payload: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.post(`${this.ROOT_URL}/users/reset/${token}`, payload, loading);
+  }
 }

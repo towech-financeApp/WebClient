@@ -6,7 +6,7 @@
  * Based from: https://codepen.io/meodai/pen/rNedxBa
  */
 import { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
 import Button from '../../Components/Button';
@@ -90,6 +90,109 @@ export default class PasswordReset {
               />
               <Button type="submit">Submit</Button>
             </form>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  static setResetPassword = (): JSX.Element => {
+    const userService = new UserService();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const currentUrl = window.location.href.split('/');
+    const token = currentUrl[currentUrl.length - 1];
+
+    // Hooks
+    const [pageState, setPageState] = useState({ invalidToken: false, succesfulReset: false });
+    const [errors, setErrors] = useState({} as any);
+    const { authToken } = useContext(AuthenticationTokenStore);
+
+    // This page is only meant to be used when the user is not authenticated
+    useEffect(() => {
+      if (authToken.token) {
+        navigate(location.state ? (location.state as any).path : '/home');
+      }
+    }, [authToken]);
+
+    // Initial call, verifies that the token is valid
+    useEffect(() => {
+      userService
+        .validateResetPasswordToken(token)
+        .then(() => {
+          setPageState(pageState);
+        })
+        .catch(() => {
+          setPageState({ invalidToken: true, succesfulReset: false });
+        });
+    }, []);
+
+    // State for the form
+    const setResetPasswordForm = UseForm(setResetPasswordCallback, {
+      newPassword: '',
+      confirmPassword: '',
+    });
+
+    async function setResetPasswordCallback() {
+      try {
+        setErrors({});
+
+        // Sends the new password
+        await userService.setResetNewPassword(token, setResetPasswordForm.values);
+
+        setResetPasswordForm.clear();
+        setPageState({ invalidToken: false, succesfulReset: true });
+      } catch (error: any) {
+        setPageState({ invalidToken: false, succesfulReset: false });
+        if (CheckNested(error, 'response', 'data', 'errors')) setErrors(error.response.data.errors);
+      }
+    }
+
+    return (
+      <div className="PasswordReset">
+        {/* Invalid Token response */}
+        {pageState.invalidToken && !pageState.succesfulReset && (
+          <div>
+            <h1>Invalid token</h1>
+            <p>This password reset token is no longer valid</p>
+            <Link to="/">Go back</Link>
+          </div>
+        )}
+        {/* Success response */}
+        {!pageState.invalidToken && pageState.succesfulReset && (
+          <div>
+            <h1>Password successfully reset</h1>
+            <p>
+              The password has been reset, please <Link to="/">login</Link> with the new password
+            </p>
+          </div>
+        )}
+        {/* Reset password form */}
+        {!pageState.invalidToken && !pageState.succesfulReset && (
+          <div>
+            <div>
+              <h1>Reset password</h1>
+              <form onSubmit={setResetPasswordForm.onSubmit}>
+                <Input
+                  error={errors.newPassword ? true : false}
+                  label="New Password"
+                  name="newPassword"
+                  type="password"
+                  value={setResetPasswordForm.values.newPassword}
+                  onChange={setResetPasswordForm.onChange}
+                />
+                <Input
+                  error={errors.confirmPassword ? true : false}
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={setResetPasswordForm.values.confirmPassword}
+                  onChange={setResetPasswordForm.onChange}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </div>
           </div>
         )}
       </div>

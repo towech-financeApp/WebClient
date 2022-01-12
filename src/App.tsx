@@ -86,6 +86,7 @@ function App(): JSX.Element {
               }
             />
             <Route path="/reset" element={<PasswordReset.sendTokenPage />} />
+            <Route path="/reset/*" element={<PasswordReset.setResetPassword />} />
             <Route path="/" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
