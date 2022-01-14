@@ -76,4 +76,14 @@ export default class UserService {
   ): Promise<AxiosResponse<any>> {
     return await this.instance.post(`${this.ROOT_URL}/users/reset/${token}`, payload, loading);
   }
+
+  /** updateEmail
+   * Changes the email of the user
+   */
+  async updateEmail(
+    email: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.put(`${this.ROOT_URL}/users/email`, { email: email }, loading);
+  }
 }

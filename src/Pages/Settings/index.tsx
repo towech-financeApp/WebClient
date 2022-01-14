@@ -10,9 +10,6 @@ import { useContext, useState } from 'react';
 import Page from '../../Components/Page';
 import SettingCard from './SettingCard';
 
-// Models
-import { User } from '../../models';
-
 // Hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
@@ -20,6 +17,7 @@ import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 import './Settings.css';
 import EditNameForm from './Functions/EditNameForm';
 import ChangePasswordForm from './Functions/ChangePasswordForm';
+import ChangeEmailForm from './Functions/ChangeEmailForm';
 
 const Settings = (): JSX.Element => {
   // Context
@@ -28,6 +26,7 @@ const Settings = (): JSX.Element => {
   // Hooks
   const [editNameModal, setEditNameModal] = useState(false);
   const [changePassModal, setChangePassModal] = useState(false);
+  const [changeEmailModal, setChangeEmailModal] = useState(false);
 
   // Functions
 
@@ -51,7 +50,7 @@ const Settings = (): JSX.Element => {
           <SettingCard
             title="Change email"
             onClick={() => {
-              console.log('Change email');
+              setChangeEmailModal(true);
             }}
           />
           <SettingCard
@@ -71,6 +70,7 @@ const Settings = (): JSX.Element => {
         </div>
         <EditNameForm state={editNameModal} setState={setEditNameModal} resultState={editUser} />
         <ChangePasswordForm state={changePassModal} setState={setChangePassModal} resultState={editUser} />
+        <ChangeEmailForm state={changeEmailModal} setState={setChangeEmailModal} resultState={editUser} />
       </div>
     </Page>
   );
