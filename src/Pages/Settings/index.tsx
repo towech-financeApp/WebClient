@@ -18,6 +18,7 @@ import './Settings.css';
 import EditNameForm from './Functions/EditNameForm';
 import ChangePasswordForm from './Functions/ChangePasswordForm';
 import ChangeEmailForm from './Functions/ChangeEmailForm';
+import ResendVerification from './Functions/ResendVerification';
 
 const Settings = (): JSX.Element => {
   // Context
@@ -27,6 +28,7 @@ const Settings = (): JSX.Element => {
   const [editNameModal, setEditNameModal] = useState(false);
   const [changePassModal, setChangePassModal] = useState(false);
   const [changeEmailModal, setChangeEmailModal] = useState(false);
+  const [resendVerification, setResendVerification] = useState(false);
 
   // Functions
 
@@ -53,6 +55,14 @@ const Settings = (): JSX.Element => {
               setChangeEmailModal(true);
             }}
           />
+          {!authToken.accountConfirmed && (
+            <SettingCard
+              title="Resend verification email"
+              onClick={() => {
+                setResendVerification(true);
+              }}
+            />
+          )}
           <SettingCard
             title="Change password"
             onClick={() => {
@@ -71,6 +81,7 @@ const Settings = (): JSX.Element => {
         <EditNameForm state={editNameModal} setState={setEditNameModal} resultState={editUser} />
         <ChangePasswordForm state={changePassModal} setState={setChangePassModal} resultState={editUser} />
         <ChangeEmailForm state={changeEmailModal} setState={setChangeEmailModal} resultState={editUser} />
+        <ResendVerification state={resendVerification} setState={setResendVerification} />
       </div>
     </Page>
   );

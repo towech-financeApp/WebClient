@@ -86,4 +86,19 @@ export default class UserService {
   ): Promise<AxiosResponse<any>> {
     return await this.instance.put(`${this.ROOT_URL}/users/email`, { email: email }, loading);
   }
+
+  /** resendVerificationEmail
+   * resends the email verification
+   */
+  async resendVerificationEmail(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+    return await this.instance.get(`${this.ROOT_URL}/users/email`, loading);
+  }
+
+  /** verifyEmail */
+  async verifyEmail(
+    token: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.patch(`${this.ROOT_URL}/authentication/verify/${token}`, null, loading);
+  }
 }

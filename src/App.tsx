@@ -9,11 +9,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
-// TODO: Pages
+// Pages
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Wallets from './Pages/Wallets';
 import Settings from './Pages/Settings';
+import PasswordReset from './Pages/PasswordReset/PasswordReset';
+import VerifyAccount from './Pages/VerifyAccount/VerifyAccount';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -27,7 +29,6 @@ import AuthenticationService from './Services/AuthenticationService';
 
 // Utils
 import AuthRoute from './Utils/AuthRoute';
-import PasswordReset from './Pages/PasswordReset/PasswordReset';
 
 function App(): JSX.Element {
   // Declares the service
@@ -87,6 +88,7 @@ function App(): JSX.Element {
             />
             <Route path="/reset" element={<PasswordReset.sendTokenPage />} />
             <Route path="/reset/*" element={<PasswordReset.setResetPassword />} />
+            <Route path="/verify/*" element={<VerifyAccount.verifyPage />} />
             <Route path="/" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

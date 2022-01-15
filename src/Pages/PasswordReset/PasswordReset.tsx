@@ -2,8 +2,7 @@
  * Copyright (c) 2022, Towechlabs
  * All rights reserved
  *
- * Login Page for the App
- * Based from: https://codepen.io/meodai/pen/rNedxBa
+ * Password reset page
  */
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
