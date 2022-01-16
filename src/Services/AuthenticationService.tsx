@@ -33,6 +33,10 @@ export default class AuthenticationService {
     return await this.instance.postCookie(`${this.ROOT_URL}/logout`, null);
   }
 
+  async logoutAll(): Promise<AxiosResponse<any>> {
+    return await this.instance.postCookie(`${this.ROOT_URL}/logout-all`, null);
+  }
+
   async refreshToken(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     return await this.instance.postCookie(`${this.ROOT_URL}/refresh`, null, loading);
   }

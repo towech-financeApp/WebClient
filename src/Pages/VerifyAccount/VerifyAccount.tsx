@@ -27,15 +27,6 @@ export default class VerifyAccount {
       userService.verifyEmail(token).finally(() => {
         navigate(location.state ? (location.state as any).path : '/home');
       });
-
-      // userService
-      //   .validateResetPasswordToken(token)
-      //   .then(() => {
-      //     setPageState(pageState);
-      //   })
-      //   .catch(() => {
-      //     setPageState({ invalidToken: true, succesfulReset: false });
-      //   });
     }, []);
 
     return <div className="VerifyAccount">Verifying</div>;

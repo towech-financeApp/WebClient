@@ -19,6 +19,7 @@ import EditNameForm from './Functions/EditNameForm';
 import ChangePasswordForm from './Functions/ChangePasswordForm';
 import ChangeEmailForm from './Functions/ChangeEmailForm';
 import ResendVerification from './Functions/ResendVerification';
+import LogoutAll from './Functions/LogoutAll';
 
 const Settings = (): JSX.Element => {
   // Context
@@ -29,6 +30,7 @@ const Settings = (): JSX.Element => {
   const [changePassModal, setChangePassModal] = useState(false);
   const [changeEmailModal, setChangeEmailModal] = useState(false);
   const [resendVerification, setResendVerification] = useState(false);
+  const [logoutModal, setLogoutModal] = useState(false);
 
   // Functions
 
@@ -77,11 +79,18 @@ const Settings = (): JSX.Element => {
               }}
             />
           )}
+          <SettingCard
+            title="Logout from all devices"
+            onClick={() => {
+              setLogoutModal(true);
+            }}
+          />
         </div>
         <EditNameForm state={editNameModal} setState={setEditNameModal} resultState={editUser} />
         <ChangePasswordForm state={changePassModal} setState={setChangePassModal} resultState={editUser} />
         <ChangeEmailForm state={changeEmailModal} setState={setChangeEmailModal} resultState={editUser} />
         <ResendVerification state={resendVerification} setState={setResendVerification} />
+        <LogoutAll state={logoutModal} setState={setLogoutModal} />
       </div>
     </Page>
   );
