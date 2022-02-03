@@ -9,17 +9,18 @@ import { useContext, useState } from 'react';
 // Components
 import Page from '../../Components/Page';
 import SettingCard from './SettingCard';
+import EditNameForm from './Functions/EditNameForm';
+import ChangePasswordForm from './Functions/ChangePasswordForm';
+import ChangeEmailForm from './Functions/ChangeEmailForm';
+import ResendVerification from './Functions/ResendVerification';
+import LogoutAll from './Functions/LogoutAll';
+import ManageUsers from './Functions/ManageUsers';
 
 // Hooks
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Styles
 import './Settings.css';
-import EditNameForm from './Functions/EditNameForm';
-import ChangePasswordForm from './Functions/ChangePasswordForm';
-import ChangeEmailForm from './Functions/ChangeEmailForm';
-import ResendVerification from './Functions/ResendVerification';
-import LogoutAll from './Functions/LogoutAll';
 
 const Settings = (): JSX.Element => {
   // Context
@@ -31,6 +32,7 @@ const Settings = (): JSX.Element => {
   const [changeEmailModal, setChangeEmailModal] = useState(false);
   const [resendVerification, setResendVerification] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
+  const [manageUsers, setManageUsers] = useState(false);
 
   // Functions
 
@@ -75,7 +77,7 @@ const Settings = (): JSX.Element => {
             <SettingCard
               title="Manage users"
               onClick={() => {
-                console.log('Manage users');
+                setManageUsers(true);
               }}
             />
           )}
@@ -91,6 +93,7 @@ const Settings = (): JSX.Element => {
         <ChangeEmailForm state={changeEmailModal} setState={setChangeEmailModal} resultState={editUser} />
         <ResendVerification state={resendVerification} setState={setResendVerification} />
         <LogoutAll state={logoutModal} setState={setLogoutModal} />
+        <ManageUsers.Menu state={manageUsers} setState={setManageUsers}/>
       </div>
     </Page>
   );
