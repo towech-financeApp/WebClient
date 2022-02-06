@@ -58,10 +58,11 @@ const TransactionCard = (props: Props): JSX.Element => {
       <div className="TransactionCard__Content">
         <div className="TransactionCard__Content__Data">
           <h4>{props.transaction.concept}</h4>
+          {props.transaction.category.name}<br/>
           {transDate.getDate().toString().padStart(2, '0')}-{(transDate.getMonth() + 1).toString().padStart(2, '0')}-
           {transDate.getFullYear()}
         </div>
-        {props.transaction.amount < 0 ? (
+        {props.transaction.category.type == 'Expense' ? (
           <div className="TransactionCard__Content__Amount negative">- {amount}</div>
         ) : (
           <div className="TransactionCard__Content__Amount"> + {amount}</div>
