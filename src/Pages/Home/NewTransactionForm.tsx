@@ -4,7 +4,7 @@
  *
  * The component shown when adding a new transaction, it is a modal
  */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 // Components
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -15,10 +15,11 @@ import Modal from '../../Components/Modal';
 import UseForm from '../../Hooks/UseForm';
 
 // Models
-import { Transaction, Wallet } from '../../models';
+import { Category, Transaction, Wallet } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
+import CategoryService from '../../Services/CategoryService';
 
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
@@ -38,12 +39,15 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
   // Starts the servicees
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
+  const categoryService = new CategoryService(authToken, dispatchAuthToken);
 
   // Hooks
   const [errors, setErrors] = useState({} as any);
+  const [categories, setCategories] = useState({ Income: [], Expense: [] });
 
   const newTransactionForm = UseForm(newTransactionCallback, {
     wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
+    category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
     amount: props.initialTransaction?.amount || 0,
     transactionDate:
@@ -54,12 +58,31 @@ const NewTransactionForm = (props: Props): JSX.Element => {
         .padStart(2, '0')}`,
   });
 
+  // Calls the service for the categories
+  // TODO: Needs to be optimized with a cache
+  useEffect(() => {
+    if (props.state == true) {
+      categoryService.getCategories().then((res) => {
+        setCategories({
+          Income: res.data.Income,
+          Expense: res.data.Expense,
+        });
+      });
+    }
+  }, [props.state]);
+
   // Functions
   async function newTransactionCallback() {
     try {
       // If no wallet was entered, returns an error
       if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
         setErrors({ wallet_id: 'Select a wallet' });
+        return;
+      }
+
+      // If no category was entered, returns an error
+      if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
+        setErrors({ wallet_id: 'Select a category' });
         return;
       }
 
@@ -94,9 +117,10 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
 
-      if (res.status !== 304) props.addTransaction(res.data);
+      props.addTransaction(res.data);
     } catch (err: any) {
-      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      if (err.response.status === 304) props.setState(false);
+      else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err.response); //eslint-disable-line no-console
     }
   }
@@ -147,6 +171,31 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               {props.wallets.map((wallet: Wallet) => (
                 <option value={wallet._id} key={wallet._id}>
                   {wallet.name}
+                </option>
+              ))}
+            </select>
+            <select 
+              name="category_id"
+              onChange={newTransactionForm.onChange}
+              defaultValue={newTransactionForm.values.category_id}
+            >
+              <option value="-1" disabled>
+                Select Category
+              </option>
+              <option value="-Expense" disabled>
+                EXPENSE
+              </option>
+              {categories.Expense.map((category: Category) => (
+                <option value={category._id} key={category._id}>
+                  {category.name}
+                </option>
+              ))}
+              <option value="-Income" disabled>
+                INCOME
+              </option>
+              {categories.Income.map((category: Category) => (
+                <option value={category._id} key={category._id}>
+                  {category.name}
                 </option>
               ))}
             </select>

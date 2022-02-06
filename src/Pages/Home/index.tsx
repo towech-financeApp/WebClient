@@ -85,6 +85,9 @@ const Home = (): JSX.Element => {
   // Adds a transaction to the list and recalculates the totals
   const addTransaction = (transaction: Transaction): void => {
     setTransactions([...transactions, transaction]);
+    setHeaderTotal(
+      headerTotal + (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount),
+    );
   };
 
   // Edits a transaction from the list and recalculates the totals
@@ -121,7 +124,7 @@ const Home = (): JSX.Element => {
     let expenses = 0;
 
     transactions.map((transaction) => {
-      if (transaction.amount > 0) {
+      if (transaction.category.type === 'Income') {
         earnings += transaction.amount;
       } else {
         expenses += transaction.amount;
