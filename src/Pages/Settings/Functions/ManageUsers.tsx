@@ -17,17 +17,12 @@ interface MenuProps {
 
 export default class ManageUsers {
   static Menu = (props: MenuProps): JSX.Element => {
-
     return (
       <div className="Settings__ManageUsers__Modal">
-        <Modal
-          showModal={props.state}
-          setModal={props.setState}
-          title={'Manage users'}
-        >
+        <Modal showModal={props.state} setModal={props.setState} title={'Manage users'}>
           Manage
         </Modal>
       </div>
-    )
+    );
   };
 }

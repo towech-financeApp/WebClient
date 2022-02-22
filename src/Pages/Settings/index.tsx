@@ -93,7 +93,7 @@ const Settings = (): JSX.Element => {
         <ChangeEmailForm state={changeEmailModal} setState={setChangeEmailModal} resultState={editUser} />
         <ResendVerification state={resendVerification} setState={setResendVerification} />
         <LogoutAll state={logoutModal} setState={setLogoutModal} />
-        <ManageUsers.Menu state={manageUsers} setState={setManageUsers}/>
+        <ManageUsers.Menu state={manageUsers} setState={setManageUsers} />
       </div>
     </Page>
   );

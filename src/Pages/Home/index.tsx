@@ -115,7 +115,7 @@ const Home = (): JSX.Element => {
   // Gets the transactions from the API of the selected wallet
   const loadTransactions = async (walletId: string, dataMonth: string): Promise<void> => {
     const res = await transactionService.getWalletTransactions(walletId, dataMonth);
-    setTransactions(res.data.transactions);
+    setTransactions(res.data);
   };
 
   // Reads the transactions and separates the income and expenses as well as the total in the header

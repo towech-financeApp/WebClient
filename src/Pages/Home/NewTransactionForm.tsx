@@ -174,7 +174,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
                 </option>
               ))}
             </select>
-            <select 
+            <select
               name="category_id"
               onChange={newTransactionForm.onChange}
               defaultValue={newTransactionForm.values.category_id}
