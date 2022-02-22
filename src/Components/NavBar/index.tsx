@@ -81,7 +81,7 @@ const NavBar = (props: Props): JSX.Element => {
           dark={props.dark}
           selected={props.selected === 'Transactions'}
         >
-          <FaIcons.FaWallet />
+          <FaIcons.FaMoneyCheckAlt />
         </MenuItem>
         <MenuItem
           link="/wallets"
@@ -93,7 +93,16 @@ const NavBar = (props: Props): JSX.Element => {
         >
           <FaIcons.FaWallet />
         </MenuItem>
-
+        <MenuItem
+          link="/settings"
+          label="Settings"
+          onClick={() => setSidebar(false)}
+          accent={props.accent}
+          dark={props.dark}
+          selected={props.selected === 'Settings'}
+        >
+          <FaIcons.FaCog />
+        </MenuItem>
         <MenuItem label="Logout" onClick={logoutCallback} accent={props.accent} dark={props.dark}>
           <FaIcons.FaUserTimes />
         </MenuItem>

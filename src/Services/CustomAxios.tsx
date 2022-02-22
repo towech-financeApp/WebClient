@@ -57,7 +57,9 @@ const mAxios = (token: string, tokenDispatch?: React.Dispatch<TokenAction>): Axi
         }
 
         // sets the token as header
-        config.headers.Authorization = `Bearer ${nuToken}`;
+        config.headers = {
+          Authorization: `Bearer ${nuToken}`,
+        };
 
         return config;
       },
@@ -140,6 +142,22 @@ export default class CustomAxios {
     if (loading) loading(true);
     try {
       const res = await mAxios(this.token.token, this.tokenDispatch).patch(url, payload);
+      if (loading) loading(false);
+      return res;
+    } catch (err) {
+      if (loading) loading(false);
+      throw err;
+    }
+  }
+
+  async put(
+    url: string,
+    payload: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    if (loading) loading(true);
+    try {
+      const res = await mAxios(this.token.token, this.tokenDispatch).put(url, payload);
       if (loading) loading(false);
       return res;
     } catch (err) {

@@ -6,6 +6,7 @@
  * - Manages Wallet creation and administration
  * - Manages Transaction administration
  */
+import React from 'react';
 import { AxiosResponse } from 'axios';
 import CustomAxios from './CustomAxios';
 
@@ -27,12 +28,23 @@ export default class TransactionService {
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
   }
 
-  async deleteTransaction(id: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+  async deleteTransaction(
+    id: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
     return await this.instance.delete(`${this.ROOT_URL}/transactions/${id}`, loading);
   }
 
   async deleteWallet(id: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
     return await this.instance.delete(`${this.ROOT_URL}/wallets/${id}`, loading);
+  }
+
+  async editTransaction(
+    transactionId: string,
+    transaction: Transaction,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<any>> {
+    return await this.instance.patch(`${this.ROOT_URL}/transactions/${transactionId}`, transaction, loading);
   }
 
   async editWallet(
@@ -48,9 +60,10 @@ export default class TransactionService {
 
   async getWalletTransactions(
     walletid: string,
+    dataMonth: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/wallets/${walletid}/transactions`, loading);
+    return await this.instance.get(`${this.ROOT_URL}/wallets/${walletid}/transactions?datamonth=${dataMonth}`, loading);
   }
 
   async newTransaction(

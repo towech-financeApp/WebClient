@@ -5,16 +5,17 @@
  * Component that holds all pages and views
  */
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
-// TODO: Pages
+// Pages
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Wallets from './Pages/Wallets';
-// import Wallet from './Pages/Wallet';
+import Settings from './Pages/Settings';
+import PasswordReset from './Pages/PasswordReset/PasswordReset';
+import VerifyAccount from './Pages/VerifyAccount/VerifyAccount';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -37,6 +38,7 @@ function App(): JSX.Element {
   const [authToken, dispatchAuthToken] = useToken('authToken');
   const [loaded, setLoaded] = useState(false);
 
+  // use Effect for first load
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded) {
@@ -53,25 +55,43 @@ function App(): JSX.Element {
       }
     };
     firstLoad();
-  });
+  }, []);
 
   return (
     <div className="App">
       <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
         <Router>
-          <Switch>
-            {/*Routes that can be accessed with or without credentials*/}
-            {/*TODO: PasswordReset Pages*/}
-            {/*Routes that can be accessed only without being logged in */}
-            <AuthRoute notAuth exact path="/" Component={Login} />
-            {/*Routes that can be accessed only while being logged in*/}
-            <AuthRoute exact path="/home" Component={Home} />
-            <AuthRoute exact path="/wallets" Component={Wallets} />
-            {/* <AuthRoute exact path="/wallet/:walletid" Component={Wallet} /> */}
-            {/*TODO: Settings Page*/}
-            {/* 404 - not found route*/}
-            <Route component={NotFound} />
-          </Switch>
+          <Routes>
+            <Route
+              path="/home"
+              element={
+                <AuthRoute>
+                  <Home />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/wallets/*"
+              element={
+                <AuthRoute>
+                  <Wallets />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/settings/"
+              element={
+                <AuthRoute>
+                  <Settings />
+                </AuthRoute>
+              }
+            />
+            <Route path="/reset" element={<PasswordReset.sendTokenPage />} />
+            <Route path="/reset/*" element={<PasswordReset.setResetPassword />} />
+            <Route path="/verify/*" element={<VerifyAccount.verifyPage />} />
+            <Route path="/" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Router>
       </AuthenticationTokenStore.Provider>
     </div>

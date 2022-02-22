@@ -5,7 +5,7 @@
  * Home Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
@@ -17,32 +17,36 @@ import { Transaction, Wallet } from '../../models';
 // Components
 import Button from '../../Components/Button';
 import Page from '../../Components/Page';
+import DataMonthSelector from './DataMonthSelector';
 import RedirectToWallets from './RedirectToWallets';
 import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
+import NewTransactionForm from './NewTransactionForm';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
 
 // Utilities
 import GetParameters from '../../Utils/GetParameters';
+import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Home.css';
-import NewTransactionForm from './NewTransactionForm';
 
-const Home = (props: RouteComponentProps): JSX.Element => {
+const Home = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
-  
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [wallets, setWallets] = useState([] as Wallet[]);
-  const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(props.location.search, 'wallet') || '-1');
+  const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
+  const [dataMonth, setDataMonth] = useState(ParseDataMonth(GetParameters(location.search, 'month')));
   const [headerTotal, setHeaderTotal] = useState(0);
   const [addModal, setAddModal] = useState(false);
   const [transactions, setTransactions] = useState([] as Transaction[]);
@@ -51,17 +55,14 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   // Main API call
   useEffect(() => {
     const firstLoad = async () => {
-      if (!loaded) {
+      if (!loaded && authToken.token) {
         setLoaded(true);
-
         // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
-            // Gets the transactions for the selected wallet
+            // Sets the available wallets, the transactions are fetched later
             setWallets(res.data);
-
-            loadTransactions(selectedWallet_id);
           })
           .catch(() => {
             // console.log(err.response);
@@ -69,7 +70,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
       }
     };
     firstLoad();
-  });
+  }, []);
 
   // Code that is run everytime the Wallets or the Transactions change
   useEffect(() => {
@@ -78,17 +79,32 @@ const Home = (props: RouteComponentProps): JSX.Element => {
 
   // Code that is run everytime the selectedWalletId changes
   useEffect(() => {
-    loadTransactions(selectedWallet_id);
-  }, [selectedWallet_id])
+    loadTransactions(selectedWallet_id, dataMonth);
+  }, [selectedWallet_id, dataMonth]);
 
   // Adds a transaction to the list and recalculates the totals
   const addTransaction = (transaction: Transaction): void => {
     setTransactions([...transactions, transaction]);
+    setHeaderTotal(
+      headerTotal + (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount),
+    );
   };
 
   // Edits a transaction from the list and recalculates the totals
   const editTransaction = (transaction: Transaction): void => {
-    console.log('edit');
+    // First, filters out the transaction
+    let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
+
+    // Then adds it back if it is in the selected wallets and in the dataMonth
+    if (
+      (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
+      dataMonth ===
+        `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+    ) {
+      editedTransactions = [...editedTransactions, transaction];
+    }
+
+    setTransactions(editedTransactions);
   };
 
   // Removes a transaction from the list
@@ -97,9 +113,9 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   };
 
   // Gets the transactions from the API of the selected wallet
-  const loadTransactions = async (walletId: string): Promise<void> => {
-    const res = await transactionService.getWalletTransactions(walletId);
-    setTransactions(res.data.transactions);
+  const loadTransactions = async (walletId: string, dataMonth: string): Promise<void> => {
+    const res = await transactionService.getWalletTransactions(walletId, dataMonth);
+    setTransactions(res.data);
   };
 
   // Reads the transactions and separates the income and expenses as well as the total in the header
@@ -108,7 +124,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
     let expenses = 0;
 
     transactions.map((transaction) => {
-      if (transaction.amount > 0) {
+      if (transaction.category.type === 'Income') {
         earnings += transaction.amount;
       } else {
         expenses += transaction.amount;
@@ -132,7 +148,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   // Redirects to the wallet when the header selector changes
   const changeSelectedWallet = (data: any): void => {
     if (data.target.options[data.target.selectedIndex].value !== selectedWallet_id) {
-      props.history.push(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
+      navigate(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
       setSelectedWalletId(data.target.options[data.target.selectedIndex].value);
     }
   };
@@ -141,11 +157,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
   const header = (
     <div className="Transactions__Header">
       <div>
-        <select
-          name="selected_wallet"
-          onChange={changeSelectedWallet}
-          value={selectedWallet_id}
-        >
+        <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
           <option value="-1">Total</option>
           {wallets.map((wallet: Wallet) => (
             <option value={wallet._id} key={wallet._id}>
@@ -156,7 +168,7 @@ const Home = (props: RouteComponentProps): JSX.Element => {
         <div>{headerTotal}</div>
       </div>
       <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
-        Add Wallet
+        Add Transaction
       </Button>
     </div>
   );
@@ -179,7 +191,13 @@ const Home = (props: RouteComponentProps): JSX.Element => {
         ) : (
           <div className="Transactions__Content">
             <WalletTotals totals={monthTotals} />
-            <TransactionViewer transactions={transactions} edit={editTransaction} delete={deleteTransaction} />
+            <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
+            <TransactionViewer
+              wallets={wallets}
+              transactions={transactions}
+              edit={editTransaction}
+              delete={deleteTransaction}
+            />
           </div>
         )}
       </div>

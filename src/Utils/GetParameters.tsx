@@ -9,7 +9,7 @@ const GetParameters = (params: string, value: string): string | null => {
   if (params === null || params.match(/^ *$/) !== null) return null;
 
   // Splits the string every ? symbol
-  const cleanParams = params.substring(1).split('?');
+  const cleanParams = params.substring(1).split('&');
 
   // Reads every param looking for the requested one.
   for (let i = 0; i < cleanParams.length; i++) {

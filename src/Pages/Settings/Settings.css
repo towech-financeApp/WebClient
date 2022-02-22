@@ -1,0 +1,29 @@
+@import url('../../App.css');
+
+.Settings {
+  --background-color: var(--color-light);
+  --text-color: var(--color-dark);
+  --accent: var(--color-accent);
+}
+
+.Settings__Container {
+  background-color: var(--background-color);
+  box-shadow: 1px 8px 20px -5px #000b;
+  border: 3px solid var(--text-color);
+  border-radius: 4px;
+  margin: 20px;
+}
+
+.Settings__Card {
+  align-items: center;
+  display: flex;
+  margin: 12px;
+  font-size: 20pt;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.Settings__Card:not(:first-child) {
+  border-top: 1px solid var(--text-color);
+  padding-top: 12px;
+}

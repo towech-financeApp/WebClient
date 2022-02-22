@@ -49,17 +49,28 @@
   color: #e43b07;
 }
 
+.Transactions__MonthSelector {
+  background-color: var(--background-color);
+  border: 3px solid var(--color-dark);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding: 12px;
+}
+
 .Transactions__Viewer {
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin-top: 15px;
 }
 
 .Transactions__Viewer__List {
   background-color: var(--background-color);
   border: 3px solid var(--color-dark);
-  border-radius: 4px;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
   height: 100%;
 }
 
@@ -115,14 +126,22 @@
   .Transactions__Viewer {
     width: 100%;
   }
+
+  .Transactions__MonthSelector {
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 768px) {
   .Transactions__Totals {
     width: 75%;
   }
-  
+
   .Transactions__Viewer {
+    width: 75%;
+  }
+
+  .Transactions__MonthSelector {
     width: 75%;
   }
 }
