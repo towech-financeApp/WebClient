@@ -1,0 +1,33 @@
+name: deploy to server
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: docker build 
+        run: |
+          docker build . --target prod --tag webclient:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: deployment
+        run: |
+          docker rm -f webClient 2> /dev/null || true
+          docker run -d \
+          --restart unless-stopped \
+          --name webClient \
+          --network towech-finance-network \
+          -p 3000:3000 \
+          -e REACT_APP_WEBAPI=financeapi.towechlabs.com \
+          webclient:latest
+          docker image prune -f
