@@ -14,7 +14,7 @@ jobs:
 
       - name: docker build 
         run: |
-          docker build . --target prod --tag webclient:latest
+          docker build . --target prod --tag webclient:latest --build-arg REACT_APP_WEBAPI=financeapi.towechlabs.com
 
   deploy:
     needs: build
@@ -27,7 +27,7 @@ jobs:
           --restart unless-stopped \
           --name webClient \
           --network towech-finance-network \
-          -p 3000:3000 \
+          -p 3000:80 \
           -e REACT_APP_WEBAPI=financeapi.towechlabs.com \
           webclient:latest
           docker image prune -f
