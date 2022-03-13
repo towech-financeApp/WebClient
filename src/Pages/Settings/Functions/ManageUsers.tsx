@@ -4,7 +4,7 @@
  *
  * Component that allows an admin to manage users
  */
-import React, { useContext } from 'react';
+import React from 'react';
 
 // Components
 import Modal from '../../../Components/Modal';
