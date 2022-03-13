@@ -45,7 +45,7 @@ jobs:
         target: 'prod'
         file: ./Dockerfile
         build-args: |
-          REACT_APP_WEBAPI=financeapi.towechlabs.com
+          REACT_APP_WEBAPI=https://financeapi.towechlabs.com
         
   # build:
   #   runs-on: self-hosted
