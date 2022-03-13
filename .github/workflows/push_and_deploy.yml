@@ -42,6 +42,7 @@ jobs:
       with:
         push: true
         tags: ${{ steps.dokcer_meta.outputs.tags }}
+        target: 'prod'
         file: ./Dockerfile
         build-args: |
           REACT_APP_WEBAPI=financeapi.towechlabs.com
