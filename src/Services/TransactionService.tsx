@@ -20,23 +20,24 @@ export default class TransactionService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
   private instance: CustomAxios;
-  private ROOT_URL: string = process.env.REACT_APP_WEBAPI || '';
+  private SERVICE_URL: string;
 
   constructor(token?: TokenState, tokenDispatch?: React.Dispatch<TokenAction>) {
     this.token = token || ({} as TokenState);
     this.tokenDispatch = tokenDispatch;
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
+    this.SERVICE_URL = this.instance.ROOT_URL + '';
   }
 
   async deleteTransaction(
     id: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.delete(`${this.ROOT_URL}/transactions/${id}`, loading);
+    return await this.instance.delete(`${this.SERVICE_URL}/transactions/${id}`, loading);
   }
 
   async deleteWallet(id: string, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
-    return await this.instance.delete(`${this.ROOT_URL}/wallets/${id}`, loading);
+    return await this.instance.delete(`${this.SERVICE_URL}/wallets/${id}`, loading);
   }
 
   async editTransaction(
@@ -44,18 +45,18 @@ export default class TransactionService {
     transaction: Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.patch(`${this.ROOT_URL}/transactions/${transactionId}`, transaction, loading);
+    return await this.instance.patch(`${this.SERVICE_URL}/transactions/${transactionId}`, transaction, loading);
   }
 
   async editWallet(
     wallet: Wallet,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.patch(`${this.ROOT_URL}/wallets/${wallet._id}`, wallet, loading);
+    return await this.instance.patch(`${this.SERVICE_URL}/wallets/${wallet._id}`, wallet, loading);
   }
 
   async getWallets(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/wallets`, loading);
+    return await this.instance.get(`${this.SERVICE_URL}/wallets`, loading);
   }
 
   async getWalletTransactions(
@@ -63,20 +64,20 @@ export default class TransactionService {
     dataMonth: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/wallets/${walletid}/transactions?datamonth=${dataMonth}`, loading);
+    return await this.instance.get(`${this.SERVICE_URL}/wallets/${walletid}/transactions?datamonth=${dataMonth}`, loading);
   }
 
   async newTransaction(
     payload: Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.post(`${this.ROOT_URL}/transactions`, payload, loading);
+    return await this.instance.post(`${this.SERVICE_URL}/transactions`, payload, loading);
   }
 
   async newWallet(
     payload: Wallet,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.post(`${this.ROOT_URL}/wallets`, payload, loading);
+    return await this.instance.post(`${this.SERVICE_URL}/wallets`, payload, loading);
   }
 }

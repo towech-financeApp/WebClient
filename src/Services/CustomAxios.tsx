@@ -13,13 +13,15 @@ import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Functions
 
+const rootURL  = process.env.REACT_APP_WEBAPI || '';
+
 /** getAuthToken
  * Makes a request to refresh the authentication token
  *
  * @param {React.Dispatch<tokenAction>} tokenDispatch Dispatch for the token
  */
 async function getAuthToken(tokenDispatch: React.Dispatch<TokenAction>): Promise<string> {
-  const res = await axios.post(`${process.env.REACT_APP_WEBAPI}/authentication/refresh`, null, {
+  const res = await axios.post(`${rootURL}/authentication/refresh`, null, {
     withCredentials: true,
   });
   tokenDispatch({ type: 'LOGIN', payload: res.data });
@@ -84,6 +86,7 @@ const mAxios = (token: string, tokenDispatch?: React.Dispatch<TokenAction>): Axi
 export default class CustomAxios {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
+  public ROOT_URL = rootURL;
 
   constructor(token: TokenState, tokenDispatch?: React.Dispatch<TokenAction>) {
     this.token = token;
