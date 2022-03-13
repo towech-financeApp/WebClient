@@ -44,30 +44,20 @@ jobs:
         file: ./Dockerfile
         build-args: |
           REACT_APP_WEBAPI=${{ secrets.API_URL }}
-        
-  # build:
-  #   runs-on: self-hosted
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         submodules: true
 
-  #     - name: docker build 
-  #       run: |
-  #         docker build . --target prod --tag webclient:latest --build-arg REACT_APP_WEBAPI=financeapi.towechlabs.com
-
-  # deploy:
-  #   needs: build
-  #   runs-on: self-hosted
-  #   steps:
-  #     - name: deployment
-  #       run: |
-  #         docker rm -f webClient 2> /dev/null || true
-  #         docker run -d \
-  #         --restart unless-stopped \
-  #         --name webClient \
-  #         --network towech-finance-network \
-  #         -p 3000:80 \
-  #         -e REACT_APP_WEBAPI=financeapi.towechlabs.com \
-  #         webclient:latest
-  #         docker image prune -f
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: deployment
+        run: |
+          docker rm -f webClient 2> /dev/null || true
+          docker image rm ghcr.io/towech-financeapp/webclient 2> /dev/null || true
+          docker pull ghcr.io/towech-financeapp/webclient:latest
+          docker run -d \
+          --restart unless-stopped \
+          --name webClient \
+          --network towech-finance-network \
+          -p 3000:80 \
+          ghcr.io/towech-financeapp/webclient:latest
+          docker image prune -f
