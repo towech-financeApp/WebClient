@@ -20,19 +20,20 @@ export default class UserService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
   private instance: CustomAxios;
-  private ROOT_URL: string = process.env.REACT_APP_WEBAPI || '';
+  private SERVICE_URL: string;
 
   constructor(token?: TokenState, tokenDispatch?: React.Dispatch<TokenAction>) {
     this.token = token || ({} as TokenState);
     this.tokenDispatch = tokenDispatch;
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
+    this.SERVICE_URL = this.instance.ROOT_URL + '';
   }
 
   async changePassword(
     values: any,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.put(`${this.ROOT_URL}/users/password`, values, loading);
+    return await this.instance.put(`${this.SERVICE_URL}/users/password`, values, loading);
   }
 
   /** editUser
@@ -43,7 +44,7 @@ export default class UserService {
     user: User,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.patch(`${this.ROOT_URL}/users/${id}`, user, loading);
+    return await this.instance.patch(`${this.SERVICE_URL}/users/${id}`, user, loading);
   }
 
   /** generateResetPassword Token
@@ -53,7 +54,7 @@ export default class UserService {
     email: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.post(`${this.ROOT_URL}/users/reset`, { username: email }, loading);
+    return await this.instance.post(`${this.SERVICE_URL}/users/reset`, { username: email }, loading);
   }
 
   /** validateResetPasswordToken
@@ -63,7 +64,7 @@ export default class UserService {
     token: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/users/reset/${token}`, loading);
+    return await this.instance.get(`${this.SERVICE_URL}/users/reset/${token}`, loading);
   }
 
   /** setResetNewPassword
@@ -74,7 +75,7 @@ export default class UserService {
     payload: any,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.post(`${this.ROOT_URL}/users/reset/${token}`, payload, loading);
+    return await this.instance.post(`${this.SERVICE_URL}/users/reset/${token}`, payload, loading);
   }
 
   /** updateEmail
@@ -84,14 +85,14 @@ export default class UserService {
     email: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.put(`${this.ROOT_URL}/users/email`, { email: email }, loading);
+    return await this.instance.put(`${this.SERVICE_URL}/users/email`, { email: email }, loading);
   }
 
   /** resendVerificationEmail
    * resends the email verification
    */
   async resendVerificationEmail(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
-    return await this.instance.get(`${this.ROOT_URL}/users/email`, loading);
+    return await this.instance.get(`${this.SERVICE_URL}/users/email`, loading);
   }
 
   /** verifyEmail */
@@ -99,6 +100,6 @@ export default class UserService {
     token: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
-    return await this.instance.patch(`${this.ROOT_URL}/authentication/verify/${token}`, null, loading);
+    return await this.instance.patch(`${this.SERVICE_URL}/authentication/verify/${token}`, null, loading);
   }
 }

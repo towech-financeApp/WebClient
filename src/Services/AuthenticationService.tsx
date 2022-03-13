@@ -17,27 +17,28 @@ export default class AuthenticationService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
   private instance: CustomAxios;
-  private ROOT_URL: string = process.env.REACT_APP_WEBAPI + '/authentication';
+  private SERVICE_URL: string;
 
   constructor(token?: TokenState, tokenDispatch?: React.Dispatch<TokenAction>) {
     this.token = token || ({} as TokenState);
     this.tokenDispatch = tokenDispatch;
     this.instance = new CustomAxios(this.token, this.tokenDispatch);
+    this.SERVICE_URL = this.instance.ROOT_URL + '/authentication';
   }
 
   async login(payload: any, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
-    return await this.instance.postCookie(`${this.ROOT_URL}/login`, payload, loading);
+    return await this.instance.postCookie(`${this.SERVICE_URL}/login`, payload, loading);
   }
 
   async logout(): Promise<AxiosResponse<any>> {
-    return await this.instance.postCookie(`${this.ROOT_URL}/logout`, null);
+    return await this.instance.postCookie(`${this.SERVICE_URL}/logout`, null);
   }
 
   async logoutAll(): Promise<AxiosResponse<any>> {
-    return await this.instance.postCookie(`${this.ROOT_URL}/logout-all`, null);
+    return await this.instance.postCookie(`${this.SERVICE_URL}/logout-all`, null);
   }
 
   async refreshToken(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
-    return await this.instance.postCookie(`${this.ROOT_URL}/refresh`, null, loading);
+    return await this.instance.postCookie(`${this.SERVICE_URL}/refresh`, null, loading);
   }
 }
