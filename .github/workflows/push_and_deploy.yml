@@ -1,8 +1,6 @@
 name: Create container, push and deploy
 
 on:
-  push:
-    branches: [ development ] #for testing
   release:
     types: [published]
 
@@ -45,7 +43,7 @@ jobs:
         target: 'prod'
         file: ./Dockerfile
         build-args: |
-          REACT_APP_WEBAPI=https://financeapi.towechlabs.com
+          REACT_APP_WEBAPI=${{ secrets.API_URL }}
         
   # build:
   #   runs-on: self-hosted
