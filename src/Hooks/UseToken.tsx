@@ -9,7 +9,7 @@
  */
 import React, { useReducer } from 'react';
 import jwt_decode from 'jwt-decode';
-import { User } from '../models';
+import { Objects } from '../models';
 
 /** getFromStorage
  * Gets a the value stored with the given key from the localStorage
@@ -64,7 +64,7 @@ const removeFromStorage = (storageLocation?: string): void => {
 };
 
 // Extension of the user interface that also has the token, is used for the useToken reducer
-export interface TokenState extends User {
+export interface TokenState extends Objects.User.BackendUser {
   token: string;
 }
 

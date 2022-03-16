@@ -4,17 +4,17 @@
  * Componet that shows all the given transactions
  */
 // Models
-import { Transaction, Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Styles
 import './Home.css';
 import TransactionCard from './TransactionCard';
 
 interface Props {
-  wallets: Wallet[];
-  transactions: Transaction[];
-  edit: (transaction: Transaction) => void;
-  delete: (transaction: Transaction) => void;
+  wallets: Objects.Wallet[];
+  transactions: Objects.Transaction[];
+  edit: (transaction: Objects.Transaction) => void;
+  delete: (transaction: Objects.Transaction) => void;
 }
 
 const TransactionViewer = (props: Props): JSX.Element => {
@@ -26,7 +26,7 @@ const TransactionViewer = (props: Props): JSX.Element => {
         </div>
       ) : (
         <div className="Transactions__Viewer__List">
-          {props.transactions.map((transaction: Transaction) => (
+          {props.transactions.map((transaction: Objects.Transaction) => (
             <TransactionCard
               key={transaction._id}
               transaction={transaction}

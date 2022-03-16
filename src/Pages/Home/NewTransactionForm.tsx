@@ -15,7 +15,7 @@ import Modal from '../../Components/Modal';
 import UseForm from '../../Hooks/UseForm';
 
 // Models
-import { Category, Transaction, Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -25,12 +25,12 @@ import CategoryService from '../../Services/CategoryService';
 import CheckNested from '../../Utils/CheckNested';
 
 interface Props {
-  addTransaction: (transaction: Transaction) => void;
+  addTransaction: (transaction: Objects.Transaction) => void;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
-  wallets: Wallet[];
+  wallets: Objects.Wallet[];
   selectedWallet: string | null;
-  initialTransaction?: Transaction;
+  initialTransaction?: Objects.Transaction;
 }
 
 const NewTransactionForm = (props: Props): JSX.Element => {
@@ -168,7 +168,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               <option value="-1" disabled>
                 Select Wallet
               </option>
-              {props.wallets.map((wallet: Wallet) => (
+              {props.wallets.map((wallet: Objects.Wallet) => (
                 <option value={wallet._id} key={wallet._id}>
                   {wallet.name}
                 </option>
@@ -185,7 +185,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               <option value="-Expense" disabled>
                 EXPENSE
               </option>
-              {categories.Expense.map((category: Category) => (
+              {categories.Expense.map((category: Objects.Category) => (
                 <option value={category._id} key={category._id}>
                   {category.name}
                 </option>
@@ -193,7 +193,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               <option value="-Income" disabled>
                 INCOME
               </option>
-              {categories.Income.map((category: Category) => (
+              {categories.Income.map((category: Objects.Category) => (
                 <option value={category._id} key={category._id}>
                   {category.name}
                 </option>

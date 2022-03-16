@@ -14,7 +14,7 @@ import CustomAxios from './CustomAxios';
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-import { Transaction, Wallet } from '../models';
+import { Objects } from '../models';
 
 export default class TransactionService {
   private token: TokenState;
@@ -42,14 +42,14 @@ export default class TransactionService {
 
   async editTransaction(
     transactionId: string,
-    transaction: Transaction,
+    transaction: Objects.Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.SERVICE_URL}/transactions/${transactionId}`, transaction, loading);
   }
 
   async editWallet(
-    wallet: Wallet,
+    wallet: Objects.Wallet,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.SERVICE_URL}/wallets/${wallet._id}`, wallet, loading);
@@ -68,14 +68,14 @@ export default class TransactionService {
   }
 
   async newTransaction(
-    payload: Transaction,
+    payload: Objects.Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.post(`${this.SERVICE_URL}/transactions`, payload, loading);
   }
 
   async newWallet(
-    payload: Wallet,
+    payload: Objects.Wallet,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.post(`${this.SERVICE_URL}/wallets`, payload, loading);

@@ -15,7 +15,7 @@ import Input from '../../Components/Input';
 import UseForm from '../../Hooks/UseForm';
 
 // Models
-import { Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -27,7 +27,7 @@ import CheckNested from '../../Utils/CheckNested';
 import './Wallets.css';
 
 interface Props {
-  addWallet: (wallet: Wallet) => void;
+  addWallet: (wallet: Objects.Wallet) => void;
   set: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
 }
