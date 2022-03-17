@@ -10,9 +10,7 @@ import { Link } from 'react-router-dom';
 import './MenuItem.css';
 
 interface Props {
-  accent?: boolean;
   children?: JSX.Element;
-  dark?: boolean;
   link?: string;
   onClick?: any;
   label?: string;
@@ -25,14 +23,12 @@ const MenuItem = (props: Props): JSX.Element => {
   // Dark
   // Light
   let theme = 'MenuItem';
-  if (props.dark) theme = 'MenuItem dark';
-  if (props.accent) theme = 'MenuItem accent';
 
   // If this item is selected, adds the color
   if (props.selected) theme += ' selected';
 
   return (
-    <div onClick={props.onClick}>
+    <div onClick={props.onClick} >
       <Link className={theme} to={props.link || '/'}>
         {props.children}
         <p>{props.label}</p>

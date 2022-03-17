@@ -89,7 +89,8 @@ const Wallets = (): JSX.Element => {
 
   return (
     <Page loading={!loaded} selected="Wallets" header={header}>
-      <div className="Wallets">
+      <div>Wallets</div>
+      {/* <div className="Wallets">
         <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
           <FaIcons.FaPlus />
         </Button>
@@ -105,7 +106,7 @@ const Wallets = (): JSX.Element => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </Page>
   );
 };

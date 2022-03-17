@@ -18,20 +18,10 @@ import './NavBar.css';
 import MenuItem from './MenuItem';
 
 interface Props {
-  accent?: boolean;
-  dark?: boolean;
   selected?: string;
 }
 
 const NavBar = (props: Props): JSX.Element => {
-  // Checks the the alternate theme flags and applies it with following hierarchy
-  // Accent
-  // Dark
-  // Light
-  let theme = 'navBar';
-  if (props.dark) theme = 'navBar dark';
-  if (props.accent) theme = 'navBar accent';
-
   // Context
   const { dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -66,7 +56,7 @@ const NavBar = (props: Props): JSX.Element => {
   }
 
   return (
-    <div className={theme}>
+    <div className="navBar">
       {/* Menu bar*/}
       <div className="navBar__selector" onClick={() => setSidebar(true)}>
         <FaIcons.FaBars />
@@ -77,8 +67,6 @@ const NavBar = (props: Props): JSX.Element => {
           link="/home"
           label="Transactions"
           onClick={() => setSidebar(false)}
-          accent={props.accent}
-          dark={props.dark}
           selected={props.selected === 'Transactions'}
         >
           <FaIcons.FaMoneyCheckAlt />
@@ -87,8 +75,6 @@ const NavBar = (props: Props): JSX.Element => {
           link="/wallets"
           label="Wallets"
           onClick={() => setSidebar(false)}
-          accent={props.accent}
-          dark={props.dark}
           selected={props.selected === 'Wallets'}
         >
           <FaIcons.FaWallet />
@@ -97,13 +83,11 @@ const NavBar = (props: Props): JSX.Element => {
           link="/settings"
           label="Settings"
           onClick={() => setSidebar(false)}
-          accent={props.accent}
-          dark={props.dark}
           selected={props.selected === 'Settings'}
         >
           <FaIcons.FaCog />
         </MenuItem>
-        <MenuItem label="Logout" onClick={logoutCallback} accent={props.accent} dark={props.dark}>
+        <MenuItem label="Log-out" onClick={logoutCallback}>
           <FaIcons.FaUserTimes />
         </MenuItem>
       </nav>
