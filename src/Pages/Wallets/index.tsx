@@ -89,12 +89,16 @@ const Wallets = (): JSX.Element => {
 
   return (
     <Page loading={!loaded} selected="Wallets" header={header}>
-      <div>Wallets</div>
-      {/* <div className="Wallets">
+      <div className="Wallets">
+        {/* Add Wallet button (mobile) */}
         <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
           <FaIcons.FaPlus />
         </Button>
+
+        {/*Add/edit wallet Form*/}
         <NewWalletForm state={modal} set={setModal} addWallet={addWallet} />
+
+        {/*Lists all the wallets, if none available, returns a "No Wallets" text*/}
         {wallets.length == 0 ? (
           <NoWalletsCard />
         ) : (
@@ -106,7 +110,7 @@ const Wallets = (): JSX.Element => {
             </div>
           </div>
         )}
-      </div> */}
+      </div>
     </Page>
   );
 };
