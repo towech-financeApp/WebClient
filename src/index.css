@@ -9,13 +9,13 @@
 :root {
   --black: #000000;
   --gray1: #202124;
-  --gray2: #4c4f50;
+  --gray2: #4c4d50;
   --gray3: #c4c4c4;
   --white: #ffffff;
 
   --yellow: #fab700;
-  --green:  #00AB75;
-  --red:    #AB0036;
+  --green: #00ab75;
+  --red: #ab0036;
 
   --header-size: 70px;
 }

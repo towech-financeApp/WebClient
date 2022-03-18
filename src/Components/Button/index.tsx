@@ -29,12 +29,12 @@ const Button = (props: Props): JSX.Element => {
   // Sets the roundness of the button
   if (props.round) theme += ' round';
 
+  // Sets the button as transparent
+
   return (
-    <div className={props.className}>
-      <button className={theme} type={props.type} onClick={props.onClick}>
-        {props.children}
-      </button>
-    </div>
+    <button className={`${theme} ${props.className}`} type={props.type} onClick={props.onClick}>
+      {props.children}
+    </button>
   );
 };
 

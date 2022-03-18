@@ -28,7 +28,7 @@ const MenuItem = (props: Props): JSX.Element => {
   if (props.selected) theme += ' selected';
 
   return (
-    <div onClick={props.onClick} >
+    <div onClick={props.onClick}>
       <Link className={theme} to={props.link || '/'}>
         {props.children}
         <p>{props.label}</p>

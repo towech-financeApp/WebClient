@@ -13,7 +13,7 @@ import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Functions
 
-const rootURL  = process.env.REACT_APP_WEBAPI || '';
+const rootURL = process.env.REACT_APP_WEBAPI || '';
 
 /** getAuthToken
  * Makes a request to refresh the authentication token

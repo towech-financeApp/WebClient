@@ -2,9 +2,10 @@
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
- * The component shown when adding a new Wallet, it is a modal
+ * The component shown when adding or editing a Wallet, it is a modal
  */
 import React, { useContext, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // Components
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -63,13 +64,15 @@ const NewWalletForm = (props: Props): JSX.Element => {
     }
   }
 
+  const acceptIcon = <FaIcons.FaSave />;
+
   return (
     <>
       <Modal
         showModal={props.state}
         setModal={props.set}
         title="New Wallet"
-        accept="Create"
+        accept={acceptIcon}
         onAccept={newWalletCallback}
         onClose={() => {
           newWalletForm.clear();

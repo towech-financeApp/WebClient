@@ -138,7 +138,7 @@ const Home = (): JSX.Element => {
     } else {
       let nHeaderTotal = 0;
       wallets.map((w) => {
-        nHeaderTotal += (w.money || 0);
+        nHeaderTotal += w.money || 0;
       });
 
       setHeaderTotal(nHeaderTotal);
