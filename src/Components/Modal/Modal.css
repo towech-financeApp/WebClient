@@ -41,6 +41,7 @@
   background-color: var(--black);
   border-radius: 25px;
   display: flex;
+  font-size: 12px;
   height: var(--header-size);
   width: 100%;
 }
