@@ -16,16 +16,16 @@ import Modal from '../../Components/Modal';
 import NewTransactionForm from './NewTransactionForm';
 
 // Models
-import { Transaction, Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
 
 interface Props {
-  wallets: Wallet[];
-  transaction: Transaction;
-  edit: (transaction: Transaction) => void;
-  delete: (transaction: Transaction) => void;
+  wallets: Objects.Wallet[];
+  transaction: Objects.Transaction;
+  edit: (transaction: Objects.Transaction) => void;
+  delete: (transaction: Objects.Transaction) => void;
 }
 
 const TransactionCard = (props: Props): JSX.Element => {

@@ -11,7 +11,7 @@ import * as FaIcons from 'react-icons/fa';
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Models
-import { Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Components
 import NoWalletsCard from './NoWalletsCard';
@@ -36,7 +36,7 @@ const Wallets = (): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [modal, setModal] = useState(false);
-  const [wallets, setWallets] = useState([] as Wallet[]);
+  const [wallets, setWallets] = useState([] as Objects.Wallet[]);
 
   // Main API call
   useEffect(() => {
@@ -56,11 +56,11 @@ const Wallets = (): JSX.Element => {
     firstLoad();
   });
 
-  const addWallet = (wallet: Wallet): void => {
+  const addWallet = (wallet: Objects.Wallet): void => {
     setWallets([...wallets, wallet]);
   };
 
-  const editWallet = (wallet: Wallet): void => {
+  const editWallet = (wallet: Objects.Wallet): void => {
     const editedWallets = wallets;
 
     for (const i in editedWallets) {
@@ -72,7 +72,7 @@ const Wallets = (): JSX.Element => {
     setWallets([...editedWallets]);
   };
 
-  const deleteWallet = (wallet: Wallet): void => {
+  const deleteWallet = (wallet: Objects.Wallet): void => {
     setWallets(wallets.filter((o) => o._id !== wallet._id));
   };
 
@@ -90,10 +90,15 @@ const Wallets = (): JSX.Element => {
   return (
     <Page loading={!loaded} selected="Wallets" header={header}>
       <div className="Wallets">
+        {/* Add Wallet button (mobile) */}
         <Button accent round className="Wallets__AddFloat" onClick={() => setModal(true)}>
           <FaIcons.FaPlus />
         </Button>
+
+        {/*Add/edit wallet Form*/}
         <NewWalletForm state={modal} set={setModal} addWallet={addWallet} />
+
+        {/*Lists all the wallets, if none available, returns a "No Wallets" text*/}
         {wallets.length == 0 ? (
           <NoWalletsCard />
         ) : (

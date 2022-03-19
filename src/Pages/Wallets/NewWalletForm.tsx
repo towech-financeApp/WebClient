@@ -2,9 +2,10 @@
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
- * The component shown when adding a new Wallet, it is a modal
+ * The component shown when adding or editing a Wallet, it is a modal
  */
 import React, { useContext, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // Components
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
@@ -15,7 +16,7 @@ import Input from '../../Components/Input';
 import UseForm from '../../Hooks/UseForm';
 
 // Models
-import { Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -27,7 +28,7 @@ import CheckNested from '../../Utils/CheckNested';
 import './Wallets.css';
 
 interface Props {
-  addWallet: (wallet: Wallet) => void;
+  addWallet: (wallet: Objects.Wallet) => void;
   set: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
 }
@@ -46,6 +47,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   const newWalletForm = UseForm(newWalletCallback, {
     name: '',
     money: 0,
+    currency: 'MXN',
   });
 
   async function newWalletCallback() {
@@ -63,52 +65,68 @@ const NewWalletForm = (props: Props): JSX.Element => {
     }
   }
 
+  const acceptIcon = <FaIcons.FaSave />;
+
   return (
     <>
       <Modal
         showModal={props.state}
         setModal={props.set}
         title="New Wallet"
-        accept="Create"
+        accept={acceptIcon}
         onAccept={newWalletCallback}
         onClose={() => {
           newWalletForm.clear();
           setErrors([]);
         }}
       >
-        <form onSubmit={newWalletForm.onSubmit}>
-          <Input
-            error={errors.name ? true : false}
-            label="Name"
-            name="name"
-            type="text"
-            value={newWalletForm.values.name}
-            onChange={newWalletForm.onChange}
-          />
-          <div className="NewWalletForm__Amount">
-            <div className="NewWalletForm__Amount__Label">Amount:</div>
-            <div className="NewWalletForm__Amount__Input">
+        <div className="NewWalletForm__MainWallet">
+          <form onSubmit={newWalletForm.onSubmit}>
+            <div className="NewWalletForm__MainWallet__FirstRow">
+              <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
               <Input
-                error={errors.amount ? true : false}
-                name="money"
-                placeholder="0"
-                type="number"
-                value={newWalletForm.values.money}
+                error={errors.name ? true : false}
+                label="Name"
+                name="name"
+                type="text"
+                value={newWalletForm.values.name}
                 onChange={newWalletForm.onChange}
               />
             </div>
-          </div>
-        </form>
-        <div>
-          {Object.keys(errors).length > 0 && (
-            <div className="ui error message">
-              <ul className="list">
-                {Object.values(errors).map((value: any) => (
-                  <li key={value}>{value}</li>
-                ))}
-              </ul>
+            <div className="NewWalletForm__MainWallet__SecondRow">
+              <div className="NewWalletForm__MainWallet__SecondRow__Money">
+                <Input
+                  error={errors.amount ? true : false}
+                  name="money"
+                  type="number"
+                  label="Money"
+                  value={newWalletForm.values.money}
+                  onChange={newWalletForm.onChange}
+                />
+              </div>
+              <div className="NewWalletForm__MainWallet__SecondRow__Currency">
+                <Input
+                  error={errors.currency ? true : false}
+                  name="currency"
+                  type="text"
+                  label="Currency"
+                  value={newWalletForm.values.currency}
+                  onChange={newWalletForm.onChange}
+                />
+              </div>
             </div>
-          )}
+          </form>
+          <div>
+            {Object.keys(errors).length > 0 && (
+              <div className="ui error message">
+                <ul className="list">
+                  {Object.values(errors).map((value: any) => (
+                    <li key={value}>{value}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </Modal>
     </>

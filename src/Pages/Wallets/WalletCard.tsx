@@ -18,7 +18,7 @@ import Modal from '../../Components/Modal';
 import Input from '../../Components/Input';
 
 // Models
-import { Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
@@ -27,9 +27,9 @@ import CheckNested from '../../Utils/CheckNested';
 import TransactionService from '../../Services/TransactionService';
 
 interface Props /*extends RouteComponentProps*/ {
-  wallet: Wallet;
-  editWallet: (wallet: Wallet) => void;
-  deleteWallet: (wallet: Wallet) => void;
+  wallet: Objects.Wallet;
+  editWallet: (wallet: Objects.Wallet) => void;
+  deleteWallet: (wallet: Objects.Wallet) => void;
 }
 
 const WalletCard = (props: Props): JSX.Element => {
@@ -52,7 +52,7 @@ const WalletCard = (props: Props): JSX.Element => {
 
   async function editWallet() {
     try {
-      const editedWallet = editWalletForm.values as Wallet;
+      const editedWallet = editWalletForm.values as Objects.Wallet;
       editedWallet._id = props.wallet._id;
 
       // Sends the wallet to the API

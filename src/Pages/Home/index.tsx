@@ -12,7 +12,7 @@ import * as FaIcons from 'react-icons/fa';
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Models
-import { Transaction, Wallet } from '../../models';
+import { Objects } from '../../models';
 
 // Components
 import Button from '../../Components/Button';
@@ -44,12 +44,12 @@ const Home = (): JSX.Element => {
 
   // Hooks
   const [loaded, setLoaded] = useState(false);
-  const [wallets, setWallets] = useState([] as Wallet[]);
+  const [wallets, setWallets] = useState([] as Objects.Wallet[]);
   const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
   const [dataMonth, setDataMonth] = useState(ParseDataMonth(GetParameters(location.search, 'month')));
   const [headerTotal, setHeaderTotal] = useState(0);
   const [addModal, setAddModal] = useState(false);
-  const [transactions, setTransactions] = useState([] as Transaction[]);
+  const [transactions, setTransactions] = useState([] as Objects.Transaction[]);
   const [monthTotals, setMonthTotals] = useState({ earnings: 0, expenses: 0 });
 
   // Main API call
@@ -83,7 +83,7 @@ const Home = (): JSX.Element => {
   }, [selectedWallet_id, dataMonth]);
 
   // Adds a transaction to the list and recalculates the totals
-  const addTransaction = (transaction: Transaction): void => {
+  const addTransaction = (transaction: Objects.Transaction): void => {
     setTransactions([...transactions, transaction]);
     setHeaderTotal(
       headerTotal + (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount),
@@ -91,7 +91,7 @@ const Home = (): JSX.Element => {
   };
 
   // Edits a transaction from the list and recalculates the totals
-  const editTransaction = (transaction: Transaction): void => {
+  const editTransaction = (transaction: Objects.Transaction): void => {
     // First, filters out the transaction
     let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
 
@@ -108,7 +108,7 @@ const Home = (): JSX.Element => {
   };
 
   // Removes a transaction from the list
-  const deleteTransaction = (transaction: Transaction): void => {
+  const deleteTransaction = (transaction: Objects.Transaction): void => {
     setTransactions(transactions.filter((o) => o._id !== transaction._id));
   };
 
@@ -138,7 +138,7 @@ const Home = (): JSX.Element => {
     } else {
       let nHeaderTotal = 0;
       wallets.map((w) => {
-        nHeaderTotal += w.money;
+        nHeaderTotal += w.money || 0;
       });
 
       setHeaderTotal(nHeaderTotal);
@@ -159,7 +159,7 @@ const Home = (): JSX.Element => {
       <div>
         <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
           <option value="-1">Total</option>
-          {wallets.map((wallet: Wallet) => (
+          {wallets.map((wallet: Objects.Wallet) => (
             <option value={wallet._id} key={wallet._id}>
               {wallet.name}
             </option>

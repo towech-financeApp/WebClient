@@ -14,7 +14,7 @@ import CustomAxios from './CustomAxios';
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-import { User } from '../models';
+import { Objects } from '../models';
 
 export default class UserService {
   private token: TokenState;
@@ -41,7 +41,7 @@ export default class UserService {
    */
   async editUser(
     id: string,
-    user: User,
+    user: Objects.User.BackendUser,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.SERVICE_URL}/users/${id}`, user, loading);

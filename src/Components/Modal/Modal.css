@@ -6,68 +6,61 @@
  */
 
 .Modal {
-  --color-background: var(--color-light);
-  --color-text: var(--color-dark);
-
   position: fixed;
-  top: 0;
-  left: 0;
   z-index: 1000000000000;
+
+  top: 200%;
+  transition: top 850ms;
 }
 
-.Modal.dark {
-  --color-background: var(--color-dark);
-  --color-text: var(--color-light);
-}
-
-.Modal.accent {
-  --color-background: var(--color-accent);
-  --color-text: var(--color-dark);
+.Modal.active {
+  top: 0;
+  transition: top 350ms;
 }
 
 .Modal__background {
-  align-items: center;
-  background-color: #444c;
+  background-color: none;
   display: flex;
-  justify-content: center;
   position: fixed;
   width: 100%;
   height: 100vh;
 }
 
 .Modal__Content {
-  background: var(--color-background);
+  background: var(--gray2);
+  border-radius: 25px 25px 0 0;
   box-shadow: none;
-  border-radius: 0;
-  color: var(--color-text);
   display: grid;
   grid-template-rows: auto 1fr auto;
+  margin-top: calc(var(--header-size) + 30px);
+  width: 100%;
 }
 
 .Modal__header {
   align-items: center;
+  background-color: var(--black);
+  border-radius: 25px;
   display: flex;
+  font-size: 12px;
+  height: var(--header-size);
   width: 100%;
-  border: 3px solid var(--color-text);
-  border-radius: 4px;
-  padding: 10px;
 }
 
-.Modal__close {
+.Modal__header__button {
   border: none;
-  margin-left: auto;
   background: none;
   font-weight: 700;
-  font-size: 2rem;
-  color: var(--color-mid);
-  cursor: pointer;
+  font-size: 45px;
+  height: var(--header-size);
+  line-height: calc(var(--header-size) + 5px);
+}
+
+.Modal__header__button.right {
+  margin-left: auto;
 }
 
 .Modal__Body {
-  border: 3px solid var(--color-text);
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  padding: 10px;
+  padding: 23px 23px 0;
 }
 
 .Modal__Footer {
@@ -82,16 +75,7 @@
   margin-left: auto;
 }
 
-@media screen and (min-width: 320px) {
-  .Modal__Content {
-    margin-top: 45px;
-    border-radius: 4px 4px 0 0;
-    max-height: calc(100% - 45px);
-    width: 100%;
-  }
-}
-
-@media screen and (min-width: 768px) {
+/* @media screen and (min-width: 768px) {
   .Modal__background {
     align-items: flex-start;
   }
@@ -102,4 +86,4 @@
     max-height: 700px;
     width: 800px;
   }
-}
+} */

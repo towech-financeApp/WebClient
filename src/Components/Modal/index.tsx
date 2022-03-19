@@ -6,11 +6,11 @@
  */
 import React, { useRef, useEffect, useCallback } from 'react';
 import './Modal.css';
-import { useSpring, animated } from 'react-spring';
 import Button from '../Button';
+import * as FaIcons from 'react-icons/fa';
 
 interface Props {
-  accept?: string;
+  accept?: string | JSX.Element;
   children?: string | JSX.Element | JSX.Element[];
   showModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,13 +21,6 @@ interface Props {
 
 const Modal = (props: Props): JSX.Element => {
   const modalRef = useRef();
-
-  const animation = useSpring({
-    config: {
-      duration: 250,
-    },
-    transform: props.showModal ? `translateY(0%)` : `translateY(200%)`,
-  });
 
   // Function that closes the modal
   const closeModal = () => {
@@ -66,29 +59,33 @@ const Modal = (props: Props): JSX.Element => {
   }, [keyPress]);
 
   return (
-    <div className="Modal">
-      {props.showModal ? (
-        <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
-          <animated.div style={animation} className="Modal__Content">
-            <div className="Modal__header">
-              <div>
-                <h1>{props.title ? props.title : ''}</h1>
+    // <div className="Modal">
+    <div className={props.showModal ? 'Modal active' : 'Modal'}>
+      <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
+        <div className="Modal__Content">
+          <div className="Modal__header">
+            <Button className="Modal__header__button" onClick={closeModal}>
+              <FaIcons.FaTimes />
+            </Button>
+            <div>
+              <h1>{props.title ? props.title : ''}</h1>
+            </div>
+            {(props.accept || props.onAccept) && (
+              <Button className="Modal__header__button right" onClick={confirmAction}>
+                {props.accept ? props.accept : <FaIcons.FaCheck />}
+              </Button>
+            )}
+          </div>
+          <div className="Modal__Body">{props.children}</div>
+          {/* <div className="Modal__Footer">
+            {(props.accept || props.onAccept) && (
+              <div className="Modal__Confirm">
+                <Button onClick={confirmAction}>{props.accept ? props.accept : 'OK'}</Button>
               </div>
-              <button className="Modal__close" onClick={closeModal}>
-                X
-              </button>
-            </div>
-            <div className="Modal__Body">{props.children}</div>
-            <div className="Modal__Footer">
-              {(props.accept || props.onAccept) && (
-                <div className="Modal__Confirm">
-                  <Button onClick={confirmAction}>{props.accept ? props.accept : 'OK'}</Button>
-                </div>
-              )}
-            </div>
-          </animated.div>
+            )}
+          </div> */}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };

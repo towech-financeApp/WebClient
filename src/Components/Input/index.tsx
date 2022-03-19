@@ -9,9 +9,8 @@
 import './Input.css';
 
 interface Props {
-  accent?: any;
-  dark?: any;
   error?: boolean;
+  disabled?: boolean;
   label?: string;
   name?: string;
   onChange?: any;
@@ -26,8 +25,6 @@ const Input = (props: Props): JSX.Element => {
   // Dark
   // Light
   let theme = 'input';
-  if (props.dark) theme = 'input dark';
-  if (props.accent) theme = 'input accent';
 
   // Adds the error outline if triggered
   if (props.error) theme += ' error';
@@ -36,6 +33,7 @@ const Input = (props: Props): JSX.Element => {
     <div className={theme}>
       <input
         className="input__field"
+        disabled={props.disabled}
         name={props.name}
         onChange={props.onChange}
         placeholder={props.placeholder ? props.placeholder : ' '}

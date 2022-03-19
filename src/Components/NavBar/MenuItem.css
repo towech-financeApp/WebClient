@@ -1,62 +1,37 @@
 .MenuItem {
-  --color-background: var(--color-light);
-  --color-text: var(--color-dark);
-  --color-hover: var(--hover-light);
-  --accent: var(--color-accent);
-
-  background-color: var(--color-background);
-  display: flex;
   align-items: center;
-}
-
-.MenuItem.accent {
-  --color-background: var(--color-accent);
-  --color-text: var(--color-dark);
-  --color-hover: var(--hover-light);
-  --accent: var(--color-light);
-}
-
-.MenuItem.dark {
-  --color-background: var(--color-dark);
-  --color-text: var(--color-light);
-  --color-hover: var(--hover-dark);
-  --accent: var(--color-accent);
+  display: flex;
+  flex-direction: row;
+  color: var(--white);
+  text-decoration: none;
+  height: 41px;
+  padding: 15px 20px;
 }
 
 .MenuItem.selected {
   pointer-events: none;
 }
 
+.MenuItem > :first-child {
+  font-size: 40px;
+}
+
+.MenuItem > p {
+  font-size: 25px;
+  font-weight: 900;
+  padding-left: 25px;
+  line-height: 90px;
+}
+
 .MenuItem:hover {
-  background-color: var(--color-hover);
+  background-color: var(--gray2);
 }
-
-.MenuItem > * {
-  color: var(--color-text);
-}
-
 .MenuItem.selected > * {
-  color: var(--accent);
+  color: var(--yellow);
+  text-decoration: underline;
 }
 
-@media screen and (min-width: 320px) {
-  .MenuItem {
-    flex-direction: row;
-    padding: 15px;
-  }
-
-  .MenuItem > :first-child {
-    font-size: 22px;
-  }
-
-  .MenuItem > p {
-    font-size: 18px;
-    font-weight: bold;
-    padding-left: 15px;
-  }
-}
-
-@media screen and (min-width: 768px) {
+/* @media screen and (min-width: 768px) {
   .MenuItem {
     flex-direction: column;
     justify-content: center;
@@ -68,4 +43,4 @@
     font-weight: 400;
     padding: 0;
   }
-}
+} */
