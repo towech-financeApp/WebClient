@@ -42,14 +42,15 @@ const Wallets = (): JSX.Element => {
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded) {
-        setLoaded(true);
         transactionService
           .getWallets()
           .then((res) => {
             setWallets(res.data);
+            setLoaded(true);
           })
           .catch(() => {
             // console.log(err.response);
+            setLoaded(true);
           });
       }
     };
@@ -99,16 +100,20 @@ const Wallets = (): JSX.Element => {
         <NewWalletForm state={modal} set={setModal} addWallet={addWallet} />
 
         {/*Lists all the wallets, if none available, returns a "No Wallets" text*/}
-        {wallets.length == 0 ? (
-          <NoWalletsCard />
-        ) : (
-          <div className="Wallets__Container">
-            <div className="Wallets__Container__Section">
-              {wallets.map((wallet) => (
-                <WalletCard key={wallet._id} wallet={wallet} editWallet={editWallet} deleteWallet={deleteWallet} />
-              ))}
+        {loaded ? (
+          wallets.length == 0 ? (
+            <NoWalletsCard />
+          ) : (
+            <div className="Wallets__Container">
+              <div className="Wallets__Container__Section">
+                {wallets.map((wallet) => (
+                  <WalletCard key={wallet._id} wallet={wallet} editWallet={editWallet} deleteWallet={deleteWallet} />
+                ))}
+              </div>
             </div>
-          </div>
+          )
+        ) : (
+          <div />
         )}
       </div>
     </Page>

@@ -47,7 +47,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   // Creates the new walletForm
   const newWalletForm = UseForm(newWalletCallback, {
     name: '',
-    money: 0,
+    money: '0',
     currency: 'MXN',
   });
 
