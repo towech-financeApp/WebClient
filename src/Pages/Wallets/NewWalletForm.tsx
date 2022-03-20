@@ -9,8 +9,9 @@ import * as FaIcons from 'react-icons/fa';
 
 // Components
 import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
-import Modal from '../../Components/Modal';
+import Errorbox from '../../Components/ErrorBox';
 import Input from '../../Components/Input';
+import Modal from '../../Components/Modal';
 
 // Hooks
 import UseForm from '../../Hooks/UseForm';
@@ -80,7 +81,9 @@ const NewWalletForm = (props: Props): JSX.Element => {
           setErrors([]);
         }}
       >
+        {/* Main Wallet data */}
         <div className="NewWalletForm__MainWallet">
+          {/* Form */}
           <form onSubmit={newWalletForm.onSubmit}>
             <div className="NewWalletForm__MainWallet__FirstRow">
               <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
@@ -116,17 +119,8 @@ const NewWalletForm = (props: Props): JSX.Element => {
               </div>
             </div>
           </form>
-          <div>
-            {Object.keys(errors).length > 0 && (
-              <div className="ui error message">
-                <ul className="list">
-                  {Object.values(errors).map((value: any) => (
-                    <li key={value}>{value}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+          {/* Error Box */}
+          <Errorbox errors={errors} setErrors={setErrors}></Errorbox>
         </div>
       </Modal>
     </>
