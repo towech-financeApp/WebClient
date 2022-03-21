@@ -39,16 +39,28 @@
   position: fixed;
   width: 100%;
   height: 100vh;
+  justify-content: center;
 }
 
 .Modal__Content {
   background: var(--gray2);
   border-radius: 25px 25px 0 0;
-  box-shadow: none;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
   margin-top: calc(var(--header-size) + var(--free-space));
   width: 100%;
+}
+
+.ModalFloat__Content {
+  align-self: center;
+  background: var(--black);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 17px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  max-height: 250px;
+  width: 70%;
 }
 
 .Modal__header {
@@ -79,12 +91,13 @@
   overflow-y: scroll;
 }
 
+.Modal__Body.floated {
+  padding: 0 12px 0;
+}
+
 .Modal__Footer {
   display: flex;
-  border: 3px solid var(--color-text);
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  padding: 0 15px 18px;
+  padding: 12px 12px;
 }
 
 .Modal__Confirm {
