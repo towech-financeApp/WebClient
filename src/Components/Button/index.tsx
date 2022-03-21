@@ -9,6 +9,7 @@ import './Button.css';
 
 interface Props {
   accent?: boolean;
+  dark?: boolean;
   warn?: boolean;
   children?: JSX.Element | string;
   className?: string;
@@ -23,6 +24,7 @@ const Button = (props: Props): JSX.Element => {
   // Dark
   // Light
   let theme = 'button';
+  if (props.dark) theme = 'button dark';
   if (props.accent) theme = 'button accent';
   if (props.warn) theme = 'button warn';
 
