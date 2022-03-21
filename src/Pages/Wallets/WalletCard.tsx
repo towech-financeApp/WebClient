@@ -12,7 +12,6 @@ import NewWalletForm from './NewWalletForm';
 // Models
 import { Objects } from '../../models';
 
-
 interface Props /*extends RouteComponentProps*/ {
   wallet: Objects.Wallet;
   editWallet: (wallet: Objects.Wallet) => void;
@@ -20,7 +19,6 @@ interface Props /*extends RouteComponentProps*/ {
 }
 
 const WalletCard = (props: Props): JSX.Element => {
-
   // Hooks
   const [showEdit, setEdit] = useState(false);
 

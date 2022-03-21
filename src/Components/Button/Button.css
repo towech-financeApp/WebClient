@@ -14,7 +14,7 @@
 }
 
 .button.dark {
-  --background-color: var(--gray2)
+  --background-color: var(--gray2);
 }
 
 .button.accent {

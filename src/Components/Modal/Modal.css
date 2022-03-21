@@ -28,7 +28,7 @@
   height: var(--spinner-size);
 
   position: fixed;
-  
+
   left: 27%;
   z-index: 9999999;
 }
