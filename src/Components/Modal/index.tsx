@@ -6,8 +6,11 @@
  */
 import React, { useRef, useEffect, useCallback } from 'react';
 import './Modal.css';
-import Button from '../Button';
 import * as FaIcons from 'react-icons/fa';
+
+// Components
+import Loading from '../Loading';
+import Button from '../Button';
 
 interface Props {
   accept?: string | JSX.Element;
@@ -17,9 +20,13 @@ interface Props {
   onAccept?: any;
   onClose?: any;
   title?: string;
+  loading?: boolean;
 }
 
 const Modal = (props: Props): JSX.Element => {
+  let theme = 'Modal__Body';
+  if (props.loading) theme += ' loading';
+
   const modalRef = useRef();
 
   // Function that closes the modal
@@ -76,7 +83,10 @@ const Modal = (props: Props): JSX.Element => {
               </Button>
             )}
           </div>
-          <div className="Modal__Body">{props.children}</div>
+          <div className={theme}>
+            {props.loading && <Loading className="Modal__spinner" />}
+            {props.children}
+          </div>
           {/* <div className="Modal__Footer">
             {(props.accept || props.onAccept) && (
               <div className="Modal__Confirm">

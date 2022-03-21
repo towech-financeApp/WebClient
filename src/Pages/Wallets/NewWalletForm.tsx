@@ -42,6 +42,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
 
   // Creates the new walletForm
@@ -54,7 +55,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   async function newWalletCallback() {
     try {
       // Sends the wallet to the API
-      const res = await transactionService.newWallet(newWalletForm.values);
+      const res = await transactionService.newWallet(newWalletForm.values, setLoading);
 
       // Clears the form, sets wallets and closes the modal
       newWalletForm.clear();
@@ -73,6 +74,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.set}
+        loading={loading}
         title="New Wallet"
         accept={acceptIcon}
         onAccept={newWalletCallback}

@@ -18,6 +18,19 @@
   transition: top 350ms;
 }
 
+.Modal__spinner {
+  --spinner-size: 150px;
+  --color: var(--white);
+
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+
+  position: fixed;
+  
+  left: 27%;
+  z-index: 9999999;
+}
+
 .Modal__background {
   background-color: none;
   display: flex;
