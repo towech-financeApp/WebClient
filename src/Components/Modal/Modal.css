@@ -11,6 +11,8 @@
 
   top: 200%;
   transition: top 850ms;
+
+  --free-space: 30px;
 }
 
 .Modal.active {
@@ -45,7 +47,7 @@
   box-shadow: none;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  margin-top: calc(var(--header-size) + 30px);
+  margin-top: calc(var(--header-size) + var(--free-space));
   width: 100%;
 }
 
@@ -74,6 +76,7 @@
 
 .Modal__Body {
   padding: 23px 23px 0;
+  overflow-y: scroll;
 }
 
 .Modal__Footer {

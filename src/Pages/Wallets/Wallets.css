@@ -1,5 +1,9 @@
 @import url('../../App.css');
 
+.Wallets {
+  --cardContainerMargin: 30px;
+}
+
 .NoWallets {
   color: var(--white);
   display: flex;
@@ -35,11 +39,9 @@
 }
 
 .Wallets__Container__Section {
-  background-color: var(--background-color);
-  box-shadow: 1px 8px 20px -5px #000b;
-  border: 3px solid var(--text-color);
-  border-radius: 4px;
-  margin: 20px;
+  background-color: var(--black);
+  border-radius: 25px;
+  margin: var(--cardContainerMargin);
   width: 98%;
 }
 
@@ -72,22 +74,70 @@
   flex-basis: 40%;
 }
 
+.NewWalletForm__Delete {
+  align-items: center;
+  border-radius: 15px;
+  display: flex;
+  font-size: 24px;
+  font-weight: 900;
+  height: 48px;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.NewWalletForm__Delete__Icon {
+  font-size: 22px;
+  margin-right: 5px;
+  line-height: 1.1;
+}
+
 .WalletCard {
   align-items: center;
   display: flex;
-  margin: 12px;
+  margin: 12px 20px;
 }
 
 .WalletCard:not(:first-child) {
-  border-top: 1px solid var(--text-color);
-  padding-top: 12px;
+  border-top: 2px solid var(--yellow);
+  padding-top: 11.5px;
 }
 
-.WalletCard__Name {
-  font-size: 20pt;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-right: auto;
+.WalletCard__Modals {
+  position: fixed;
+  margin: calc(-1 * var(--cardContainerMargin));
+  z-index: 999999;
+}
+
+.WalletCard__Icon {
+  background-color: var(--gray2);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.WalletCard__Info {
+  padding-left: 16px;
+  font-weight: 900;
+}
+
+.WalletCard__Info__Name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+
+  font-size: 24pt;
+}
+
+.WalletCard__Info__Money {
+  font-size: 14pt;
+  display: flex;
+  color: var(--gray2);
+}
+
+.WalletCard__Info__Money__Amount {
+  color: var(--red);
 }
 
 /* @media screen and (min-width: 768px) {
