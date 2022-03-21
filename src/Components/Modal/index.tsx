@@ -6,8 +6,11 @@
  */
 import React, { useRef, useEffect, useCallback } from 'react';
 import './Modal.css';
-import Button from '../Button';
 import * as FaIcons from 'react-icons/fa';
+
+// Components
+import Loading from '../Loading';
+import Button from '../Button';
 
 interface Props {
   accept?: string | JSX.Element;
@@ -17,9 +20,15 @@ interface Props {
   onAccept?: any;
   onClose?: any;
   title?: string;
+  loading?: boolean;
+  float?: boolean;
 }
 
 const Modal = (props: Props): JSX.Element => {
+  let theme = 'Modal__Body';
+  if (props.float) theme += ' floated';
+  if (props.loading) theme += ' loading';
+
   const modalRef = useRef();
 
   // Function that closes the modal
@@ -62,28 +71,40 @@ const Modal = (props: Props): JSX.Element => {
     // <div className="Modal">
     <div className={props.showModal ? 'Modal active' : 'Modal'}>
       <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
-        <div className="Modal__Content">
-          <div className="Modal__header">
-            <Button className="Modal__header__button" onClick={closeModal}>
-              <FaIcons.FaTimes />
-            </Button>
-            <div>
-              <h1>{props.title ? props.title : ''}</h1>
-            </div>
-            {(props.accept || props.onAccept) && (
-              <Button className="Modal__header__button right" onClick={confirmAction}>
-                {props.accept ? props.accept : <FaIcons.FaCheck />}
+        <div className={props.float ? 'ModalFloat__Content' : 'Modal__Content'}>
+          {!props.float && (
+            <div className="Modal__header">
+              <Button className="Modal__header__button" onClick={closeModal}>
+                <FaIcons.FaTimes />
               </Button>
-            )}
-          </div>
-          <div className="Modal__Body">{props.children}</div>
-          {/* <div className="Modal__Footer">
-            {(props.accept || props.onAccept) && (
-              <div className="Modal__Confirm">
-                <Button onClick={confirmAction}>{props.accept ? props.accept : 'OK'}</Button>
+              <div>
+                <h1>{props.title ? props.title : ''}</h1>
               </div>
-            )}
-          </div> */}
+              {(props.accept || props.onAccept) && (
+                <Button className="Modal__header__button right" onClick={confirmAction}>
+                  {props.accept ? props.accept : <FaIcons.FaCheck />}
+                </Button>
+              )}
+            </div>
+          )}
+          <div className={theme}>
+            {props.loading && <Loading className="Modal__spinner" />}
+            {props.children}
+          </div>
+          {props.float && (
+            <div className="Modal__Footer">
+              <div className="Modal__Confirm">
+                <Button dark onClick={() => props.setModal(false)}>
+                  {props.onAccept ? 'Cancel' : props.accept || 'Ok'}
+                </Button>
+                {props.onAccept && (
+                  <Button warn onClick={confirmAction}>
+                    {props.accept || 'Ok'}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

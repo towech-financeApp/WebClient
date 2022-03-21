@@ -21,11 +21,16 @@ const rootURL = process.env.REACT_APP_WEBAPI || '';
  * @param {React.Dispatch<tokenAction>} tokenDispatch Dispatch for the token
  */
 async function getAuthToken(tokenDispatch: React.Dispatch<TokenAction>): Promise<string> {
-  const res = await axios.post(`${rootURL}/authentication/refresh`, null, {
-    withCredentials: true,
-  });
-  tokenDispatch({ type: 'LOGIN', payload: res.data });
-  return res.data.token;
+  try {
+    const res = await axios.post(`${rootURL}/authentication/refresh`, null, {
+      withCredentials: true,
+    });
+    tokenDispatch({ type: 'LOGIN', payload: res.data });
+    return res.data.token;
+  } catch (err) {
+    tokenDispatch({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
+    return '';
+  }
 }
 
 /** mAxios

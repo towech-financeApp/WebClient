@@ -9,9 +9,10 @@ import './Button.css';
 
 interface Props {
   accent?: boolean;
+  dark?: boolean;
+  warn?: boolean;
   children?: JSX.Element | string;
   className?: string;
-  dark?: boolean;
   round?: boolean;
   type?: 'button' | 'submit' | 'reset' | undefined;
   onClick?: any;
@@ -25,6 +26,7 @@ const Button = (props: Props): JSX.Element => {
   let theme = 'button';
   if (props.dark) theme = 'button dark';
   if (props.accent) theme = 'button accent';
+  if (props.warn) theme = 'button warn';
 
   // Sets the roundness of the button
   if (props.round) theme += ' round';

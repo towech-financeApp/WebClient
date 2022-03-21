@@ -5,17 +5,25 @@
  * Styles for the button component
  */
 .button {
-  --size-radius: 4px;
+  --size-radius: 10px;
 
-  --background-color: var(--color-dark);
-  --text-color: var(--color-light);
+  --background-color: var(--black);
+  --text-color: var(--white);
 
   border-radius: var(--size-radius);
+}
+
+.button.dark {
+  --background-color: var(--gray2);
 }
 
 .button.accent {
   --background-color: var(--yellow);
   --text-color: var(--black);
+}
+
+.button.warn {
+  --background-color: var(--red);
 }
 
 .button.round {
