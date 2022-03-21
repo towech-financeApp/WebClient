@@ -32,7 +32,8 @@ const Input = (props: Props): JSX.Element => {
   return (
     <div className={theme}>
       <input
-        className="input__field"
+        // className="input__field"
+        className={props.type === 'number' ? 'input__field number' : 'input__field'}
         disabled={props.disabled}
         name={props.name}
         onChange={props.onChange}
