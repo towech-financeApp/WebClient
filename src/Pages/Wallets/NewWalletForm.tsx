@@ -48,6 +48,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   // Hooks
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
+  const [deleteWarn, setDeleteWarn] = useState(false);
 
   // Creates the new walletForm
   const newWalletForm = UseForm(newWalletCallback, {
@@ -175,7 +176,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
 
           {props.initialWallet && (
             <div>
-              <Button warn className="NewWalletForm__Delete" onClick={deleteWallet}>
+              <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
                 <>
                   <div className="NewWalletForm__Delete__Icon">
                     <FaIcons.FaTrashAlt />
@@ -187,6 +188,15 @@ const NewWalletForm = (props: Props): JSX.Element => {
           )}
         </div>
       </Modal>
+
+      {props.initialWallet && (
+        <Modal float setModal={setDeleteWarn} showModal={deleteWarn} accept="Delete" onAccept={deleteWallet}>
+          <>
+            <p>Are you sure you want to delete the wallet: {props.initialWallet.name}?</p>
+            This action cannot be undone.
+          </>
+        </Modal>
+      )}
     </>
   );
 };
