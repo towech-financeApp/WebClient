@@ -10,7 +10,6 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding-top: 15px;
 }
 
@@ -24,7 +23,7 @@
   border-radius: 4px;
   display: flex;
   font-size: 16pt;
-  padding: 8px 15px;
+  /* padding: 8px 15px; */
   line-height: 1.5;
 }
 
@@ -57,7 +56,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
-  padding: 12px;
+  /* padding: 12px; */
 }
 
 .Transactions__Viewer {

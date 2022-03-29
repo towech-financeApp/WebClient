@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router';
 import GetParameters from '../../Utils/GetParameters';
 
 // Styles
-import './Home.css';
+import './Transactions.css';
 
 // Components
 import Button from '../../Components/Button';

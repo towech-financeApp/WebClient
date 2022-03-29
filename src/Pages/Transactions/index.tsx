@@ -1,8 +1,8 @@
-/** Home.tsx
+/** Transactions.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
- * Home Page for the App
+ * Transactions Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -31,9 +31,9 @@ import GetParameters from '../../Utils/GetParameters';
 import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
-import './Home.css';
+import './Transactions.css';
 
-const Home = (): JSX.Element => {
+const Transactions = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
   const navigate = useNavigate();
@@ -56,16 +56,17 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded && authToken.token) {
-        setLoaded(true);
         // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
             // Sets the available wallets, the transactions are fetched later
             setWallets(res.data);
+            setLoaded(true);
           })
           .catch(() => {
             // console.log(err.response);
+            setLoaded(true);
           });
       }
     };
@@ -156,7 +157,7 @@ const Home = (): JSX.Element => {
   // Extracted HTML components
   const header = (
     <div className="Transactions__Header">
-      <div>
+      {/* <div>
         <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
           <option value="-1">Total</option>
           {wallets.map((wallet: Objects.Wallet) => (
@@ -169,12 +170,12 @@ const Home = (): JSX.Element => {
       </div>
       <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
         Add Transaction
-      </Button>
+      </Button> */}
     </div>
   );
 
   return (
-    <Page header={header} selected="Transactions">
+    <Page loading={!loaded} header={header} selected="Transactions">
       <div className="Transactions">
         <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
           <FaIcons.FaPlus />
@@ -205,4 +206,4 @@ const Home = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default Transactions;

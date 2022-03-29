@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 // Pages
-import Home from './Pages/Home';
+import Transactions from './Pages/Transactions';
 import Login from './Pages/Login';
 import Wallets from './Pages/Wallets';
 import Settings from './Pages/Settings';
@@ -66,7 +66,7 @@ function App(): JSX.Element {
               path="/home"
               element={
                 <AuthRoute>
-                  <Home />
+                  <Transactions />
                 </AuthRoute>
               }
             />
