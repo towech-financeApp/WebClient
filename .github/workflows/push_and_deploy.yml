@@ -2,8 +2,8 @@ name: Create container, push and deploy
 
 on:
   #for testing
-  push:
-    branches: [development]
+  # push:
+  #   branches: [development]
 
   release:
     types: [published]

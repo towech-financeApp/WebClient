@@ -32,6 +32,7 @@ import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Transactions.css';
+import TransactionHeader from './TransactionsHeader';
 
 const Transactions = (): JSX.Element => {
   // Context
@@ -100,7 +101,7 @@ const Transactions = (): JSX.Element => {
     if (
       (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
       dataMonth ===
-        `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+      `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
     ) {
       editedTransactions = [...editedTransactions, transaction];
     }
@@ -147,31 +148,36 @@ const Transactions = (): JSX.Element => {
   };
 
   // Redirects to the wallet when the header selector changes
-  const changeSelectedWallet = (data: any): void => {
-    if (data.target.options[data.target.selectedIndex].value !== selectedWallet_id) {
-      navigate(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
-      setSelectedWalletId(data.target.options[data.target.selectedIndex].value);
+  const changeSelectedWallet = (data: string): void => {
+    if (data !== selectedWallet_id) {
+      navigate(`/home?wallet=${data}`);
+      setSelectedWalletId(data);
     }
   };
 
   // Extracted HTML components
   const header = (
-    <div className="Transactions__Header">
-      {/* <div>
-        <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
-          <option value="-1">Total</option>
-          {wallets.map((wallet: Objects.Wallet) => (
-            <option value={wallet._id} key={wallet._id}>
-              {wallet.name}
-            </option>
-          ))}
-        </select>
-        <div>{headerTotal}</div>
-      </div>
-      <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
-        Add Transaction
-      </Button> */}
-    </div>
+    <TransactionHeader
+      selectedWallet_id={selectedWallet_id}
+      wallets={wallets}
+      onChange={changeSelectedWallet}
+    />
+    // <div className="Transactions__Header">
+    //   <div>
+    //     <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
+    //       <option value="-1">Total</option>
+    //       {wallets.map((wallet: Objects.Wallet) => (
+    //         <option value={wallet._id} key={wallet._id}>
+    //           {wallet.name}
+    //         </option>
+    //       ))}
+    //     </select>
+    //     <div>{headerTotal}</div>
+    //   </div>
+    //   <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
+    //     Add Transaction
+    //   </Button>
+    // </div>
   );
 
   return (
