@@ -42,14 +42,21 @@
 
 .Transactions__Header__Wallet__Money {
   color: var(--white);
+  display: flex;
   font-size: 22px;
   font-weight: 900;
+}
+
+.Transactions__Header__Wallet__Money__Amount {
+  color: var(--red);
 }
 
 .Transactions__Header__Selector {
   background-color: var(--black);
   border-radius: 25px;
   display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .Transactions__Header__Selector:not(:first-child) {
@@ -60,12 +67,16 @@
   display: flex;
   align-items: center;
   margin: 15px;
-  width: 100%;
 }
 
 .Transactions__Header__Selector__Item:not(:first-child) {
   border-top: 2px solid var(--yellow);
   padding-top: 11.5px;
+  margin-top: 0;
+}
+
+.Transactions__Header__Selector__Item__Text {
+  flex: 1;
 }
 
 .Transactions__Header__Selector__Item__Icon {
@@ -88,12 +99,6 @@
   font-weight: 900;
 }
 
-
-
-
-
-
-
 .Transactions__Content {
   align-items: center;
   display: flex;
@@ -109,7 +114,7 @@
   font-size: 16pt;
   /* padding: 8px 15px; */
   line-height: 1.5;
-  width: 100%
+  width: 100%;
 }
 
 .Transactions__Totals__Items {

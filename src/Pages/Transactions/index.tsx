@@ -101,7 +101,7 @@ const Transactions = (): JSX.Element => {
     if (
       (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
       dataMonth ===
-      `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+        `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
     ) {
       editedTransactions = [...editedTransactions, transaction];
     }
@@ -157,11 +157,7 @@ const Transactions = (): JSX.Element => {
 
   // Extracted HTML components
   const header = (
-    <TransactionHeader
-      selectedWallet_id={selectedWallet_id}
-      wallets={wallets}
-      onChange={changeSelectedWallet}
-    />
+    <TransactionHeader selectedWallet_id={selectedWallet_id} wallets={wallets} onChange={changeSelectedWallet} />
     // <div className="Transactions__Header">
     //   <div>
     //     <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
