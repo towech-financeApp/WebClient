@@ -7,7 +7,7 @@
 import { Objects } from '../../models';
 
 // Styles
-import './Home.css';
+import './Transactions.css';
 import TransactionCard from './TransactionCard';
 
 interface Props {

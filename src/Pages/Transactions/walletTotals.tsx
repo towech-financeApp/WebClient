@@ -4,7 +4,7 @@
  * Componet that shows the sum of income and expense of the transactions
  */
 // Styles
-import './Home.css';
+import './Transactions.css';
 
 interface Props {
   totals: { earnings: number; expenses: number };

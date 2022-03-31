@@ -4,9 +4,10 @@
  *
  * The Componet shown in the transactions view when there are no wallets
  */
-// Styles
-import './Home.css';
+//Libraries
 import { Link } from 'react-router-dom';
+// Styles
+import './Transactions.css';
 
 const RedirectToWallets = (): JSX.Element => {
   return (

@@ -1,21 +1,109 @@
 .Transactions {
   height: 100%;
+}
 
-  --background-color: var(--color-light);
-  --text-color: var(--color-dark);
-  --accent: var(--color-accent);
+.Transactions__Header {
+  display: flex;
+}
+
+.Transactions__Header__Icon {
+  display: flex;
+  align-items: center;
+  padding-right: 15px;
+}
+
+.Transactions__Header__Icon__Triangle {
+  border-color: var(--white) transparent transparent transparent;
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  height: 0;
+  width: 0;
+}
+
+.Transactions__Header__Icon__Circle {
+  background-color: var(--gray2);
+  border-radius: 50%;
+  height: 35px;
+  margin-left: 5px;
+  width: 35px;
+}
+
+.Transactions__Header__Modals {
+  position: fixed;
+  margin-left: -80px;
+  z-index: 999999;
+}
+
+.Transactions__Header__Wallet__Name {
+  color: var(--gray2);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.Transactions__Header__Wallet__Money {
+  color: var(--white);
+  display: flex;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.Transactions__Header__Wallet__Money__Amount {
+  color: var(--red);
+}
+
+.Transactions__Header__Selector {
+  background-color: var(--black);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Transactions__Header__Selector:not(:first-child) {
+  margin-top: 30px;
+}
+
+.Transactions__Header__Selector__Item {
+  display: flex;
+  align-items: center;
+  margin: 15px;
+}
+
+.Transactions__Header__Selector__Item:not(:first-child) {
+  border-top: 2px solid var(--yellow);
+  padding-top: 11.5px;
+  margin-top: 0;
+}
+
+.Transactions__Header__Selector__Item__Text {
+  flex: 1;
+}
+
+.Transactions__Header__Selector__Item__Icon {
+  background-color: var(--gray1);
+  border-radius: 50%;
+  margin-right: 15px;
+  height: 50px;
+  width: 50px;
+}
+
+.Transactions__Header__Selector__Item__Name {
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.Transactions__Header__Selector__Item__Money {
+  color: var(--gray2);
+  font-size: 15px;
+  font-weight: 900;
 }
 
 .Transactions__Content {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding-top: 15px;
-}
-
-.Transactions__Header {
-  display: flex;
 }
 
 .Transactions__Totals {
@@ -24,8 +112,9 @@
   border-radius: 4px;
   display: flex;
   font-size: 16pt;
-  padding: 8px 15px;
+  /* padding: 8px 15px; */
   line-height: 1.5;
+  width: 100%;
 }
 
 .Transactions__Totals__Items {
@@ -57,13 +146,15 @@
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
-  padding: 12px;
+  /* padding: 12px; */
+  width: 100%;
 }
 
 .Transactions__Viewer {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 
 .Transactions__Viewer__List {
@@ -118,21 +209,7 @@
   color: #e43b07;
 }
 
-@media screen and (min-width: 320px) {
-  .Transactions__Totals {
-    width: 100%;
-  }
-
-  .Transactions__Viewer {
-    width: 100%;
-  }
-
-  .Transactions__MonthSelector {
-    width: 100%;
-  }
-}
-
-@media screen and (min-width: 768px) {
+/*@media screen and (min-width: 768px) {
   .Transactions__Totals {
     width: 75%;
   }
@@ -144,4 +221,4 @@
   .Transactions__MonthSelector {
     width: 75%;
   }
-}
+} */

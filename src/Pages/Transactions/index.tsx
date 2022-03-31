@@ -1,8 +1,8 @@
-/** Home.tsx
+/** Transactions.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
- * Home Page for the App
+ * Transactions Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -31,9 +31,10 @@ import GetParameters from '../../Utils/GetParameters';
 import ParseDataMonth from '../../Utils/ParseDataMonth';
 
 // Styles
-import './Home.css';
+import './Transactions.css';
+import TransactionHeader from './TransactionsHeader';
 
-const Home = (): JSX.Element => {
+const Transactions = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
   const navigate = useNavigate();
@@ -56,16 +57,17 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded && authToken.token) {
-        setLoaded(true);
         // Gets all the wallets of the client
         transactionService
           .getWallets()
           .then((res) => {
             // Sets the available wallets, the transactions are fetched later
             setWallets(res.data);
+            setLoaded(true);
           })
           .catch(() => {
             // console.log(err.response);
+            setLoaded(true);
           });
       }
     };
@@ -146,35 +148,36 @@ const Home = (): JSX.Element => {
   };
 
   // Redirects to the wallet when the header selector changes
-  const changeSelectedWallet = (data: any): void => {
-    if (data.target.options[data.target.selectedIndex].value !== selectedWallet_id) {
-      navigate(`/home?wallet=${data.target.options[data.target.selectedIndex].value}`);
-      setSelectedWalletId(data.target.options[data.target.selectedIndex].value);
+  const changeSelectedWallet = (data: string): void => {
+    if (data !== selectedWallet_id) {
+      navigate(`/home?wallet=${data}`);
+      setSelectedWalletId(data);
     }
   };
 
   // Extracted HTML components
   const header = (
-    <div className="Transactions__Header">
-      <div>
-        <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
-          <option value="-1">Total</option>
-          {wallets.map((wallet: Objects.Wallet) => (
-            <option value={wallet._id} key={wallet._id}>
-              {wallet.name}
-            </option>
-          ))}
-        </select>
-        <div>{headerTotal}</div>
-      </div>
-      <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
-        Add Transaction
-      </Button>
-    </div>
+    <TransactionHeader selectedWallet_id={selectedWallet_id} wallets={wallets} onChange={changeSelectedWallet} />
+    // <div className="Transactions__Header">
+    //   <div>
+    //     <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
+    //       <option value="-1">Total</option>
+    //       {wallets.map((wallet: Objects.Wallet) => (
+    //         <option value={wallet._id} key={wallet._id}>
+    //           {wallet.name}
+    //         </option>
+    //       ))}
+    //     </select>
+    //     <div>{headerTotal}</div>
+    //   </div>
+    //   <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
+    //     Add Transaction
+    //   </Button>
+    // </div>
   );
 
   return (
-    <Page header={header} selected="Transactions">
+    <Page loading={!loaded} header={header} selected="Transactions">
       <div className="Transactions">
         <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
           <FaIcons.FaPlus />
@@ -205,4 +208,4 @@ const Home = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default Transactions;
