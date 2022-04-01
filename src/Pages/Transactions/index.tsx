@@ -156,54 +156,47 @@ const Transactions = (): JSX.Element => {
   };
 
   // Extracted HTML components
-  const header = (
-    <TransactionHeader selectedWallet_id={selectedWallet_id} wallets={wallets} onChange={changeSelectedWallet} />
-    // <div className="Transactions__Header">
-    //   <div>
-    //     <select name="selected_wallet" onChange={changeSelectedWallet} value={selectedWallet_id}>
-    //       <option value="-1">Total</option>
-    //       {wallets.map((wallet: Objects.Wallet) => (
-    //         <option value={wallet._id} key={wallet._id}>
-    //           {wallet.name}
-    //         </option>
-    //       ))}
-    //     </select>
-    //     <div>{headerTotal}</div>
-    //   </div>
-    //   <Button accent className="Wallets__AddTop" onClick={() => setAddModal(true)}>
-    //     Add Transaction
-    //   </Button>
-    // </div>
-  );
+  const header =
+    loaded && wallets.length > 0 ? (
+      <TransactionHeader selectedWallet_id={selectedWallet_id} wallets={wallets} onChange={changeSelectedWallet} />
+    ) : (
+      <></>
+    );
 
   return (
     <Page loading={!loaded} header={header} selected="Transactions">
-      <div className="Transactions">
-        <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
-          <FaIcons.FaPlus />
-        </Button>
-        <NewTransactionForm
-          state={addModal}
-          setState={setAddModal}
-          addTransaction={addTransaction}
-          wallets={wallets}
-          selectedWallet={selectedWallet_id}
-        />
-        {wallets.length == 0 ? (
-          <RedirectToWallets />
-        ) : (
-          <div className="Transactions__Content">
-            <WalletTotals totals={monthTotals} />
-            <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
-            <TransactionViewer
-              wallets={wallets}
-              transactions={transactions}
-              edit={editTransaction}
-              delete={deleteTransaction}
-            />
-          </div>
-        )}
-      </div>
+      {loaded ? (
+        <div className="Transactions">
+          {wallets.length == 0 ? (
+            <RedirectToWallets />
+          ) : (
+            <>
+              <div className="Transactions__Content">
+                <WalletTotals totals={monthTotals} />
+                <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
+                <TransactionViewer
+                  wallets={wallets}
+                  transactions={transactions}
+                  edit={editTransaction}
+                  delete={deleteTransaction}
+                />
+              </div>
+              <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
+                <FaIcons.FaPlus />
+              </Button>
+              <NewTransactionForm
+                state={addModal}
+                setState={setAddModal}
+                addTransaction={addTransaction}
+                wallets={wallets}
+                selectedWallet={selectedWallet_id}
+              />
+            </>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
     </Page>
   );
 };
