@@ -33,6 +33,7 @@ import ParseDataMonth from '../../Utils/ParseDataMonth';
 // Styles
 import './Transactions.css';
 import TransactionHeader from './TransactionsHeader';
+import Loading from '../../Components/Loading';
 
 const Transactions = (): JSX.Element => {
   // Context
@@ -45,6 +46,7 @@ const Transactions = (): JSX.Element => {
 
   // Hooks
   const [loaded, setLoaded] = useState(false);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
   const [wallets, setWallets] = useState([] as Objects.Wallet[]);
   const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
   const [dataMonth, setDataMonth] = useState(ParseDataMonth(GetParameters(location.search, 'month')));
@@ -116,7 +118,7 @@ const Transactions = (): JSX.Element => {
 
   // Gets the transactions from the API of the selected wallet
   const loadTransactions = async (walletId: string, dataMonth: string): Promise<void> => {
-    const res = await transactionService.getWalletTransactions(walletId, dataMonth);
+    const res = await transactionService.getWalletTransactions(walletId, dataMonth, setLoadingTransactions);
     setTransactions(res.data);
   };
 
@@ -172,14 +174,22 @@ const Transactions = (): JSX.Element => {
           ) : (
             <>
               <div className="Transactions__Content">
-                <WalletTotals totals={monthTotals} />
                 <DataMonthSelector dataMonth={dataMonth} setDataMonth={setDataMonth} />
-                <TransactionViewer
-                  wallets={wallets}
-                  transactions={transactions}
-                  edit={editTransaction}
-                  delete={deleteTransaction}
-                />
+                {!loadingTransactions ? (
+                  <>
+                    {transactions.length > 0 && <WalletTotals totals={monthTotals} />}
+                    <TransactionViewer
+                      wallets={wallets}
+                      transactions={transactions}
+                      edit={editTransaction}
+                      delete={deleteTransaction}
+                    />
+                  </>
+                ) : (
+                  <div className="Transactions__Content__Loading">
+                    <Loading className="Transactions__Spinner" />
+                  </div>
+                )}
               </div>
               <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
                 <FaIcons.FaPlus />
