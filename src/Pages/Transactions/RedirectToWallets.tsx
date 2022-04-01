@@ -13,7 +13,7 @@ const RedirectToWallets = (): JSX.Element => {
   return (
     <div className="NoWallets">
       <h1>
-        You have no wallets, add one in <Link to="wallets">Wallets</Link>
+        You have no wallets, add one in <Link to="/wallets">Wallets</Link>
       </h1>
     </div>
   );

@@ -42,7 +42,7 @@ const addMonths = (dataMonth: string, amount: number): string => {
 };
 
 const displayDataMonth = (dataMonth: string): string => {
-  return `${dataMonth.substr(0, 4)}/${dataMonth.substr(4, 2)}`;
+  return `${dataMonth.substring(0, 4)}/${dataMonth.substring(4, 6)}`;
 };
 
 const DataMonthSelector = (props: Props): JSX.Element => {
@@ -66,11 +66,16 @@ const DataMonthSelector = (props: Props): JSX.Element => {
     navigate(`/home?wallet=${walletId}&month=${addMonths(props.dataMonth, amount)}`);
   };
 
+  // TODO: Go to current month
   return (
     <div className="Transactions__MonthSelector">
-      <Button onClick={() => setCurrentMonth(-1)}>{displayDataMonth(prevMonth)}</Button>
-      <Button accent>{displayDataMonth(props.dataMonth)}</Button>
-      <Button onClick={() => setCurrentMonth(1)}>{displayDataMonth(nextMonth)}</Button>
+      <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(-1)}>
+        {displayDataMonth(prevMonth)}
+      </Button>
+      <Button className="Transactions__MonthSelector__Button selected">{displayDataMonth(props.dataMonth)}</Button>
+      <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(1)}>
+        {displayDataMonth(nextMonth)}
+      </Button>
     </div>
   );
 };

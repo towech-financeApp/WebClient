@@ -45,9 +45,5 @@ For development
 For production
 > docker build towechFinance-WebClient . --target --build-arg REACT_APP_WEBAPI=\<url>
 
-## Future_Improvements
-- [ ] Create a functional UI
-- [ ] Create a decent looking UI
-
 ## Credits
 - Jose Tow [[@Tow96](https://github.com/Tow96)]

@@ -21,8 +21,8 @@ const TransactionViewer = (props: Props): JSX.Element => {
   return (
     <div className="Transactions__Viewer">
       {props.transactions.length == 0 ? (
-        <div className="NoWallets">
-          <h1>There are no transactions</h1>
+        <div className="Transactions__Empty">
+          <h1>There are no transactions for this period</h1>
         </div>
       ) : (
         <div className="Transactions__Viewer__List">
