@@ -4,7 +4,7 @@
  *
  * Navigation bar component
  */
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Hooks

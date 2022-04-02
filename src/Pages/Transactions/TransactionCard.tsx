@@ -4,22 +4,22 @@
  *
  * Component that shows the Transaction elements
  */
-import { useContext, useState } from 'react';
-import * as HiIcons from 'react-icons/hi';
+import { useState } from 'react';
+// import * as HiIcons from 'react-icons/hi';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+// import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Components
-import Button from '../../Components/Button';
-import Modal from '../../Components/Modal';
+// import Button from '../../Components/Button';
+// import Modal from '../../Components/Modal';
 import NewTransactionForm from './NewTransactionForm';
 
 // Models
 import { Objects } from '../../models';
 
 // Services
-import TransactionService from '../../Services/TransactionService';
+// import TransactionService from '../../Services/TransactionService';
 
 interface Props {
   wallets: Objects.Wallet[];
@@ -30,28 +30,28 @@ interface Props {
 
 const TransactionCard = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  // const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
   // Starts the services
-  const transactionService = new TransactionService(authToken, dispatchAuthToken);
+  // const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
   const [showEdit, setEdit] = useState(false);
-  const [showDelete, setDelete] = useState(false);
+  // const [showDelete, setDelete] = useState(false);
 
   const transDate = new Date(props.transaction.transactionDate);
   const amount = Math.abs(props.transaction.amount).toFixed(2);
 
-  async function deleteTransaction(): Promise<void> {
-    try {
-      await transactionService.deleteTransaction(props.transaction._id);
+  // async function deleteTransaction(): Promise<void> {
+  //   try {
+  //     await transactionService.deleteTransaction(props.transaction._id);
 
-      props.delete(props.transaction);
-    } catch (err: any) {
-      console.log(err.response); // eslint-disable-line no-console
-      setDelete(false);
-    }
-  }
+  //     props.delete(props.transaction);
+  //   } catch (err: any) {
+  //     console.log(err.response); // eslint-disable-line no-console
+  //     setDelete(false);
+  //   }
+  // }
 
   return (
     <>
