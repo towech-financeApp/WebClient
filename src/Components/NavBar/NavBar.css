@@ -28,21 +28,25 @@
   line-height: calc(var(--header-size) + 10px);
 }
 
+.navBar__outside {
+  left: -100%;
+  position: fixed;
+  top: 0;
+  transition: left 850ms;
+  width: 100%;
+  z-index: 2147483639;
+}
+
 .navBar__Menu {
   background-color: var(--black);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  left: -100%;
-  position: fixed;
-  top: 0;
-  transition: left 850ms;
   width: 300px;
-  z-index: 2147483639;
 }
 
-.navBar__Menu.active {
+.navBar__outside.active {
   left: 0;
   transition: left 350ms;
 }

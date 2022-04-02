@@ -20,8 +20,8 @@ interface Props {
 }
 
 const addMonths = (dataMonth: string, amount: number): string => {
-  let year = parseInt(dataMonth.substr(0, 4));
-  let month = parseInt(dataMonth.substr(4, 2));
+  let year = parseInt(dataMonth.substring(0, 4));
+  let month = parseInt(dataMonth.substring(4, 6));
 
   // adds the month
   month += amount;
