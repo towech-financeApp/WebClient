@@ -19,7 +19,7 @@ interface Props {
 
 const TransactionViewer = (props: Props): JSX.Element => {
   return (
-    <div className="Transactions__Viewer">
+    <div className={props.transactions.length == 0 ? 'Transactions__Viewer emptytrans' : 'Transactions__Viewer'}>
       {props.transactions.length == 0 ? (
         <div className="Transactions__Empty">
           <h1>There are no transactions for this period</h1>
@@ -35,6 +35,7 @@ const TransactionViewer = (props: Props): JSX.Element => {
               delete={props.delete}
             />
           ))}
+          <div className="Transactions__Viewer__Filler" />
         </div>
       )}
     </div>

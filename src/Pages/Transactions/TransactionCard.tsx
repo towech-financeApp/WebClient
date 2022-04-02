@@ -54,27 +54,28 @@ const TransactionCard = (props: Props): JSX.Element => {
   }
 
   return (
-    <div className="TransactionCard">
-      <div className="TransactionCard__Content">
-        <div className="TransactionCard__Content__Data">
-          <h4>{props.transaction.concept}</h4>
-          {props.transaction.category.name}
-          <br />
-          {transDate.getDate().toString().padStart(2, '0')}-{(transDate.getMonth() + 1).toString().padStart(2, '0')}-
-          {transDate.getFullYear()}
+    <>
+      <div className="TransactionCard" onClick={() => setEdit(true)}>
+        <div className="TransactionCard__Icon" />
+        <div className="TransactionCard__Content">
+          <div className="TransactionCard__Content__Top">
+            <div className="Transaction__Content__Top__Category">{props.transaction.category.name}</div>
+            {props.transaction.category.type == 'Expense' ? (
+              <div className="TransactionCard__Content__Top__Amount negative">- {amount}</div>
+            ) : (
+              <div className="TransactionCard__Content__Top__Amount"> + {amount}</div>
+            )}
+          </div>
+          <div className="TransactionCard__Content__Bottom">
+            <div className="TransactionCard__Content__Bottom__Concept">{props.transaction.concept}</div>
+            <div className="TransactionCard__Content__Bottom__Date">
+              {transDate.getDate().toString().padStart(2, '0')}-{(transDate.getMonth() + 1).toString().padStart(2, '0')}
+              -{transDate.getFullYear()}
+            </div>
+          </div>
         </div>
-        {props.transaction.category.type == 'Expense' ? (
-          <div className="TransactionCard__Content__Amount negative">- {amount}</div>
-        ) : (
-          <div className="TransactionCard__Content__Amount"> + {amount}</div>
-        )}
       </div>
-      <Button onClick={() => setEdit(true)}>
-        <HiIcons.HiPencilAlt />
-      </Button>
-      <Button onClick={() => setDelete(true)}>
-        <HiIcons.HiTrash />
-      </Button>
+
       {/* Edit Wallet Modal */}
       <NewTransactionForm
         state={showEdit}
@@ -84,22 +85,32 @@ const TransactionCard = (props: Props): JSX.Element => {
         selectedWallet={null}
         initialTransaction={props.transaction}
       />
-      {/* Delete Transaction Modal */}
-      <Modal
-        showModal={showDelete}
-        setModal={setDelete}
-        title="Delete transaction"
-        accept="Delete"
-        onAccept={deleteTransaction}
-      >
-        <p>
-          <br />
-          Are you sure you want to delete this transaction?
-          <br />
-          <br /> This cannot be undone
-        </p>
-      </Modal>
-    </div>
+    </>
+    //   {/* Edit Wallet Modal */}
+    //   <NewTransactionForm
+    //     state={showEdit}
+    //     setState={setEdit}
+    //     addTransaction={props.edit}
+    //     wallets={props.wallets}
+    //     selectedWallet={null}
+    //     initialTransaction={props.transaction}
+    //   />
+    //   {/* Delete Transaction Modal */}
+    //   <Modal
+    //     showModal={showDelete}
+    //     setModal={setDelete}
+    //     title="Delete transaction"
+    //     accept="Delete"
+    //     onAccept={deleteTransaction}
+    //   >
+    //     <p>
+    //       <br />
+    //       Are you sure you want to delete this transaction?
+    //       <br />
+    //       <br /> This cannot be undone
+    //     </p>
+    //   </Modal>
+    // </div>
   );
 };
 

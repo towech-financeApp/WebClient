@@ -34,15 +34,15 @@ const NavBar = (props: Props): JSX.Element => {
 
   // Adds the mouse listener event, it is used to close the sidebar when a click
   // outside the menu is made
-  useEffect(() => {
-    document.addEventListener('mousedown', (event) => {
-      if (menuRef.current) {
-        if (!menuRef.current.contains(event.target as Node) && sidebar) {
-          setSidebar(false);
-        }
-      }
-    });
-  });
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', (event) => {
+  //     if (menuRef.current) {
+  //       if (!menuRef.current.contains(event.target as Node) && sidebar) {
+  //         setSidebar(false);
+  //       }
+  //     }
+  //   });
+  // });
 
   // Callbacks
   async function logoutCallback() {
