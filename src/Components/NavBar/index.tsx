@@ -4,7 +4,7 @@
  *
  * Navigation bar component
  */
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Hooks
@@ -34,15 +34,15 @@ const NavBar = (props: Props): JSX.Element => {
 
   // Adds the mouse listener event, it is used to close the sidebar when a click
   // outside the menu is made
-  useEffect(() => {
-    document.addEventListener('mousedown', (event) => {
-      if (menuRef.current) {
-        if (!menuRef.current.contains(event.target as Node) && sidebar) {
-          setSidebar(false);
-        }
-      }
-    });
-  });
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', (event) => {
+  //     if (menuRef.current) {
+  //       if (!menuRef.current.contains(event.target as Node) && sidebar) {
+  //         setSidebar(false);
+  //       }
+  //     }
+  //   });
+  // });
 
   // Callbacks
   async function logoutCallback() {
@@ -62,35 +62,37 @@ const NavBar = (props: Props): JSX.Element => {
         <FaIcons.FaBars />
       </div>
       {/*Navigation bar*/}
-      <nav ref={menuRef} className={sidebar ? 'navBar__Menu active' : 'navBar__Menu'}>
-        <MenuItem
-          link="/home"
-          label="Transactions"
-          onClick={() => setSidebar(false)}
-          selected={props.selected === 'Transactions'}
-        >
-          <FaIcons.FaMoneyCheckAlt />
-        </MenuItem>
-        <MenuItem
-          link="/wallets"
-          label="Wallets"
-          onClick={() => setSidebar(false)}
-          selected={props.selected === 'Wallets'}
-        >
-          <FaIcons.FaWallet />
-        </MenuItem>
-        <MenuItem
-          link="/settings"
-          label="Settings"
-          onClick={() => setSidebar(false)}
-          selected={props.selected === 'Settings'}
-        >
-          <FaIcons.FaCog />
-        </MenuItem>
-        <MenuItem label="Log-out" onClick={logoutCallback}>
-          <FaIcons.FaUserTimes />
-        </MenuItem>
-      </nav>
+      <div className={sidebar ? 'navBar__outside active' : 'navBar__outside'} onClick={() => setSidebar(false)}>
+        <nav ref={menuRef} className="navBar__Menu">
+          <MenuItem
+            link="/home"
+            label="Transactions"
+            onClick={() => setSidebar(false)}
+            selected={props.selected === 'Transactions'}
+          >
+            <FaIcons.FaMoneyCheckAlt />
+          </MenuItem>
+          <MenuItem
+            link="/wallets"
+            label="Wallets"
+            onClick={() => setSidebar(false)}
+            selected={props.selected === 'Wallets'}
+          >
+            <FaIcons.FaWallet />
+          </MenuItem>
+          <MenuItem
+            link="/settings"
+            label="Settings"
+            onClick={() => setSidebar(false)}
+            selected={props.selected === 'Settings'}
+          >
+            <FaIcons.FaCog />
+          </MenuItem>
+          <MenuItem label="Log-out" onClick={logoutCallback}>
+            <FaIcons.FaUserTimes />
+          </MenuItem>
+        </nav>
+      </div>
     </div>
   );
 };
