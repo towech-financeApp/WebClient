@@ -247,13 +247,13 @@
 }
 
 .Transaction__Content__Top__Category {
-  flex: 2;
+  flex: 1;
 }
 
 .TransactionCard__Content__Top__Amount {
   color: var(--green);
   font-weight: 700;
-  flex: 1;
+  flex: 2;
   text-align: right;
 }
 
