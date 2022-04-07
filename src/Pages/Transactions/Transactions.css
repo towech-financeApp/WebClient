@@ -243,7 +243,7 @@
 
 .TransactionCard__Content__Top {
   display: flex;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .Transaction__Content__Top__Category {
@@ -276,6 +276,80 @@
   text-align: right;
   flex: 1;
 }
+
+.NewTransactionForm__Content__Splitted {
+  align-items: center;
+  display: flex;
+}
+
+.NewTransactionForm__Content__Date {
+  flex: 5;
+  margin-left: 3px;
+}
+
+.NewTransactionForm__WalletSelector {
+  align-items: center;
+  background-color: var(--black);
+  border-radius: 10px;
+  display: flex;
+  flex: 4;
+  height: 30px;
+  margin-right: 3px;
+  padding: 10px;
+}
+
+.NewTransactionForm__WalletSelector.error {
+  border: 5px solid var(--red);
+  padding: 5px;
+}
+
+.NewTransactionForm__WalletSelector__Icon {
+  background-color: var(--white);
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+.NewTransactionForm__WalletSelector__Name {
+  margin-left: 10px;
+  font-size: 20px;
+  flex: 1;
+}
+
+.NewTransactionForm__WalletSelector__Triangle {
+  border-color: var(--yellow) transparent transparent transparent;
+  border-style: solid;
+  border-width: 13px 8px 0 8px;
+  height: 0;
+  width: 0;
+}
+
+.NewTrnsactionForm__WalletSelector__Container {
+  background-color: var(--black);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.NewTransactionForm__Delete {
+  align-items: center;
+  border-radius: 15px;
+  display: flex;
+  font-size: 24px;
+  font-weight: 900;
+  height: 48px;
+  justify-content: center;
+  margin: 60px 0;
+  width: 100%;
+}
+
+.NewTransactionForm__Delete__Icon {
+  font-size: 22px;
+  margin-right: 5px;
+  line-height: 1.1;
+}
+
 
 /*
 .TransactionCard__Content__Data {
