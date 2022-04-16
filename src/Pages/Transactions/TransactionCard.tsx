@@ -78,39 +78,15 @@ const TransactionCard = (props: Props): JSX.Element => {
 
       {/* Edit Wallet Modal */}
       <NewTransactionForm
+        addTransaction={props.edit}
+        deleteTransaction={props.delete}
         state={showEdit}
         setState={setEdit}
-        addTransaction={props.edit}
         wallets={props.wallets}
         selectedWallet={null}
         initialTransaction={props.transaction}
       />
     </>
-    //   {/* Edit Wallet Modal */}
-    //   <NewTransactionForm
-    //     state={showEdit}
-    //     setState={setEdit}
-    //     addTransaction={props.edit}
-    //     wallets={props.wallets}
-    //     selectedWallet={null}
-    //     initialTransaction={props.transaction}
-    //   />
-    //   {/* Delete Transaction Modal */}
-    //   <Modal
-    //     showModal={showDelete}
-    //     setModal={setDelete}
-    //     title="Delete transaction"
-    //     accept="Delete"
-    //     onAccept={deleteTransaction}
-    //   >
-    //     <p>
-    //       <br />
-    //       Are you sure you want to delete this transaction?
-    //       <br />
-    //       <br /> This cannot be undone
-    //     </p>
-    //   </Modal>
-    // </div>
   );
 };
 
