@@ -26,10 +26,10 @@ import CategoryService from '../../Services/CategoryService';
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
 import Errorbox from '../../Components/ErrorBox';
-import { Wallet } from '../../models/objects';
 
 interface Props {
-  addTransaction: (transaction: Objects.Transaction) => void;
+  addTransaction?: (transaction: Objects.Transaction) => void;
+  editTransaction?: (transaction: Objects.Transaction) => void;
   deleteTransaction?: (transaction: Objects.Transaction) => void;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
@@ -48,9 +48,15 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
   // Hooks
   const [errors, setErrors] = useState({} as any);
-  const [categories, setCategories] = useState({ Income: [], Expense: [] });
+  const [categories, setCategories] = useState({ Income: [] as Objects.Category[], Expense: [] as Objects.Category[] });
   const [deleteWarn, setDeleteWarn] = useState(false);
+  // Wallet Selector Hooks
+  const [selectWallet, setSelectWallet] = useState(null as Objects.Wallet | null);
   const [walletSelector, setWalletSelector] = useState(false);
+  // Category Selector Hooks
+  const [categorySelector, setCategorySelector] = useState(false);
+  const [categoryType, setCategoryType] = useState(false);
+  const [selectCat, setSelectCat] = useState(null as Objects.Category | null);
 
   const newTransactionForm = UseForm(newTransactionCallback, {
     wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
@@ -69,44 +75,68 @@ const NewTransactionForm = (props: Props): JSX.Element => {
   // TODO: Needs to be optimized with a cache
   useEffect(() => {
     if (props.state == true) {
+      // Fetches the categories
       categoryService.getCategories().then((res) => {
         setCategories({
           Income: res.data.Income,
           Expense: res.data.Expense,
         });
+
+        // Set selected wallet and category for edit
+        if (props.initialTransaction) {
+          setSelectedWallet(props.initialTransaction.wallet_id);
+          setSelectedCategory(props.initialTransaction.category._id);
+        } else {
+          setSelectedWallet(props.selectedWallet || '-1');
+          setSelectedCategory('-1');
+        }
       });
     }
   }, [props.state]);
 
   // Functions
+  function setSelectedWallet(id: string) {
+    newTransactionForm.values.wallet_id = id;
+    const p = props.wallets.find((wallet) => wallet._id === id);
+    setSelectWallet(p || null);
+    setWalletSelector(false);
+  }
+
+  function setSelectedCategory(id: string) {
+    newTransactionForm.values.category_id = id;
+    const allCats = [...categories.Expense, ...categories.Income];
+    const p = allCats.find((cat) => cat._id === id);
+    setSelectCat(p || null);
+    setCategorySelector(false);
+  }
+
   async function newTransactionCallback() {
-    console.log(newTransactionForm.values);
-    // try {
-    //   // If no wallet was entered, returns an error
-    //   if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
-    //     setErrors({ wallet_id: 'Select a wallet' });
-    //     return;
-    //   }
+    try {
+      // If no wallet was entered, returns an error
+      if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
+        setErrors({ wallet_id: 'Select a wallet' });
+        return;
+      }
 
-    //   // If no category was entered, returns an error
-    //   if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
-    //     setErrors({ wallet_id: 'Select a category' });
-    //     return;
-    //   }
+      // If no category was entered, returns an error
+      if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
+        setErrors({ wallet_id: 'Select a category' });
+        return;
+      }
 
-    //   // Sends the transaction to the API
-    //   const res = await transactionService.newTransaction(newTransactionForm.values);
+      // Sends the transaction to the API
+      const res = await transactionService.newTransaction(newTransactionForm.values);
 
-    //   // Clears the form, adds the transaction to the list and closes the modal
-    //   newTransactionForm.clear();
+      // Clears the form, adds the transaction to the list and closes the modal
+      newTransactionForm.clear();
 
-    //   if (res.data.wallet_id === props.selectedWallet || props.selectedWallet === null) props.addTransaction(res.data);
+      if (props.addTransaction) props.addTransaction(res.data);
 
-    //   props.setState(false);
-    // } catch (err: any) {
-    //   if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
-    //   else console.log(err); //eslint-disable-line no-console
-    // }
+      props.setState(false);
+    } catch (err: any) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      else console.log(err); //eslint-disable-line no-console
+    }
   }
 
   async function editTransactionCallback() {
@@ -125,7 +155,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
 
-      props.addTransaction(res.data);
+      if (props.editTransaction) props.editTransaction(res.data);
     } catch (err: any) {
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
@@ -179,7 +209,11 @@ const NewTransactionForm = (props: Props): JSX.Element => {
                 value={newTransactionForm.values.amount}
                 onChange={newTransactionForm.onChange}
               />
-              <CategorySelector />
+              <div className="NewTransactionForm__CategorySelector" onClick={() => setCategorySelector(true)}>
+                <div className="NewTransactionForm__CategorySelector__Icon" />
+                <div className="NewTransactionForm__CategorySelector__Name">{selectCat?.name || 'Select Category'}</div>
+                <div className="NewTransactionForm__CategorySelector__Triangle" />
+              </div>
               <Input
                 error={errors.name ? true : false}
                 label="Concept"
@@ -188,14 +222,17 @@ const NewTransactionForm = (props: Props): JSX.Element => {
                 value={newTransactionForm.values.concept}
                 onChange={newTransactionForm.onChange}
               />
-              <div className="NewTransactionForm__Content__Splitted" onClick={() => setWalletSelector(true)}>
+              <div className="NewTransactionForm__Content__Splitted">
                 <div
                   className={
                     errors.category ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'
                   }
+                  onClick={() => setWalletSelector(true)}
                 >
                   <div className="NewTransactionForm__WalletSelector__Icon" />
-                  <div className="NewTransactionForm__WalletSelector__Name">Wallet</div>
+                  <div className="NewTransactionForm__WalletSelector__Name">
+                    {selectWallet?.name || 'Select Wallet'}
+                  </div>
                   <div className="NewTransactionForm__WalletSelector__Triangle" />
                 </div>
                 <div className="NewTransactionForm__Content__Date">
@@ -209,65 +246,6 @@ const NewTransactionForm = (props: Props): JSX.Element => {
                   />
                 </div>
               </div>
-              {/* <div className="Transactions__New__Modal__Bar">
-                <Input
-                  error={errors.amount ? true : false}
-                  label="Amount"
-                  name="amount"
-                  type="number"
-                  value={newTransactionForm.values.amount}
-                  onChange={newTransactionForm.onChange}
-                />
-              </div>
-              <div className="Transactions__New__Modal__Bar">
-                <select
-                  name="wallet_id"
-                  onChange={newTransactionForm.onChange}
-                  defaultValue={newTransactionForm.values.wallet_id}
-                >
-                  <option value="-1" disabled>
-                    Select Wallet
-                  </option>
-                  {props.wallets.map((wallet: Objects.Wallet) => (
-                    <option value={wallet._id} key={wallet._id}>
-                      {wallet.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="category_id"
-                  onChange={newTransactionForm.onChange}
-                  defaultValue={newTransactionForm.values.category_id}
-                >
-                  <option value="-1" disabled>
-                    Select Category
-                  </option>
-                  <option value="-Expense" disabled>
-                    EXPENSE
-                  </option>
-                  {categories.Expense.map((category: Objects.Category) => (
-                    <option value={category._id} key={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-                  <option value="-Income" disabled>
-                    INCOME
-                  </option>
-                  {categories.Income.map((category: Objects.Category) => (
-                    <option value={category._id} key={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                <Input
-                  error={errors.name ? true : false}
-                  label="Concept"
-                  name="concept"
-                  type="text"
-                  value={newTransactionForm.values.concept}
-                  onChange={newTransactionForm.onChange}
-                />
-              </div> */}
             </form>
 
             {/* Error Box */}
@@ -292,11 +270,57 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
       {/* Wallet selector modal */}
       <Modal showModal={walletSelector} setModal={setWalletSelector} title="Select Wallet">
-        <div className="NewTrnsactionForm__WalletSelector__Container">
-          {props.wallets.map((wallet: Wallet) => (
-            <div id={wallet._id}>{wallet.name}</div>
+        <div className="NewTransactionForm__WalletSelector__Container">
+          {props.wallets.map((wallet: Objects.Wallet) => (
+            <div
+              className="NewTransactionForm__WalletSelector__Wallet"
+              key={wallet._id}
+              onClick={() => setSelectedWallet(wallet._id)}
+            >
+              <div className="NewTransactionForm__WalletSelector__Wallet__Container">
+                <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
+                <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
+              </div>
+            </div>
           ))}
         </div>
+      </Modal>
+
+      {/* Category selector modal */}
+      <Modal setModal={setCategorySelector} showModal={categorySelector}>
+        <>
+          <div className="NewTransactionForm__CategorySelector__Container">
+            <div className={categoryType ? 'selected' : ''} onClick={() => setCategoryType(true)}>
+              Income
+            </div>
+            <div className={!categoryType ? 'selected' : ''} onClick={() => setCategoryType(false)}>
+              Expense
+            </div>
+          </div>
+          <div className="NewTransactionForm__CategorySelector__ListContainer">
+            {categoryType
+              ? categories.Income.map((cat: Objects.Category) => (
+                  <div
+                    className="NewTransactionForm__CategorySelector__Category"
+                    key={cat._id}
+                    onClick={() => setSelectedCategory(cat._id)}
+                  >
+                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  </div>
+                ))
+              : categories.Expense.map((cat: Objects.Category) => (
+                  <div
+                    className="NewTransactionForm__CategorySelector__Category"
+                    key={cat._id}
+                    onClick={() => setSelectedCategory(cat._id)}
+                  >
+                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  </div>
+                ))}
+          </div>
+        </>
       </Modal>
 
       {props.initialTransaction && (
@@ -309,10 +333,6 @@ const NewTransactionForm = (props: Props): JSX.Element => {
       )}
     </>
   );
-};
-
-const CategorySelector = (): JSX.Element => {
-  return <div>Selector</div>;
 };
 
 export default NewTransactionForm;

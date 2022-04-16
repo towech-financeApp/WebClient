@@ -88,27 +88,34 @@ const Transactions = (): JSX.Element => {
 
   // Adds a transaction to the list and recalculates the totals
   const addTransaction = (transaction: Objects.Transaction): void => {
-    setTransactions([...transactions, transaction]);
-    setHeaderTotal(
-      headerTotal + (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount),
-    );
+    if (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) {
+      setTransactions([...transactions, transaction]);
+      setHeaderTotal(
+        headerTotal + (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount),
+      );
+    }
+
+    // Updates the wallets
+    updateWalletAmounts(transaction);
   };
 
   // Edits a transaction from the list and recalculates the totals
   const editTransaction = (transaction: Objects.Transaction): void => {
-    // First, filters out the transaction
-    let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
+    if (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) {
+      // First, filters out the transaction
+      let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
 
-    // Then adds it back if it is in the selected wallets and in the dataMonth
-    if (
-      (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
-      dataMonth ===
-        `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
-    ) {
-      editedTransactions = [...editedTransactions, transaction];
+      // Then adds it back if it is in the selected wallets and in the dataMonth
+      if (
+        (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
+        dataMonth ===
+          `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+      ) {
+        editedTransactions = [...editedTransactions, transaction];
+      }
+
+      setTransactions(editedTransactions);
     }
-
-    setTransactions(editedTransactions);
   };
 
   // Removes a transaction from the list
@@ -155,6 +162,25 @@ const Transactions = (): JSX.Element => {
       navigate(`/home?wallet=${data}`);
       setSelectedWalletId(data);
     }
+  };
+
+  // Updates the wallets amount given a Transaction
+  const updateWalletAmounts = (transaction: Objects.Transaction, reverse = false): void => {
+    const newWallets: Objects.Wallet[] = wallets;
+    for (let i = 0; i < newWallets.length; i++) {
+      if (newWallets[i]._id === transaction.wallet_id) {
+        if (reverse) {
+          newWallets[i].money =
+            (newWallets[i].money || 0) +
+            (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount);
+        } else {
+          newWallets[i].money =
+            (newWallets[i].money || 0) -
+            (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount);
+        }
+      }
+    }
+    setWallets(newWallets);
   };
 
   // Extracted HTML components
