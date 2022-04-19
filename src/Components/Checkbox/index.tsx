@@ -23,7 +23,6 @@ const Checkbox = (props: Props): JSX.Element => {
   // Light
   let theme = 'checkbox';
   if (props.dark) theme = 'checkbox dark';
-  if (props.accent) theme = 'checkbox accent';
 
   return (
     <div className={theme}>
