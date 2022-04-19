@@ -99,15 +99,20 @@ const Login = (): JSX.Element => {
           />
           <div className="Login__bottomRow">
             <Checkbox
+              dark
               label="Keep me logged in"
               name="keepSession"
               checked={loginForm.values.keepSession}
               onChange={loginForm.onChange}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" accent>
+              Login
+            </Button>
           </div>
         </form>
-        <Link to="/reset">Forgot password?</Link>
+        <Link className="Login__resetLink" to="/reset">
+          Forgot password?
+        </Link>
       </div>
     </div>
   );
