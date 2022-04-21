@@ -5,6 +5,7 @@
  * Component used to change the password, it is a modal
  */
 import React, { useContext, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // Components
 import Input from '../../../Components/Input';
@@ -42,6 +43,8 @@ const ChangePasswordForm = (props: Props): JSX.Element => {
     confirmPassword: '',
   });
 
+  const acceptIcon = <FaIcons.FaSave />;
+
   // Functions
   async function changePasswordCallback() {
     try {
@@ -65,8 +68,8 @@ const ChangePasswordForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.setState}
-        title={'Change Name'}
-        accept={'Save'}
+        title={'Change password'}
+        accept={acceptIcon}
         onAccept={changePasswordCallback}
         onClose={clearModal}
       >

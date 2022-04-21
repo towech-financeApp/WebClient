@@ -5,6 +5,7 @@
  * Component used to change the email, it is a modal
  */
 import React, { useContext, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // Components
 import Input from '../../../Components/Input';
@@ -40,6 +41,8 @@ const ChangeEmailForm = (props: Props): JSX.Element => {
     email: '',
   });
 
+  const acceptIcon = <FaIcons.FaSave />;
+
   // Functions
   async function changeEmailCallback() {
     try {
@@ -65,8 +68,8 @@ const ChangeEmailForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.setState}
-        title={'Change Name'}
-        accept={'Save'}
+        title={'Change Email'}
+        accept={acceptIcon}
         onAccept={changeEmailCallback}
         onClose={clearModal}
       >

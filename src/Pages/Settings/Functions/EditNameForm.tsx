@@ -5,6 +5,7 @@
  * Component used to edit the username, it is a modal
  */
 import React, { useContext, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
 
 // Components
 import Input from '../../../Components/Input';
@@ -40,6 +41,8 @@ const EditNameForm = (props: Props): JSX.Element => {
     name: authToken.name || '',
   });
 
+  const acceptIcon = <FaIcons.FaSave />;
+
   // Functions
   async function editNameCallback() {
     try {
@@ -73,7 +76,7 @@ const EditNameForm = (props: Props): JSX.Element => {
         showModal={props.state}
         setModal={props.setState}
         title={'Change Name'}
-        accept={'Save'}
+        accept={acceptIcon}
         onAccept={editNameCallback}
         onClose={clearModal}
       >
