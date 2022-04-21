@@ -24,7 +24,7 @@ import { Objects } from '../../models';
 interface Props {
   wallets: Objects.Wallet[];
   transaction: Objects.Transaction;
-  edit: (transaction: Objects.Transaction) => void;
+  edit: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
   delete: (transaction: Objects.Transaction) => void;
 }
 
@@ -41,17 +41,6 @@ const TransactionCard = (props: Props): JSX.Element => {
 
   const transDate = new Date(props.transaction.transactionDate);
   const amount = Math.abs(props.transaction.amount).toFixed(2);
-
-  // async function deleteTransaction(): Promise<void> {
-  //   try {
-  //     await transactionService.deleteTransaction(props.transaction._id);
-
-  //     props.delete(props.transaction);
-  //   } catch (err: any) {
-  //     console.log(err.response); // eslint-disable-line no-console
-  //     setDelete(false);
-  //   }
-  // }
 
   return (
     <>
@@ -78,7 +67,7 @@ const TransactionCard = (props: Props): JSX.Element => {
 
       {/* Edit Wallet Modal */}
       <NewTransactionForm
-        addTransaction={props.edit}
+        editTransaction={props.edit}
         deleteTransaction={props.delete}
         state={showEdit}
         setState={setEdit}

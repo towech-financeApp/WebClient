@@ -100,27 +100,32 @@ const Transactions = (): JSX.Element => {
   };
 
   // Edits a transaction from the list and recalculates the totals
-  const editTransaction = (transaction: Objects.Transaction): void => {
-    if (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) {
+  const editTransaction = (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction): void => {
+    if (selectedWallet_id === '-1' || selectedWallet_id === newTransaction.wallet_id) {
       // First, filters out the transaction
-      let editedTransactions = transactions.filter((o) => o._id !== transaction._id);
+      let editedTransactions = transactions.filter((o) => o._id !== newTransaction._id);
 
       // Then adds it back if it is in the selected wallets and in the dataMonth
       if (
-        (selectedWallet_id === '-1' || selectedWallet_id === transaction.wallet_id) &&
+        (selectedWallet_id === '-1' || selectedWallet_id === newTransaction.wallet_id) &&
         dataMonth ===
-          `${transaction.transactionDate.toString().substr(0, 4)}${transaction.transactionDate.toString().substr(5, 2)}`
+          `${newTransaction.transactionDate.toString().substring(0, 3)}${newTransaction.transactionDate
+            .toString()
+            .substring(5, 6)}`
       ) {
-        editedTransactions = [...editedTransactions, transaction];
+        editedTransactions = [...editedTransactions, newTransaction];
       }
 
       setTransactions(editedTransactions);
     }
+    updateWalletAmounts(oldTransaction, true, newTransaction);
   };
 
   // Removes a transaction from the list
   const deleteTransaction = (transaction: Objects.Transaction): void => {
     setTransactions(transactions.filter((o) => o._id !== transaction._id));
+
+    updateWalletAmounts(transaction, true);
   };
 
   // Gets the transactions from the API of the selected wallet
@@ -167,21 +172,39 @@ const Transactions = (): JSX.Element => {
   };
 
   // Updates the wallets amount given a Transaction
-  const updateWalletAmounts = (transaction: Objects.Transaction, reverse = false): void => {
+  const updateWalletAmounts = (transaction: Objects.Transaction, reverse = false, newTransaction?: Objects.Transaction): void => {
     const newWallets: Objects.Wallet[] = wallets;
     for (let i = 0; i < newWallets.length; i++) {
       if (newWallets[i]._id === transaction.wallet_id) {
         if (reverse) {
           newWallets[i].money =
-            (newWallets[i].money || 0) +
+            (newWallets[i].money || 0) -
             (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount);
         } else {
           newWallets[i].money =
-            (newWallets[i].money || 0) -
+            (newWallets[i].money || 0) +
             (transaction.category.type === 'Income' ? transaction.amount : -1 * transaction.amount);
         }
       }
     }
+
+    // New transaction in case it exists
+    if (newTransaction) {
+      for (let i = 0; i < newWallets.length; i++) {
+        if (newWallets[i]._id === newTransaction.wallet_id) {
+          if (!reverse) {
+            newWallets[i].money =
+              (newWallets[i].money || 0) -
+              (newTransaction.category.type === 'Income' ? newTransaction.amount : -1 * newTransaction.amount);
+          } else {
+            newWallets[i].money =
+              (newWallets[i].money || 0) +
+              (newTransaction.category.type === 'Income' ? newTransaction.amount : -1 * newTransaction.amount);
+          }
+        }
+      }
+    }
+
     setWallets(newWallets);
   };
 

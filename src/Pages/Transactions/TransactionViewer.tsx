@@ -13,7 +13,7 @@ import TransactionCard from './TransactionCard';
 interface Props {
   wallets: Objects.Wallet[];
   transactions: Objects.Transaction[];
-  edit: (transaction: Objects.Transaction) => void;
+  edit: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
   delete: (transaction: Objects.Transaction) => void;
 }
 

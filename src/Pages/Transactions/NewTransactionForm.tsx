@@ -30,7 +30,7 @@ import Checkbox from '../../Components/Checkbox';
 
 interface Props {
   addTransaction?: (transaction: Objects.Transaction) => void;
-  editTransaction?: (transaction: Objects.Transaction) => void;
+  editTransaction?: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
   deleteTransaction?: (transaction: Objects.Transaction) => void;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
@@ -157,7 +157,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
 
-      if (props.editTransaction) props.editTransaction(res.data);
+      if (props.editTransaction) props.editTransaction(res.data, props.initialTransaction || {} as Objects.Transaction);
     } catch (err: any) {
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
