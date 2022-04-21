@@ -135,10 +135,12 @@ const Transactions = (): JSX.Element => {
     let expenses = 0;
 
     transactions.map((transaction) => {
-      if (transaction.category.type === 'Income') {
-        earnings += transaction.amount;
-      } else {
-        expenses += transaction.amount;
+      if (!transaction.excludeFromReport) {
+        if (transaction.category.type === 'Income') {
+          earnings += transaction.amount;
+        } else {
+          expenses += transaction.amount;
+        }
       }
     });
 

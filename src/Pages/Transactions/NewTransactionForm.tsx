@@ -26,6 +26,7 @@ import CategoryService from '../../Services/CategoryService';
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
 import Errorbox from '../../Components/ErrorBox';
+import Checkbox from '../../Components/Checkbox';
 
 interface Props {
   addTransaction?: (transaction: Objects.Transaction) => void;
@@ -63,6 +64,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
     category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
     amount: props.initialTransaction?.amount || '',
+    excludeFromReport: props.initialTransaction?.excludeFromReport || false,
     transactionDate:
       props.initialTransaction?.transactionDate?.toString().substr(0, 10) ||
       `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date()
@@ -246,6 +248,13 @@ const NewTransactionForm = (props: Props): JSX.Element => {
                   />
                 </div>
               </div>
+              <Checkbox
+                dark
+                checked={newTransactionForm.values.excludeFromReport}
+                name="excludeFromReport"
+                label="Exclude transaction from report"
+                onChange={newTransactionForm.onChange}
+              ></Checkbox>
             </form>
 
             {/* Error Box */}
