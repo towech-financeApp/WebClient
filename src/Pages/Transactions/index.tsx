@@ -104,14 +104,13 @@ const Transactions = (): JSX.Element => {
     if (selectedWallet_id === '-1' || selectedWallet_id === newTransaction.wallet_id) {
       // First, filters out the transaction
       let editedTransactions = transactions.filter((o) => o._id !== newTransaction._id);
-
       // Then adds it back if it is in the selected wallets and in the dataMonth
       if (
-        (selectedWallet_id === '-1' || selectedWallet_id === newTransaction.wallet_id) &&
+        (selectedWallet_id === '-1' || selectedWallet_id === newTransaction.wallet_id.toString()) &&
         dataMonth ===
-          `${newTransaction.transactionDate.toString().substring(0, 3)}${newTransaction.transactionDate
+          `${newTransaction.transactionDate.toString().substring(0, 4)}${newTransaction.transactionDate
             .toString()
-            .substring(5, 6)}`
+            .substring(5, 7)}`
       ) {
         editedTransactions = [...editedTransactions, newTransaction];
       }
@@ -140,7 +139,7 @@ const Transactions = (): JSX.Element => {
     let expenses = 0;
 
     transactions.map((transaction) => {
-      if (!transaction.excludeFromReport) {
+      if (!transaction.excludeFromReport && !(transaction.transfer_id && selectedWallet_id === '-1')) {
         if (transaction.category.type === 'Income') {
           earnings += transaction.amount;
         } else {
@@ -172,7 +171,11 @@ const Transactions = (): JSX.Element => {
   };
 
   // Updates the wallets amount given a Transaction
-  const updateWalletAmounts = (transaction: Objects.Transaction, reverse = false, newTransaction?: Objects.Transaction): void => {
+  const updateWalletAmounts = (
+    transaction: Objects.Transaction,
+    reverse = false,
+    newTransaction?: Objects.Transaction,
+  ): void => {
     const newWallets: Objects.Wallet[] = wallets;
     for (let i = 0; i < newWallets.length; i++) {
       if (newWallets[i]._id === transaction.wallet_id) {

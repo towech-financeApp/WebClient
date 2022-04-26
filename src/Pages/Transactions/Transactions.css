@@ -271,16 +271,10 @@
   flex: 2;
 }
 
-.TransactionCard__Content__Bottom__Date {
-  color: var(--gray3);
-  text-align: right;
-  flex: 1;
-}
-
 .NewTransactionForm__Content__Splitted {
   align-items: center;
   display: flex;
-  margin-top: -15px;
+  margin: 15px 5px;
 }
 
 .NewTransactionForm__Content__Date {
@@ -295,8 +289,8 @@
   display: flex;
   flex: 4;
   height: 30px;
-  margin-right: 3px;
-  padding: 10px;
+  margin: 10px 5px;
+  padding: 10px 20px;
 }
 
 .NewTransactionForm__WalletSelector.error {
@@ -323,6 +317,10 @@
   border-width: 13px 8px 0 8px;
   height: 0;
   width: 0;
+}
+
+.NewTransactionForm__WalletSelector__Modal {
+  margin-left: -23px;
 }
 
 .NewTransactionForm__WalletSelector__Container {
@@ -416,7 +414,7 @@
   background-color: var(--black);
   border-radius: 20px 20px 0 0;
   display: flex;
-  font-size: 26px;
+  font-size: 22px;
   height: 40px;
   justify-content: space-around;
 }

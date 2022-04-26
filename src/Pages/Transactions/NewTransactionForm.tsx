@@ -51,15 +51,12 @@ const NewTransactionForm = (props: Props): JSX.Element => {
   const [errors, setErrors] = useState({} as any);
   const [categories, setCategories] = useState({ Income: [] as Objects.Category[], Expense: [] as Objects.Category[] });
   const [deleteWarn, setDeleteWarn] = useState(false);
-  // Wallet Selector Hooks
-  const [selectWallet, setSelectWallet] = useState(null as Objects.Wallet | null);
-  const [walletSelector, setWalletSelector] = useState(false);
   // Category Selector Hooks
   const [categorySelector, setCategorySelector] = useState(false);
-  const [categoryType, setCategoryType] = useState(false);
+  const [categoryType, setCategoryType] = useState(1);
   const [selectCat, setSelectCat] = useState(null as Objects.Category | null);
 
-  const newTransactionForm = UseForm(newTransactionCallback, {
+  const transactionForm = UseForm(null, {
     wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
     category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
@@ -86,55 +83,59 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
         // Set selected wallet and category for edit
         if (props.initialTransaction) {
-          setSelectedWallet(props.initialTransaction.wallet_id);
           setSelectedCategory(props.initialTransaction.category._id);
         } else {
-          setSelectedWallet(props.selectedWallet || '-1');
           setSelectedCategory('-1');
         }
       });
     }
   }, [props.state]);
 
-  // Functions
-  function setSelectedWallet(id: string) {
-    newTransactionForm.values.wallet_id = id;
-    const p = props.wallets.find((wallet) => wallet._id === id);
-    setSelectWallet(p || null);
-    setWalletSelector(false);
-  }
-
   function setSelectedCategory(id: string) {
-    newTransactionForm.values.category_id = id;
     const allCats = [...categories.Expense, ...categories.Income];
-    const p = allCats.find((cat) => cat._id === id);
-    setSelectCat(p || null);
+    let selected: Objects.Category | undefined;
+
+    switch (id) {
+      case '-2':
+        selected = { _id: '-2', name: 'Transfer', type: 'Expense', user_id: '-1', parent_id: '-1' };
+        break;
+      default:
+        selected = allCats.find((cat) => cat._id === id);
+    }
+
+    transactionForm.values.category_id = id;
+    setSelectCat(selected || null);
     setCategorySelector(false);
   }
 
   async function newTransactionCallback() {
     try {
-      // If no wallet was entered, returns an error
-      if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
-        setErrors({ wallet_id: 'Select a wallet' });
-        return;
-      }
+      console.log(transactionForm.values);
+      // if (newTransactionForm.values.category_id === '-2') {
+      //   return console.log('Transfer');
+      // }
 
-      // If no category was entered, returns an error
-      if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
-        setErrors({ wallet_id: 'Select a category' });
-        return;
-      }
+      // // If no wallet was entered, returns an error
+      // if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
+      //   setErrors({ wallet_id: 'Select a wallet' });
+      //   return;
+      // }
 
-      // Sends the transaction to the API
-      const res = await transactionService.newTransaction(newTransactionForm.values);
+      // // If no category was entered, returns an error
+      // if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
+      //   setErrors({ wallet_id: 'Select a category' });
+      //   return;
+      // }
 
-      // Clears the form, adds the transaction to the list and closes the modal
-      newTransactionForm.clear();
+      // // Sends the transaction to the API
+      // const res = await transactionService.newTransaction(newTransactionForm.values);
 
-      if (props.addTransaction) props.addTransaction(res.data);
+      // // Clears the form, adds the transaction to the list and closes the modal
+      // newTransactionForm.clear();
 
-      props.setState(false);
+      // if (props.addTransaction) props.addTransaction(res.data);
+
+      // props.setState(false);
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console
@@ -143,21 +144,23 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
   async function editTransactionCallback() {
     try {
+      if (transactionForm.values.category_id === '-2') {
+        return;
+      }
+
       // If no wallet was entered, returns an error
-      if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
+      if (transactionForm.values.wallet_id === '' || transactionForm.values.wallet_id === '-1') {
         setErrors({ wallet_id: 'Select a wallet' });
         return;
       }
 
       // Sends the transaction to the API
-      const res = await transactionService.editTransaction(
-        props.initialTransaction?._id || '',
-        newTransactionForm.values,
-      );
+      const res = await transactionService.editTransaction(props.initialTransaction?._id || '', transactionForm.values);
 
       props.setState(false);
 
-      if (props.editTransaction) props.editTransaction(res.data, props.initialTransaction || {} as Objects.Transaction);
+      if (props.editTransaction)
+        props.editTransaction(res.data, props.initialTransaction || ({} as Objects.Transaction));
     } catch (err: any) {
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
@@ -194,7 +197,7 @@ const NewTransactionForm = (props: Props): JSX.Element => {
           props.initialTransaction ? editTransactionCallback() : newTransactionCallback();
         }}
         onClose={() => {
-          newTransactionForm.clear();
+          transactionForm.clear();
           setErrors([]);
         }}
       >
@@ -202,60 +205,64 @@ const NewTransactionForm = (props: Props): JSX.Element => {
           {/* Main Transaction data */}
           <div className="NewTransactionForm__Content">
             {/* Form */}
-            <form onSubmit={newTransactionForm.onSubmit}>
-              <Input
-                error={errors.amount ? true : false}
-                label="Amount"
-                name="amount"
-                type="number"
-                value={newTransactionForm.values.amount}
-                onChange={newTransactionForm.onChange}
-              />
-              <div className="NewTransactionForm__CategorySelector" onClick={() => setCategorySelector(true)}>
-                <div className="NewTransactionForm__CategorySelector__Icon" />
-                <div className="NewTransactionForm__CategorySelector__Name">{selectCat?.name || 'Select Category'}</div>
-                <div className="NewTransactionForm__CategorySelector__Triangle" />
-              </div>
-              <Input
-                error={errors.name ? true : false}
-                label="Concept"
-                name="concept"
-                type="text"
-                value={newTransactionForm.values.concept}
-                onChange={newTransactionForm.onChange}
-              />
-              <div className="NewTransactionForm__Content__Splitted">
-                <div
-                  className={
-                    errors.category ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'
-                  }
-                  onClick={() => setWalletSelector(true)}
-                >
-                  <div className="NewTransactionForm__WalletSelector__Icon" />
-                  <div className="NewTransactionForm__WalletSelector__Name">
-                    {selectWallet?.name || 'Select Wallet'}
-                  </div>
-                  <div className="NewTransactionForm__WalletSelector__Triangle" />
-                </div>
-                <div className="NewTransactionForm__Content__Date">
-                  <Input
-                    error={errors.transactionDate ? true : false}
-                    label="Date"
-                    name="transactionDate"
-                    type="text"
-                    value={newTransactionForm.values.transactionDate}
-                    onChange={newTransactionForm.onChange}
-                  />
-                </div>
-              </div>
-              <Checkbox
-                dark
-                checked={newTransactionForm.values.excludeFromReport}
-                name="excludeFromReport"
-                label="Exclude transaction from report"
-                onChange={newTransactionForm.onChange}
-              ></Checkbox>
-            </form>
+            <Input
+              error={errors.amount ? true : false}
+              label="Amount"
+              name="amount"
+              type="number"
+              value={transactionForm.values.amount}
+              onChange={transactionForm.onChange}
+            />
+            {/* Category selector */}
+            <div
+              className={
+                props.initialTransaction?.transfer_id
+                  ? 'NewTransactionForm__CategorySelector loading'
+                  : 'NewTransactionForm__CategorySelector'
+              }
+              onClick={() => setCategorySelector(true)}
+            >
+              <div className="NewTransactionForm__CategorySelector__Icon" />
+              <div className="NewTransactionForm__CategorySelector__Name">{selectCat?.name || 'Select Category'}</div>
+              <div className="NewTransactionForm__CategorySelector__Triangle" />
+            </div>
+
+            {/* Regular and from wallet selector */}
+            <WalletSelector
+              wallets={props.wallets}
+              onChange={transactionForm.onChange}
+              name="wallet_id"
+              value={transactionForm.values.wallet_id}
+              visible={props.state}
+            ></WalletSelector>
+
+            {/* Concept field */}
+            <Input
+              error={errors.name ? true : false}
+              label="Concept"
+              name="concept"
+              type="text"
+              value={transactionForm.values.concept}
+              onChange={transactionForm.onChange}
+            />
+
+            {/* Date field */}
+            <Input
+              error={errors.transactionDate ? true : false}
+              label="Date"
+              name="transactionDate"
+              type="text"
+              value={transactionForm.values.transactionDate}
+              onChange={transactionForm.onChange}
+            />
+            {/* Exclude from report checkbox */}
+            <Checkbox
+              dark
+              checked={transactionForm.values.excludeFromReport}
+              name="excludeFromReport"
+              label="Exclude transaction from report"
+              onChange={transactionForm.onChange}
+            ></Checkbox>
 
             {/* Error Box */}
             <Errorbox errors={errors} setErrors={setErrors} />
@@ -277,57 +284,57 @@ const NewTransactionForm = (props: Props): JSX.Element => {
         </div>
       </Modal>
 
-      {/* Wallet selector modal */}
-      <Modal showModal={walletSelector} setModal={setWalletSelector} title="Select Wallet">
-        <div className="NewTransactionForm__WalletSelector__Container">
-          {props.wallets.map((wallet: Objects.Wallet) => (
-            <div
-              className="NewTransactionForm__WalletSelector__Wallet"
-              key={wallet._id}
-              onClick={() => setSelectedWallet(wallet._id)}
-            >
-              <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
-                <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Modal>
-
       {/* Category selector modal */}
       <Modal setModal={setCategorySelector} showModal={categorySelector}>
         <>
           <div className="NewTransactionForm__CategorySelector__Container">
-            <div className={categoryType ? 'selected' : ''} onClick={() => setCategoryType(true)}>
+            {!props.initialTransaction && (
+              <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
+                Other
+              </div>
+            )}
+            <div className={categoryType === 1 ? 'selected' : ''} onClick={() => setCategoryType(1)}>
               Income
             </div>
-            <div className={!categoryType ? 'selected' : ''} onClick={() => setCategoryType(false)}>
+            <div className={categoryType === 2 ? 'selected' : ''} onClick={() => setCategoryType(2)}>
               Expense
             </div>
           </div>
           <div className="NewTransactionForm__CategorySelector__ListContainer">
-            {categoryType
-              ? categories.Income.map((cat: Objects.Category) => (
-                  <div
-                    className="NewTransactionForm__CategorySelector__Category"
-                    key={cat._id}
-                    onClick={() => setSelectedCategory(cat._id)}
-                  >
-                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                  </div>
-                ))
-              : categories.Expense.map((cat: Objects.Category) => (
-                  <div
-                    className="NewTransactionForm__CategorySelector__Category"
-                    key={cat._id}
-                    onClick={() => setSelectedCategory(cat._id)}
-                  >
-                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                  </div>
-                ))}
+            {categoryType === 0 ? (
+              <>
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key="-2"
+                  onClick={() => setSelectedCategory('-2')}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
+                </div>
+              </>
+            ) : categoryType === 1 ? (
+              categories.Income.map((cat: Objects.Category) => (
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key={cat._id}
+                  onClick={() => setSelectedCategory(cat._id)}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                </div>
+              ))
+            ) : (
+              categories.Expense.map((cat: Objects.Category) => (
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key={cat._id}
+                  onClick={() => setSelectedCategory(cat._id)}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                </div>
+              ))
+            )}
           </div>
         </>
       </Modal>
@@ -340,6 +347,78 @@ const NewTransactionForm = (props: Props): JSX.Element => {
           </>
         </Modal>
       )}
+    </>
+  );
+};
+
+interface WalletSelectorProps {
+  error?: boolean;
+  wallets: Objects.Wallet[];
+  value?: string;
+  onChange?: any;
+  name?: string;
+  visible: boolean;
+}
+
+const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
+  // Hooks
+  const [showModal, setShowModal] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState(null as Objects.Wallet | null);
+
+  // Start useEffect only updates the when the form is visible
+  useEffect(() => {
+    if (props.visible) {
+      searchAndSetView(props.value || '-1');
+    }
+  }, [props.visible]);
+
+  // Functions
+  const searchAndSetView = (id: string): void => {
+    const p = props.wallets.find((wallet) => wallet._id === id);
+    setSelectedWallet(p || null);
+  };
+
+  const setWalletCallback = (id: string): void => {
+    searchAndSetView(id);
+    props.onChange({
+      target: {
+        type: 'custom-select',
+        name: props.name,
+        value: id,
+      },
+    });
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <div
+        className={props.error ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'}
+        onClick={() => setShowModal(true)}
+      >
+        <div className="NewTransactionForm__WalletSelector__Icon" />
+        <div className="NewTransactionForm__WalletSelector__Name">{selectedWallet?.name || 'Select Wallet'}</div>
+        <div className="NewTransactionForm__WalletSelector__Triangle" />
+      </div>
+
+      <div className="NewTransactionForm__WalletSelector__Modal">
+        <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
+          <div className="NewTransactionForm__WalletSelector__Container">
+            {props.wallets.map((wallet: Objects.Wallet) => (
+              <div
+                className="NewTransactionForm__WalletSelector__Wallet"
+                key={wallet._id}
+                onClick={() => setWalletCallback(wallet._id)}
+              >
+                <div className="NewTransactionForm__WalletSelector__Wallet__Container">
+                  <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
+                  <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      </div>
     </>
   );
 };

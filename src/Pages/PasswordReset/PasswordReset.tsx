@@ -87,7 +87,9 @@ export default class PasswordReset {
                 value={sendTokenForm.values.username}
                 onChange={sendTokenForm.onChange}
               />
-              <Button type="submit" accent>Submit</Button>
+              <Button type="submit" accent>
+                Submit
+              </Button>
             </form>
           </div>
         )}
@@ -189,7 +191,9 @@ export default class PasswordReset {
                   value={setResetPasswordForm.values.confirmPassword}
                   onChange={setResetPasswordForm.onChange}
                 />
-                <Button type="submit" accent>Submit</Button>
+                <Button type="submit" accent>
+                  Submit
+                </Button>
               </form>
             </div>
           </div>
