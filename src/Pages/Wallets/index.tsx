@@ -36,22 +36,17 @@ const Wallets = (): JSX.Element => {
 
   // Main API call
   useEffect(() => {
-    const firstLoad = async () => {
-      if (!loaded) {
-        transactionService
-          .getWallets()
-          .then((res) => {
-            dispatchWallets({ type: 'SET', payload: { wallets: res.data } });
-            setLoaded(true);
-          })
-          .catch(() => {
-            // console.log(err.response);
-            setLoaded(true);
-          });
-      }
-    };
-    firstLoad();
-  });
+    transactionService
+      .getWallets()
+      .then((res) => {
+        dispatchWallets({ type: 'SET', payload: { wallets: res.data } });
+        setLoaded(true);
+      })
+      .catch(() => {
+        // console.log(err.response);
+        setLoaded(true);
+      });
+  }, []);
 
   const header = (
     <div className="Wallets__Header">
