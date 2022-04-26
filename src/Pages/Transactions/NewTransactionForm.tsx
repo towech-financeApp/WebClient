@@ -21,7 +21,6 @@ import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
-import CategoryService from '../../Services/CategoryService';
 
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
@@ -45,16 +44,10 @@ const NewTransactionForm = (props: Props): JSX.Element => {
 
   // Starts the servicees
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
-  const categoryService = new CategoryService(authToken, dispatchAuthToken);
 
   // Hooks
   const [errors, setErrors] = useState({} as any);
-  const [categories, setCategories] = useState({ Income: [] as Objects.Category[], Expense: [] as Objects.Category[] });
   const [deleteWarn, setDeleteWarn] = useState(false);
-  // Category Selector Hooks
-  const [categorySelector, setCategorySelector] = useState(false);
-  const [categoryType, setCategoryType] = useState(1);
-  const [selectCat, setSelectCat] = useState(null as Objects.Category | null);
 
   const transactionForm = UseForm(null, {
     wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
@@ -69,44 +62,6 @@ const NewTransactionForm = (props: Props): JSX.Element => {
         .toString()
         .padStart(2, '0')}`,
   });
-
-  // Calls the service for the categories
-  // TODO: Needs to be optimized with a cache
-  useEffect(() => {
-    if (props.state == true) {
-      // Fetches the categories
-      categoryService.getCategories().then((res) => {
-        setCategories({
-          Income: res.data.Income,
-          Expense: res.data.Expense,
-        });
-
-        // Set selected wallet and category for edit
-        if (props.initialTransaction) {
-          setSelectedCategory(props.initialTransaction.category._id);
-        } else {
-          setSelectedCategory('-1');
-        }
-      });
-    }
-  }, [props.state]);
-
-  function setSelectedCategory(id: string) {
-    const allCats = [...categories.Expense, ...categories.Income];
-    let selected: Objects.Category | undefined;
-
-    switch (id) {
-      case '-2':
-        selected = { _id: '-2', name: 'Transfer', type: 'Expense', user_id: '-1', parent_id: '-1' };
-        break;
-      default:
-        selected = allCats.find((cat) => cat._id === id);
-    }
-
-    transactionForm.values.category_id = id;
-    setSelectCat(selected || null);
-    setCategorySelector(false);
-  }
 
   async function newTransactionCallback() {
     try {
@@ -214,18 +169,15 @@ const NewTransactionForm = (props: Props): JSX.Element => {
               onChange={transactionForm.onChange}
             />
             {/* Category selector */}
-            <div
-              className={
-                props.initialTransaction?.transfer_id
-                  ? 'NewTransactionForm__CategorySelector loading'
-                  : 'NewTransactionForm__CategorySelector'
-              }
-              onClick={() => setCategorySelector(true)}
-            >
-              <div className="NewTransactionForm__CategorySelector__Icon" />
-              <div className="NewTransactionForm__CategorySelector__Name">{selectCat?.name || 'Select Category'}</div>
-              <div className="NewTransactionForm__CategorySelector__Triangle" />
-            </div>
+            <CategorySelector
+              edit={props.initialTransaction ? true : false}
+              error={errors.category_id ? true : false}
+              name="category_id"
+              onChange={transactionForm.onChange}
+              transfer={props.initialTransaction?.transfer_id ? true : false}
+              value={transactionForm.values.category_id}
+              visible={props.state}
+            ></CategorySelector>
 
             {/* Regular and from wallet selector */}
             <WalletSelector
@@ -284,61 +236,6 @@ const NewTransactionForm = (props: Props): JSX.Element => {
         </div>
       </Modal>
 
-      {/* Category selector modal */}
-      <Modal setModal={setCategorySelector} showModal={categorySelector}>
-        <>
-          <div className="NewTransactionForm__CategorySelector__Container">
-            {!props.initialTransaction && (
-              <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
-                Other
-              </div>
-            )}
-            <div className={categoryType === 1 ? 'selected' : ''} onClick={() => setCategoryType(1)}>
-              Income
-            </div>
-            <div className={categoryType === 2 ? 'selected' : ''} onClick={() => setCategoryType(2)}>
-              Expense
-            </div>
-          </div>
-          <div className="NewTransactionForm__CategorySelector__ListContainer">
-            {categoryType === 0 ? (
-              <>
-                <div
-                  className="NewTransactionForm__CategorySelector__Category"
-                  key="-2"
-                  onClick={() => setSelectedCategory('-2')}
-                >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
-                </div>
-              </>
-            ) : categoryType === 1 ? (
-              categories.Income.map((cat: Objects.Category) => (
-                <div
-                  className="NewTransactionForm__CategorySelector__Category"
-                  key={cat._id}
-                  onClick={() => setSelectedCategory(cat._id)}
-                >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                </div>
-              ))
-            ) : (
-              categories.Expense.map((cat: Objects.Category) => (
-                <div
-                  className="NewTransactionForm__CategorySelector__Category"
-                  key={cat._id}
-                  onClick={() => setSelectedCategory(cat._id)}
-                >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                </div>
-              ))
-            )}
-          </div>
-        </>
-      </Modal>
-
       {props.initialTransaction && (
         <Modal float setModal={setDeleteWarn} showModal={deleteWarn} accept="Delete" onAccept={deleteTransaction}>
           <>
@@ -367,7 +264,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
 
   // Start useEffect only updates the when the form is visible
   useEffect(() => {
-    if (props.visible) {
+    if (props.visible && props.value !== (selectedWallet?._id || '-1')) {
       searchAndSetView(props.value || '-1');
     }
   }, [props.visible]);
@@ -417,6 +314,130 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
               </div>
             ))}
           </div>
+        </Modal>
+      </div>
+    </>
+  );
+};
+
+interface CategorySelectorProps {
+  error?: boolean;
+  value?: string;
+  onChange?: any;
+  name?: string;
+  visible: boolean;
+  edit?: boolean;
+  transfer?: boolean;
+}
+
+const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
+  const { categories } = useContext(AuthenticationTokenStore);
+  const [categoryType, setCategoryType] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null as Objects.Category | null);
+
+  // Start useEffect only updates the when the form is visible
+  useEffect(() => {
+    if (props.visible && props.value !== (selectedCategory?._id || '-1')) {
+      // TODO: When categories are editable, fetch to check if there are new ones
+      searchAndSetView(props.value || '-1');
+    }
+  }, [props.visible]);
+
+  // Functions
+  const searchAndSetView = (id: string): void => {
+    const allCats = [...categories.Expense, ...categories.Income];
+    let selected: Objects.Category | undefined;
+
+    switch (id) {
+      case '-2':
+        selected = { _id: '-2', name: 'Transfer', type: 'Expense', user_id: '-1', parent_id: '-1' };
+        break;
+      default:
+        selected = allCats.find((cat) => cat._id === id);
+    }
+
+    setSelectedCategory(selected || null);
+  };
+
+  const setCategoryCallback = (id: string): void => {
+    searchAndSetView(id);
+    props.onChange({
+      target: {
+        type: 'custom-select',
+        name: props.name,
+        value: id,
+      },
+    });
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <div
+        className={
+          props.transfer ? 'NewTransactionForm__CategorySelector loading' : 'NewTransactionForm__CategorySelector'
+        }
+        onClick={() => setShowModal(true)}
+      >
+        <div className="NewTransactionForm__CategorySelector__Icon" />
+        <div className="NewTransactionForm__CategorySelector__Name">{selectedCategory?.name || 'Select Category'}</div>
+        <div className="NewTransactionForm__CategorySelector__Triangle" />
+      </div>
+
+      <div className="NewTransactionForm__WalletSelector__Modal">
+        <Modal setModal={setShowModal} showModal={showModal}>
+          <>
+            <div className="NewTransactionForm__CategorySelector__Container">
+              {!props.edit && (
+                <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
+                  Other
+                </div>
+              )}
+              <div className={categoryType === 1 ? 'selected' : ''} onClick={() => setCategoryType(1)}>
+                Income
+              </div>
+              <div className={categoryType === 2 ? 'selected' : ''} onClick={() => setCategoryType(2)}>
+                Expense
+              </div>
+            </div>
+            <div className="NewTransactionForm__CategorySelector__ListContainer">
+              {categoryType === 0 ? (
+                <>
+                  <div
+                    className="NewTransactionForm__CategorySelector__Category"
+                    key="-2"
+                    onClick={() => setCategoryCallback('-2')}
+                  >
+                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                    <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
+                  </div>
+                </>
+              ) : categoryType === 1 ? (
+                categories.Income.map((cat: Objects.Category) => (
+                  <div
+                    className="NewTransactionForm__CategorySelector__Category"
+                    key={cat._id}
+                    onClick={() => setCategoryCallback(cat._id)}
+                  >
+                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  </div>
+                ))
+              ) : (
+                categories.Expense.map((cat: Objects.Category) => (
+                  <div
+                    className="NewTransactionForm__CategorySelector__Category"
+                    key={cat._id}
+                    onClick={() => setCategoryCallback(cat._id)}
+                  >
+                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
         </Modal>
       </div>
     </>

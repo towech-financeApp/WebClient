@@ -26,9 +26,11 @@ import useToken from './Hooks/UseToken';
 
 // Services
 import AuthenticationService from './Services/AuthenticationService';
+import CategoryService from './Services/CategoryService';
 
 // Utils
 import AuthRoute from './Utils/AuthRoute';
+import useCategories from './Hooks/UseCategories';
 
 function App(): JSX.Element {
   // Declares the service
@@ -36,21 +38,31 @@ function App(): JSX.Element {
 
   // Hooks
   const [authToken, dispatchAuthToken] = useToken('authToken');
+  const [categories, dispatchCategories] = useCategories();
   const [loaded, setLoaded] = useState(false);
 
   // use Effect for first load
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded) {
-        setLoaded(true);
         authService
           .refreshToken()
           .then((res) => {
             dispatchAuthToken({ type: 'LOGIN', payload: res.data });
+
+            const categoryService = new CategoryService(authToken, dispatchAuthToken);
+            categoryService.getCategories().then((catRes) => {
+              dispatchCategories({
+                type: 'UPDATE',
+                payload: catRes.data,
+              });
+            });
+
+            setLoaded(true);
           })
           .catch(() => {
-            //console.log(err.response);
             dispatchAuthToken({ type: 'LOGOUT', payload: { token: '', keepSession: false } });
+            setLoaded(true);
           });
       }
     };
@@ -59,7 +71,7 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
-      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
+      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken, categories, dispatchCategories }}>
         <Router>
           <Routes>
             <Route
