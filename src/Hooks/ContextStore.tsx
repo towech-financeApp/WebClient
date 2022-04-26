@@ -7,16 +7,27 @@
 import React, { createContext } from 'react';
 import { TokenAction, TokenState } from './UseToken';
 import { CategoryAction, CategoryState } from './UseCategories';
+import { WalletAction } from './UseWallets';
+import { Objects } from '../models';
 
 // Context that holds the Refresh token for the API Calls
 export const RefreshTokenStore = createContext(null);
 
 // Context that holds the Authentication Token in order to make API Calls
 export const AuthenticationTokenStore = createContext({
+  // Token
   authToken: {} as TokenState,
   dispatchAuthToken: (() => {
     /*empty*/
   }) as React.Dispatch<TokenAction>,
+
+  // Wallets
+  wallets: [] as Objects.Wallet[],
+  dispatchWallets: (() => {
+    /*empty*/
+  }) as React.Dispatch<WalletAction>,
+
+  // Categories
   categories: {} as CategoryState,
   dispatchCategories: (() => {
     /*empty*/

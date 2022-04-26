@@ -23,6 +23,8 @@ import NotFound from './Components/NotFound';
 // Hooks
 import { AuthenticationTokenStore } from './Hooks/ContextStore';
 import useToken from './Hooks/UseToken';
+import useCategories from './Hooks/UseCategories';
+import useWallets from './Hooks/UseWallets';
 
 // Services
 import AuthenticationService from './Services/AuthenticationService';
@@ -30,7 +32,6 @@ import CategoryService from './Services/CategoryService';
 
 // Utils
 import AuthRoute from './Utils/AuthRoute';
-import useCategories from './Hooks/UseCategories';
 
 function App(): JSX.Element {
   // Declares the service
@@ -39,6 +40,7 @@ function App(): JSX.Element {
   // Hooks
   const [authToken, dispatchAuthToken] = useToken('authToken');
   const [categories, dispatchCategories] = useCategories();
+  const [wallets, dispatchWallets] = useWallets();
   const [loaded, setLoaded] = useState(false);
 
   // use Effect for first load
@@ -71,7 +73,9 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
-      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken, categories, dispatchCategories }}>
+      <AuthenticationTokenStore.Provider
+        value={{ authToken, dispatchAuthToken, categories, dispatchCategories, wallets, dispatchWallets }}
+      >
         <Router>
           <Routes>
             <Route

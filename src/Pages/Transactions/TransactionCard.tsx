@@ -13,7 +13,7 @@ import { useState } from 'react';
 // Components
 // import Button from '../../Components/Button';
 // import Modal from '../../Components/Modal';
-import NewTransactionForm from './NewTransactionForm';
+import NewTransactionForm from './TransactionForm';
 
 // Models
 import { Objects } from '../../models';

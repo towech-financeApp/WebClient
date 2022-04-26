@@ -10,17 +10,6 @@ import React, { useReducer } from 'react';
 // Models
 import { Objects } from '../models';
 
-/** useCategories
- * Reducer that stores the user categories
- *
- * @param {TokenState} token state of the user token
- * @param {React.Dispatch<TokenAction>} tokenDispatch dispatch of the user token
- *
- * @returns {Objects.Category[]} categories
- * @returns {React.Dispatch<categoryAction>} The function to dispatch actions
- *
- */
-
 export interface CategoryState {
   Income: Objects.Category[];
   Expense: Objects.Category[];
@@ -34,6 +23,15 @@ export interface CategoryAction {
   };
 }
 
+/** useCategories
+ * Reducer that stores the user categories
+ *
+ * @param {CategoryState} initial initial state of the categories
+ *
+ * @returns {CategoryState} categories
+ * @returns {React.Dispatch<categoryAction>} The function to dispatch actions
+ *
+ */
 const useCategories = (initial?: CategoryState): [CategoryState, React.Dispatch<CategoryAction>] => {
   // The initial state is an empty array
   const initialState: CategoryState = initial || { Income: [], Expense: [] };

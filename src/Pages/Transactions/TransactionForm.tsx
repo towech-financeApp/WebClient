@@ -38,7 +38,7 @@ interface Props {
   initialTransaction?: Objects.Transaction;
 }
 
-const NewTransactionForm = (props: Props): JSX.Element => {
+const TransactionForm = (props: Props): JSX.Element => {
   // Authentication Token Context
   const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
 
@@ -444,4 +444,4 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   );
 };
 
-export default NewTransactionForm;
+export default TransactionForm;

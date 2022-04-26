@@ -1,4 +1,4 @@
-/** NewWalletForm.tsx
+/** WalletForm.tsx
  * Copyright (c) 2021, Jose Tow
  * All rights reserved
  *
@@ -30,17 +30,14 @@ import './Wallets.css';
 import Button from '../../Components/Button';
 
 interface Props {
-  addWallet?: (wallet: Objects.Wallet) => void;
-  editWallet?: (wallet: Objects.Wallet) => void;
-  deleteWallet?: (wallet: Objects.Wallet) => void;
   set: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
   initialWallet?: Objects.Wallet;
 }
 
-const NewWalletForm = (props: Props): JSX.Element => {
+const WalletForm = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken, dispatchWallets } = useContext(AuthenticationTokenStore);
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
@@ -51,7 +48,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
   const [deleteWarn, setDeleteWarn] = useState(false);
 
   // Creates the new walletForm
-  const newWalletForm = UseForm(newWalletCallback, {
+  const walletForm = UseForm(null, {
     name: props.initialWallet?.name || '',
     money: props.initialWallet?.money?.toString() || '0',
     currency: props.initialWallet?.currency || 'MXN',
@@ -61,11 +58,11 @@ const NewWalletForm = (props: Props): JSX.Element => {
   async function newWalletCallback() {
     try {
       // Sends the wallet to the API
-      const res = await transactionService.newWallet(newWalletForm.values, setLoading);
+      const res = await transactionService.newWallet(walletForm.values, setLoading);
 
       // Clears the form, sets wallets and closes the modal
-      newWalletForm.clear();
-      if (props.addWallet) props.addWallet(res.data);
+      walletForm.clear();
+      dispatchWallets({ type: 'ADD', payload: { wallets: [res.data] } });
       props.set(false);
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
@@ -80,14 +77,14 @@ const NewWalletForm = (props: Props): JSX.Element => {
           response: `Somehow you managed to edit a wallet without an initial wallet, stop messing with the app pls`,
         };
 
-      const editedWallet = newWalletForm.values as Objects.Wallet;
+      const editedWallet = walletForm.values as Objects.Wallet;
       editedWallet._id = props.initialWallet._id;
 
       // Sends the wallet to the API
       const res = await transactionService.editWallet(editedWallet, setLoading);
 
       // Sets the wallet and closes the modal
-      if (props.editWallet) props.editWallet(res.data);
+      dispatchWallets({ type: 'EDIT', payload: { wallets: [res.data] } });
       props.set(false);
     } catch (err: any) {
       // If there is a 304 status, then the modal is closed
@@ -106,7 +103,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
 
       await transactionService.deleteWallet(props.initialWallet._id, setLoading);
 
-      if (props.deleteWallet) props.deleteWallet(props.initialWallet);
+      dispatchWallets({ type: 'DELETE', payload: { wallets: [props.initialWallet] } });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -126,7 +123,7 @@ const NewWalletForm = (props: Props): JSX.Element => {
           props.initialWallet ? editWalletCallback() : newWalletCallback();
         }}
         onClose={() => {
-          newWalletForm.clear();
+          walletForm.clear();
           setErrors([]);
         }}
       >
@@ -134,42 +131,41 @@ const NewWalletForm = (props: Props): JSX.Element => {
           {/* Main Wallet data */}
           <div className="NewWalletForm__MainWallet">
             {/* Form */}
-            <form onSubmit={newWalletForm.onSubmit}>
-              <div className="NewWalletForm__MainWallet__FirstRow">
-                <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
+            <div className="NewWalletForm__MainWallet__FirstRow">
+              <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
+              <Input
+                error={errors.name ? true : false}
+                label="Name"
+                name="name"
+                type="text"
+                value={walletForm.values.name}
+                onChange={walletForm.onChange}
+              />
+            </div>
+            <div className="NewWalletForm__MainWallet__SecondRow">
+              <div className="NewWalletForm__MainWallet__SecondRow__Money">
                 <Input
-                  error={errors.name ? true : false}
-                  label="Name"
-                  name="name"
-                  type="text"
-                  value={newWalletForm.values.name}
-                  onChange={newWalletForm.onChange}
+                  error={errors.amount ? true : false}
+                  name="money"
+                  type="number"
+                  label="Money"
+                  disabled={props.initialWallet ? true : false}
+                  value={walletForm.values.money}
+                  onChange={walletForm.onChange}
                 />
               </div>
-              <div className="NewWalletForm__MainWallet__SecondRow">
-                <div className="NewWalletForm__MainWallet__SecondRow__Money">
-                  <Input
-                    error={errors.amount ? true : false}
-                    name="money"
-                    type="number"
-                    label="Money"
-                    disabled={props.initialWallet ? true : false}
-                    value={newWalletForm.values.money}
-                    onChange={newWalletForm.onChange}
-                  />
-                </div>
-                <div className="NewWalletForm__MainWallet__SecondRow__Currency">
-                  <Input
-                    error={errors.currency ? true : false}
-                    name="currency"
-                    type="text"
-                    label="Currency"
-                    value={newWalletForm.values.currency}
-                    onChange={newWalletForm.onChange}
-                  />
-                </div>
+              <div className="NewWalletForm__MainWallet__SecondRow__Currency">
+                <Input
+                  error={errors.currency ? true : false}
+                  name="currency"
+                  type="text"
+                  label="Currency"
+                  value={walletForm.values.currency}
+                  onChange={walletForm.onChange}
+                />
               </div>
-            </form>
+            </div>
+
             {/* Error Box */}
             <Errorbox errors={errors} setErrors={setErrors}></Errorbox>
           </div>
@@ -201,4 +197,4 @@ const NewWalletForm = (props: Props): JSX.Element => {
   );
 };
 
-export default NewWalletForm;
+export default WalletForm;

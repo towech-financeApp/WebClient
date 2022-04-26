@@ -21,7 +21,7 @@ import DataMonthSelector from './DataMonthSelector';
 import RedirectToWallets from './RedirectToWallets';
 import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
-import NewTransactionForm from './NewTransactionForm';
+import TransactionForm from './TransactionForm';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -248,7 +248,7 @@ const Transactions = (): JSX.Element => {
               <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
                 <FaIcons.FaPlus />
               </Button>
-              <NewTransactionForm
+              <TransactionForm
                 state={addModal}
                 setState={setAddModal}
                 addTransaction={addTransaction}
