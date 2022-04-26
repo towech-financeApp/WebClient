@@ -13,7 +13,7 @@ import Input from '../../Components/Input';
 
 // hooks
 import UseForm from '../../Hooks/UseForm';
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 
 // Services
 import UserService from '../../Services/UserService';
@@ -33,7 +33,7 @@ export default class PasswordReset {
     // Hooks
     const [errors, setErrors] = useState({} as any);
     const [formSent, setFormSent] = useState(false);
-    const { authToken } = useContext(AuthenticationTokenStore);
+    const { authToken } = useContext(MainStore);
 
     // This page is only meant to be used when the user is not authenticated
     useEffect(() => {
@@ -108,7 +108,7 @@ export default class PasswordReset {
     // Hooks
     const [pageState, setPageState] = useState({ invalidToken: false, succesfulReset: false });
     const [errors, setErrors] = useState({} as any);
-    const { authToken } = useContext(AuthenticationTokenStore);
+    const { authToken } = useContext(MainStore);
 
     // This page is only meant to be used when the user is not authenticated
     useEffect(() => {

@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Modal from '../../../Components/Modal';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../../Hooks/ContextStore';
+import { MainStore } from '../../../Hooks/ContextStore';
 
 // Services
 import UserService from '../../../Services/UserService';
@@ -22,7 +22,7 @@ interface Props {
 
 const ResendVerification = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(MainStore);
 
   // Starts the services
   const userService = new UserService(authToken, dispatchAuthToken);

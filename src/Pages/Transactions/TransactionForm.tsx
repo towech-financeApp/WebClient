@@ -8,12 +8,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Components
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 import Button from '../../Components/Button';
 import Input from '../../Components/Input';
 import Modal from '../../Components/Modal';
 
 // Hooks
+import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
 import UseForm from '../../Hooks/UseForm';
 
 // Models
@@ -28,18 +28,15 @@ import Errorbox from '../../Components/ErrorBox';
 import Checkbox from '../../Components/Checkbox';
 
 interface Props {
-  addTransaction?: (transaction: Objects.Transaction) => void;
-  editTransaction?: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
-  deleteTransaction?: (transaction: Objects.Transaction) => void;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
-  selectedWallet: string | null;
   initialTransaction?: Objects.Transaction;
 }
 
 const TransactionForm = (props: Props): JSX.Element => {
   // Authentication Token Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(MainStore);
+  const { transactionState, dispatchTransactionState } = useContext(TransactionPageStore);
 
   // Starts the servicees
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
@@ -49,7 +46,7 @@ const TransactionForm = (props: Props): JSX.Element => {
   const [deleteWarn, setDeleteWarn] = useState(false);
 
   const transactionForm = UseForm(null, {
-    wallet_id: props.initialTransaction?.wallet_id || props.selectedWallet || '',
+    wallet_id: props.initialTransaction?.wallet_id || transactionState.selectedWallet || '',
     category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
     amount: props.initialTransaction?.amount || '',
@@ -64,32 +61,33 @@ const TransactionForm = (props: Props): JSX.Element => {
 
   async function newTransactionCallback() {
     try {
-      console.log(transactionForm.values);
-      // if (newTransactionForm.values.category_id === '-2') {
-      //   return console.log('Transfer');
-      // }
+      // console.log(transactionForm.values);
+      if (transactionForm.values.category_id === '-2') {
+        return console.log('Transfer');
+      }
 
-      // // If no wallet was entered, returns an error
-      // if (newTransactionForm.values.wallet_id === '' || newTransactionForm.values.wallet_id === '-1') {
-      //   setErrors({ wallet_id: 'Select a wallet' });
-      //   return;
-      // }
+      // If no wallet was entered, returns an error
+      if (transactionForm.values.wallet_id === '' || transactionForm.values.wallet_id === '-1') {
+        setErrors({ wallet_id: 'Select a wallet' });
+        return;
+      }
 
-      // // If no category was entered, returns an error
-      // if (newTransactionForm.values.category_id === '' || newTransactionForm.values.category_id === '-1') {
-      //   setErrors({ wallet_id: 'Select a category' });
-      //   return;
-      // }
+      // If no category was entered, returns an error
+      if (transactionForm.values.category_id === '' || transactionForm.values.category_id === '-1') {
+        setErrors({ wallet_id: 'Select a category' });
+        return;
+      }
 
-      // // Sends the transaction to the API
-      // const res = await transactionService.newTransaction(newTransactionForm.values);
+      // Sends the transaction to the API
+      const res = await transactionService.newTransaction(transactionForm.values);
 
-      // // Clears the form, adds the transaction to the list and closes the modal
-      // newTransactionForm.clear();
+      // Clears the form, adds the transaction to the list and closes the modal
+      transactionForm.clear();
 
-      // if (props.addTransaction) props.addTransaction(res.data);
+      dispatchTransactionState({ type: 'ADD', payload: [res.data] });
+      // TODO: updateWalletAmounts(transaction);
 
-      // props.setState(false);
+      props.setState(false);
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console
@@ -113,14 +111,17 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
 
-      if (props.editTransaction)
-        props.editTransaction(res.data, props.initialTransaction || ({} as Objects.Transaction));
+      dispatchTransactionState({ type: 'EDIT', payload: [res.data] });
+      // TODO updateWalletAmounts(oldTransaction, true, newTransaction);
+
+      // if (props.editTransaction)
+      //   props.editTransaction(res.data, props.initialTransaction || ({} as Objects.Transaction));
     } catch (err: any) {
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err.response); //eslint-disable-line no-console
     }
-  }
+  }  
 
   async function deleteTransaction() {
     try {
@@ -131,7 +132,8 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       await transactionService.deleteTransaction(props.initialTransaction._id);
 
-      if (props.deleteTransaction) props.deleteTransaction(props.initialTransaction);
+      dispatchTransactionState({ type: 'DELETE', payload: [props.initialTransaction] });
+      // TODO: updateWalletAmounts(transaction, true);
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -255,7 +257,7 @@ interface WalletSelectorProps {
 }
 
 const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
-  const { wallets } = useContext(AuthenticationTokenStore);
+  const { wallets } = useContext(MainStore);
 
   // Hooks
   const [showModal, setShowModal] = useState(false);
@@ -330,7 +332,7 @@ interface CategorySelectorProps {
 }
 
 const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
-  const { categories } = useContext(AuthenticationTokenStore);
+  const { categories } = useContext(MainStore);
   const [categoryType, setCategoryType] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null as Objects.Category | null);

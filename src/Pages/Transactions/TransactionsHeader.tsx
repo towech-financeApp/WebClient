@@ -8,7 +8,7 @@
 import { useState, useContext } from 'react';
 
 // hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 
 // Models
 import { Objects } from '../../models';
@@ -32,7 +32,7 @@ interface WalletProps {
 }
 
 const TransactionHeader = (props: HeaderProps): JSX.Element => {
-  const { wallets } = useContext(AuthenticationTokenStore);
+  const { wallets } = useContext(MainStore);
 
   // Hooks
   const [showModal, setModal] = useState(false);

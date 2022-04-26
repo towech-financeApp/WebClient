@@ -17,14 +17,14 @@ import LogoutAll from './Functions/LogoutAll';
 import ManageUsers from './Functions/ManageUsers';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 
 // Styles
 import './Settings.css';
 
 const Settings = (): JSX.Element => {
   // Context
-  const { authToken } = useContext(AuthenticationTokenStore);
+  const { authToken } = useContext(MainStore);
 
   // Hooks
   const [editNameModal, setEditNameModal] = useState(false);

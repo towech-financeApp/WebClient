@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 import WalletForm from './WalletForm';
 
 // Components
@@ -25,7 +25,7 @@ import './Wallets.css';
 
 const Wallets = (): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken, wallets, dispatchWallets } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken, wallets, dispatchWallets } = useContext(MainStore);
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);

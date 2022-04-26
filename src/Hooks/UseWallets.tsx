@@ -10,14 +10,19 @@ import React, { useReducer } from 'react';
 import { Objects } from '../models';
 
 export interface WalletAction {
-  type: 'SET' | 'ADD' | 'EDIT' | 'DELETE';
+  type: 'SET' | 'ADD' | 'EDIT' | 'DELETE' | 'UPDATE-AMOUNT';
   payload: {
     wallets: Objects.Wallet[];
+    updateAmount?: {
+      new: Objects.Transaction[];
+      reverse?: boolean;
+      old?: Objects.Transaction[];
+    };
   };
 }
 
 /** useWallets
- * Reducer that stores the user categories
+ * Reducer that stores the user wallets
  *
  * @param {Objects.Wallet[]} initial initial state of the wallets
  *
@@ -62,6 +67,33 @@ const useWallets = (initial?: Objects.Wallet[]): [Objects.Wallet[], React.Dispat
           return index < 0;
         });
         return item;
+      case 'UPDATE-AMOUNT':
+        if (action.payload.updateAmount) {
+          item = [...state];
+
+          for (let i = 0; i < item.length; i++) {
+
+            // calculates with the new transactions
+            action.payload.updateAmount.new.map((x) => {
+              const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
+
+              item[i].money =
+                (item[i].money || 0) +
+                (x.category.type === 'Income' ? multiplier * x.amount : -1 * multiplier * x.amount);
+            });
+
+            // calculates with the old transactions
+            action.payload.updateAmount.old?.map((x) => {
+              const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
+
+              item[i].money =
+                (item[i].money || 0) +
+                (x.category.type === 'Income' ? multiplier * x.amount : -1 * multiplier * x.amount);
+            });
+          }
+        }
+
+        return state;
       default:
         return state;
     }

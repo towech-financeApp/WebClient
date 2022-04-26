@@ -4,40 +4,22 @@
  *
  * Component that shows the Transaction elements
  */
+// Libraries
 import { useState } from 'react';
-// import * as HiIcons from 'react-icons/hi';
-
-// Hooks
-// import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Components
-// import Button from '../../Components/Button';
-// import Modal from '../../Components/Modal';
 import NewTransactionForm from './TransactionForm';
 
 // Models
 import { Objects } from '../../models';
 
-// Services
-// import TransactionService from '../../Services/TransactionService';
-
 interface Props {
   transaction: Objects.Transaction;
-  edit: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
-  delete: (transaction: Objects.Transaction) => void;
 }
 
 const TransactionCard = (props: Props): JSX.Element => {
-  // Context
-  // const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
-
-  // Starts the services
-  // const transactionService = new TransactionService(authToken, dispatchAuthToken);
-
   // Hooks
   const [showEdit, setEdit] = useState(false);
-  // const [showDelete, setDelete] = useState(false);
-
   const transDate = new Date(props.transaction.transactionDate);
   const amount = Math.abs(props.transaction.amount).toFixed(2);
 
@@ -65,14 +47,7 @@ const TransactionCard = (props: Props): JSX.Element => {
       </div>
 
       {/* Edit Wallet Modal */}
-      <NewTransactionForm
-        editTransaction={props.edit}
-        deleteTransaction={props.delete}
-        state={showEdit}
-        setState={setEdit}
-        selectedWallet={null}
-        initialTransaction={props.transaction}
-      />
+      <NewTransactionForm state={showEdit} setState={setEdit} initialTransaction={props.transaction} />
     </>
   );
 };

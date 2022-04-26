@@ -8,7 +8,7 @@ import React, { useContext, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Components
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 import Errorbox from '../../Components/ErrorBox';
 import Input from '../../Components/Input';
 import Modal from '../../Components/Modal';
@@ -37,7 +37,7 @@ interface Props {
 
 const WalletForm = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken, dispatchWallets } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken, dispatchWallets } = useContext(MainStore);
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);

@@ -8,10 +8,10 @@ import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
 // Hooks
-import { AuthenticationTokenStore } from '../Hooks/ContextStore';
+import { MainStore } from '../Hooks/ContextStore';
 
 const AuthRoute = ({ children }: any): JSX.Element => {
-  const { authToken } = useContext(AuthenticationTokenStore);
+  const { authToken } = useContext(MainStore);
 
   // Checks the notAuth flag, if present, redirects when logged in
   return authToken.token ? (

@@ -21,7 +21,7 @@ import VerifyAccount from './Pages/VerifyAccount/VerifyAccount';
 import NotFound from './Components/NotFound';
 
 // Hooks
-import { AuthenticationTokenStore } from './Hooks/ContextStore';
+import { MainStore } from './Hooks/ContextStore';
 import useToken from './Hooks/UseToken';
 import useCategories from './Hooks/UseCategories';
 import useWallets from './Hooks/UseWallets';
@@ -64,7 +64,7 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
-      <AuthenticationTokenStore.Provider
+      <MainStore.Provider
         value={{ authToken, dispatchAuthToken, categories, dispatchCategories, wallets, dispatchWallets }}
       >
         <Router>
@@ -100,7 +100,7 @@ function App(): JSX.Element {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
-      </AuthenticationTokenStore.Provider>
+      </MainStore.Provider>
     </div>
   );
 }

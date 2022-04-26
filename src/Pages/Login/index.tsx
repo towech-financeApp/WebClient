@@ -16,7 +16,7 @@ import Loading from '../../Components/Loading';
 
 // hooks
 import UseForm from '../../Hooks/UseForm';
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 
 // Services
 import AuthenticationService from '../../Services/AuthenticationService';
@@ -36,7 +36,7 @@ const Login = (): JSX.Element => {
   // Hooks
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(MainStore);
 
   // State for the form
   const loginForm = UseForm(loginCallback, {
