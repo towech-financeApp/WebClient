@@ -5,13 +5,16 @@
  * Header that allows to change the selected wallet
  */
 // Libraries
-import Modal from '../../Components/Modal';
+import { useState, useContext } from 'react';
+
+// hooks
+import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
 
 // Models
 import { Objects } from '../../models';
 
 // Components
-import { useState } from 'react';
+import Modal from '../../Components/Modal';
 
 // Styles
 import './Transactions.css';
@@ -19,7 +22,6 @@ import './Transactions.css';
 // Interfaces
 interface HeaderProps {
   selectedWallet_id: string;
-  wallets: Objects.Wallet[];
   onChange: (id: string) => void;
 }
 
@@ -30,6 +32,8 @@ interface WalletProps {
 }
 
 const TransactionHeader = (props: HeaderProps): JSX.Element => {
+  const { wallets } = useContext(AuthenticationTokenStore);
+
   // Hooks
   const [showModal, setModal] = useState(false);
 
@@ -64,7 +68,7 @@ const TransactionHeader = (props: HeaderProps): JSX.Element => {
   };
 
   // Variables
-  const displayed = getNameAndTotal(props.wallets, props.selectedWallet_id);
+  const displayed = getNameAndTotal(wallets, props.selectedWallet_id);
 
   return (
     <>
@@ -89,7 +93,7 @@ const TransactionHeader = (props: HeaderProps): JSX.Element => {
             <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
           </div>
           <div className="Transactions__Header__Selector">
-            {props.wallets.map((wallet: Objects.Wallet) => (
+            {wallets.map((wallet: Objects.Wallet) => (
               <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
             ))}
           </div>

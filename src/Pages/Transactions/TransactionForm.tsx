@@ -33,7 +33,6 @@ interface Props {
   deleteTransaction?: (transaction: Objects.Transaction) => void;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
-  wallets: Objects.Wallet[];
   selectedWallet: string | null;
   initialTransaction?: Objects.Transaction;
 }
@@ -181,7 +180,6 @@ const TransactionForm = (props: Props): JSX.Element => {
 
             {/* Regular and from wallet selector */}
             <WalletSelector
-              wallets={props.wallets}
               onChange={transactionForm.onChange}
               name="wallet_id"
               value={transactionForm.values.wallet_id}
@@ -250,7 +248,6 @@ const TransactionForm = (props: Props): JSX.Element => {
 
 interface WalletSelectorProps {
   error?: boolean;
-  wallets: Objects.Wallet[];
   value?: string;
   onChange?: any;
   name?: string;
@@ -258,6 +255,8 @@ interface WalletSelectorProps {
 }
 
 const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
+  const { wallets } = useContext(AuthenticationTokenStore);
+
   // Hooks
   const [showModal, setShowModal] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState(null as Objects.Wallet | null);
@@ -271,7 +270,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
 
   // Functions
   const searchAndSetView = (id: string): void => {
-    const p = props.wallets.find((wallet) => wallet._id === id);
+    const p = wallets.find((wallet) => wallet._id === id);
     setSelectedWallet(p || null);
   };
 
@@ -301,7 +300,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
       <div className="NewTransactionForm__WalletSelector__Modal">
         <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
           <div className="NewTransactionForm__WalletSelector__Container">
-            {props.wallets.map((wallet: Objects.Wallet) => (
+            {wallets.map((wallet: Objects.Wallet) => (
               <div
                 className="NewTransactionForm__WalletSelector__Wallet"
                 key={wallet._id}

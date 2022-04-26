@@ -22,7 +22,6 @@ import { Objects } from '../../models';
 // import TransactionService from '../../Services/TransactionService';
 
 interface Props {
-  wallets: Objects.Wallet[];
   transaction: Objects.Transaction;
   edit: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
   delete: (transaction: Objects.Transaction) => void;
@@ -71,7 +70,6 @@ const TransactionCard = (props: Props): JSX.Element => {
         deleteTransaction={props.delete}
         state={showEdit}
         setState={setEdit}
-        wallets={props.wallets}
         selectedWallet={null}
         initialTransaction={props.transaction}
       />

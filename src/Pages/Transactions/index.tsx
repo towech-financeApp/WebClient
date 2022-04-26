@@ -25,6 +25,7 @@ import TransactionForm from './TransactionForm';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
+import CategoryService from '../../Services/CategoryService';
 
 // Utilities
 import GetParameters from '../../Utils/GetParameters';
@@ -37,18 +38,20 @@ import Loading from '../../Components/Loading';
 
 const Transactions = (): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken, wallets, dispatchWallets, dispatchCategories } =
+    useContext(AuthenticationTokenStore);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
+  const categoryService = new CategoryService(authToken, dispatchAuthToken);
 
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [loadingTransactions, setLoadingTransactions] = useState(false);
-  const [wallets, setWallets] = useState([] as Objects.Wallet[]);
   const [selectedWallet_id, setSelectedWalletId] = useState(GetParameters(location.search, 'wallet') || '-1');
+
   const [dataMonth, setDataMonth] = useState(ParseDataMonth(GetParameters(location.search, 'month')));
   const [headerTotal, setHeaderTotal] = useState(0);
   const [addModal, setAddModal] = useState(false);
@@ -64,13 +67,21 @@ const Transactions = (): JSX.Element => {
           .getWallets()
           .then((res) => {
             // Sets the available wallets, the transactions are fetched later
-            setWallets(res.data);
+            dispatchWallets({ type: 'SET', payload: { wallets: res.data } });
             setLoaded(true);
           })
           .catch(() => {
             // console.log(err.response);
             setLoaded(true);
           });
+
+        // Gets all the categories
+        categoryService.getCategories().then((catRes) => {
+          dispatchCategories({
+            type: 'UPDATE',
+            payload: catRes.data,
+          });
+        });
       }
     };
     firstLoad();
@@ -208,13 +219,13 @@ const Transactions = (): JSX.Element => {
       }
     }
 
-    setWallets(newWallets);
+    dispatchWallets({ type: 'SET', payload: { wallets: newWallets } });
   };
 
   // Extracted HTML components
   const header =
     loaded && wallets.length > 0 ? (
-      <TransactionHeader selectedWallet_id={selectedWallet_id} wallets={wallets} onChange={changeSelectedWallet} />
+      <TransactionHeader selectedWallet_id={selectedWallet_id} onChange={changeSelectedWallet} />
     ) : (
       <></>
     );
@@ -232,12 +243,7 @@ const Transactions = (): JSX.Element => {
                 {!loadingTransactions ? (
                   <>
                     {transactions.length > 0 && <WalletTotals totals={monthTotals} />}
-                    <TransactionViewer
-                      wallets={wallets}
-                      transactions={transactions}
-                      edit={editTransaction}
-                      delete={deleteTransaction}
-                    />
+                    <TransactionViewer transactions={transactions} edit={editTransaction} delete={deleteTransaction} />
                   </>
                 ) : (
                   <div className="Transactions__Content__Loading">
@@ -252,7 +258,6 @@ const Transactions = (): JSX.Element => {
                 state={addModal}
                 setState={setAddModal}
                 addTransaction={addTransaction}
-                wallets={wallets}
                 selectedWallet={selectedWallet_id}
               />
             </>

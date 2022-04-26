@@ -11,7 +11,6 @@ import './Transactions.css';
 import TransactionCard from './TransactionCard';
 
 interface Props {
-  wallets: Objects.Wallet[];
   transactions: Objects.Transaction[];
   edit: (newTransaction: Objects.Transaction, oldTransaction: Objects.Transaction) => void;
   delete: (transaction: Objects.Transaction) => void;
@@ -27,13 +26,7 @@ const TransactionViewer = (props: Props): JSX.Element => {
       ) : (
         <div className="Transactions__Viewer__List">
           {props.transactions.map((transaction: Objects.Transaction) => (
-            <TransactionCard
-              key={transaction._id}
-              transaction={transaction}
-              wallets={props.wallets}
-              edit={props.edit}
-              delete={props.delete}
-            />
+            <TransactionCard key={transaction._id} transaction={transaction} edit={props.edit} delete={props.delete} />
           ))}
           <div className="Transactions__Viewer__Filler" />
         </div>

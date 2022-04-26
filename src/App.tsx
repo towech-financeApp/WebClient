@@ -28,7 +28,6 @@ import useWallets from './Hooks/UseWallets';
 
 // Services
 import AuthenticationService from './Services/AuthenticationService';
-import CategoryService from './Services/CategoryService';
 
 // Utils
 import AuthRoute from './Utils/AuthRoute';
@@ -51,14 +50,6 @@ function App(): JSX.Element {
           .refreshToken()
           .then((res) => {
             dispatchAuthToken({ type: 'LOGIN', payload: res.data });
-
-            const categoryService = new CategoryService(authToken, dispatchAuthToken);
-            categoryService.getCategories().then((catRes) => {
-              dispatchCategories({
-                type: 'UPDATE',
-                payload: catRes.data,
-              });
-            });
 
             setLoaded(true);
           })
