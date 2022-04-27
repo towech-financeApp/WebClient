@@ -59,25 +59,33 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
       if (action.payload.updateAmount) {
         item = [...state];
 
-        for (let i = 0; i < item.length; i++) {
-          // calculates with the new transactions
-          action.payload.updateAmount.new.map((x) => {
-            const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
+        // calculates the new transactions
+        action.payload.updateAmount.new.map((transaction) => {
+          const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
+          const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
 
-            item[i].money =
-              (item[i].money || 0) +
-              (x.category.type === 'Income' ? multiplier * x.amount : -1 * multiplier * x.amount);
-          });
+          if (index !== -1) {
+            item[index].money =
+              (item[index].money || 0) +
+              (transaction.category.type === 'Income'
+                ? multiplier * transaction.amount
+                : -1 * multiplier * transaction.amount);
+          }
+        });
 
-          // calculates with the old transactions
-          action.payload.updateAmount.old?.map((x) => {
-            const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
+        // Reverses the old transactions if provided
+        action.payload.updateAmount.old?.map((transaction) => {
+          const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
+          const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
 
-            item[i].money =
-              (item[i].money || 0) +
-              (x.category.type === 'Income' ? multiplier * x.amount : -1 * multiplier * x.amount);
-          });
-        }
+          if (index !== -1) {
+            item[index].money =
+              (item[index].money || 0) +
+              (transaction.category.type === 'Income'
+                ? multiplier * transaction.amount
+                : -1 * multiplier * transaction.amount);
+          }
+        });
       }
 
       return state;

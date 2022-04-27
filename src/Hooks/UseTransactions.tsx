@@ -33,10 +33,15 @@ export interface TransAction {
  * @returns {React.Dispatch<TransAction>} The function to dispatch actions
  */
 // Functions
-const cleanAndSort = (input: Objects.Transaction[], dataMonth: string): Objects.Transaction[] => {
+const cleanAndSort = (
+  input: Objects.Transaction[],
+  selectedWallet: string,
+  dataMonth: string,
+): Objects.Transaction[] => {
   const cleaned = [] as Objects.Transaction[];
   input.map((x) => {
     if (
+      (selectedWallet === '-1' || selectedWallet === x.wallet_id) &&
       `${x.transactionDate.toString().substring(0, 4)}${x.transactionDate.toString().substring(5, 7)}` === dataMonth
     ) {
       cleaned.push(x);
@@ -91,7 +96,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
       item = {
         dataMonth: action.payload.dataMonth,
         selectedWallet: action.payload.selectedWallet,
-        transactions: cleanAndSort(action.payload.transactions, ParseDataMonth(state.dataMonth)),
+        transactions: cleanAndSort(action.payload.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth)),
         report: { earnings: 0, expenses: 0 },
       };
 
@@ -110,7 +115,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
         }
       });
 
-      item.transactions = cleanAndSort(item.transactions, ParseDataMonth(state.dataMonth));
+      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
       item.report = calculateReport(item.transactions, item.selectedWallet);
 
       return item;
@@ -125,7 +130,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
         }
       });
 
-      item.transactions = cleanAndSort(item.transactions, ParseDataMonth(state.dataMonth));
+      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
       item.report = calculateReport(item.transactions, item.selectedWallet);
       return item;
     case 'DELETE':

@@ -5,7 +5,7 @@
  * Transactions Page for the App
  */
 import { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
@@ -16,10 +16,11 @@ import useTransactions from '../../Hooks/UseTransactions';
 import Button from '../../Components/Button';
 import Page from '../../Components/Page';
 import DataMonthSelector from './DataMonthSelector';
-import RedirectToWallets from './RedirectToWallets';
 import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
 import TransactionForm from './TransactionForm';
+import Loading from '../../Components/Loading';
+import EmptyTransactions from './EmptyTransactions';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -32,12 +33,10 @@ import ParseDataMonth from '../../Utils/ParseDataMonth';
 // Styles
 import './Transactions.css';
 import TransactionHeader from './TransactionsHeader';
-import Loading from '../../Components/Loading';
 
 const Transactions = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken, wallets, dispatchWallets, dispatchCategories } = useContext(MainStore);
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Starts the services
@@ -58,7 +57,7 @@ const Transactions = (): JSX.Element => {
 
   // Main API call
   useEffect(() => {
-    if (!loaded && authToken.token) {
+    if (authToken.token) {
       // Gets all the wallets of the client
       transactionService
         .getWallets()
@@ -100,21 +99,8 @@ const Transactions = (): JSX.Element => {
     });
   };
 
-  // Redirects to the wallet when the header selector changes
-  const changeSelectedWallet = (data: string): void => {
-    if (data !== transactionState.selectedWallet) {
-      navigate(`/home?wallet=${data}`);
-      dispatchTransactionState({ type: 'SELECT-WALLET', payload: data });
-    }
-  };
-
   // Extracted HTML components
-  const header =
-    loaded && wallets.length > 0 ? (
-      <TransactionHeader selectedWallet_id={transactionState.selectedWallet} onChange={changeSelectedWallet} />
-    ) : (
-      <></>
-    );
+  const header = loaded && wallets.length > 0 ? <TransactionHeader /> : <></>;
 
   return (
     <TransactionPageStore.Provider value={{ transactionState, dispatchTransactionState }}>
@@ -122,7 +108,7 @@ const Transactions = (): JSX.Element => {
         {loaded ? (
           <div className="Transactions">
             {wallets.length == 0 ? (
-              <RedirectToWallets />
+              <EmptyTransactions.RedirectToWallets />
             ) : (
               <>
                 <div className="Transactions__Content">
@@ -138,9 +124,11 @@ const Transactions = (): JSX.Element => {
                     </div>
                   )}
                 </div>
+                {/*Add wallet button*/}
                 <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
                   <FaIcons.FaPlus />
                 </Button>
+                {/*Add wallet form*/}
                 <TransactionForm state={addModal} setState={setAddModal} />
               </>
             )}

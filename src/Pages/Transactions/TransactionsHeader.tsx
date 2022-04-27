@@ -6,9 +6,10 @@
  */
 // Libraries
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // hooks
-import { MainStore } from '../../Hooks/ContextStore';
+import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
 
 // Models
 import { Objects } from '../../models';
@@ -20,26 +21,27 @@ import Modal from '../../Components/Modal';
 import './Transactions.css';
 
 // Interfaces
-interface HeaderProps {
-  selectedWallet_id: string;
-  onChange: (id: string) => void;
-}
-
 interface WalletProps {
   onClick: (id: string) => void;
   wallet?: Objects.Wallet;
   total?: number;
 }
 
-const TransactionHeader = (props: HeaderProps): JSX.Element => {
+const TransactionHeader = (): JSX.Element => {
   const { wallets } = useContext(MainStore);
+  const { transactionState, dispatchTransactionState } = useContext(TransactionPageStore);
+  const navigate = useNavigate();
 
   // Hooks
   const [showModal, setModal] = useState(false);
 
+
   // Functions
   const selectWallet = (id: string) => {
-    props.onChange(id);
+    if (id !== transactionState.selectedWallet) {
+      navigate(`/home?wallet=${id}`);
+      dispatchTransactionState({ type: 'SELECT-WALLET', payload: id });
+    }
     setModal(false);
   };
 
@@ -62,13 +64,13 @@ const TransactionHeader = (props: HeaderProps): JSX.Element => {
       }
     }
 
-    if (props.selectedWallet_id === '-1') output.money = output.total;
+    if (transactionState.selectedWallet === '-1') output.money = output.total;
 
     return output;
   };
 
   // Variables
-  const displayed = getNameAndTotal(wallets, props.selectedWallet_id);
+  const displayed = getNameAndTotal(wallets, transactionState.selectedWallet);
 
   return (
     <>

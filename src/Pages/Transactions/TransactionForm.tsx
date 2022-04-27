@@ -42,6 +42,7 @@ const TransactionForm = (props: Props): JSX.Element => {
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
   // Hooks
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
   const [deleteWarn, setDeleteWarn] = useState(false);
 
@@ -62,9 +63,9 @@ const TransactionForm = (props: Props): JSX.Element => {
   async function newTransactionCallback() {
     try {
       // console.log(transactionForm.values);
-      if (transactionForm.values.category_id === '-2') {
-        return //console.log('Transfer');
-      }
+      // if (transactionForm.values.category_id === '-2') {
+      //   return //console.log('Transfer');
+      // }
 
       // If no wallet was entered, returns an error
       if (transactionForm.values.wallet_id === '' || transactionForm.values.wallet_id === '-1') {
@@ -79,7 +80,9 @@ const TransactionForm = (props: Props): JSX.Element => {
       }
 
       // Sends the transaction to the API
+      setLoading(true);
       const res = await transactionService.newTransaction(transactionForm.values);
+      setLoading(false);
 
       // Clears the form, adds the transaction to the list and closes the modal
       transactionForm.clear();
@@ -92,6 +95,7 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
     } catch (err: any) {
+      setLoading(false);
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console
     }
@@ -110,7 +114,9 @@ const TransactionForm = (props: Props): JSX.Element => {
       }
 
       // Sends the transaction to the API
+      setLoading(true);
       const res = await transactionService.editTransaction(props.initialTransaction?._id || '', transactionForm.values);
+      setLoading(false);
 
       props.setState(false);
 
@@ -124,6 +130,7 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchTransactionState({ type: 'EDIT', payload: [res.data] });
     } catch (err: any) {
+      setLoading(false);
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err.response); //eslint-disable-line no-console
@@ -137,7 +144,9 @@ const TransactionForm = (props: Props): JSX.Element => {
           response: `Somehow you managed to delete a transaction without an initial transaction, stop messing with the app pls`,
         };
 
+      setLoading(true);
       await transactionService.deleteTransaction(props.initialTransaction._id);
+      setLoading(false);
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
@@ -145,6 +154,7 @@ const TransactionForm = (props: Props): JSX.Element => {
       });
       dispatchTransactionState({ type: 'DELETE', payload: [props.initialTransaction] });
     } catch (err: any) {
+      setLoading(false);
       console.log(err.response); // eslint-disable-line no-console
     }
   }
@@ -157,6 +167,7 @@ const TransactionForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.setState}
+        loading={loading}
         title={props.initialTransaction ? 'Edit Transaction' : 'New Transaction'}
         accept={acceptIcon}
         onAccept={() => {
@@ -246,8 +257,16 @@ const TransactionForm = (props: Props): JSX.Element => {
         </div>
       </Modal>
 
+      {/* delete transaction Modal */}
       {props.initialTransaction && (
-        <Modal float setModal={setDeleteWarn} showModal={deleteWarn} accept="Delete" onAccept={deleteTransaction}>
+        <Modal
+          float
+          setModal={setDeleteWarn}
+          showModal={deleteWarn}
+          accept="Delete"
+          onAccept={deleteTransaction}
+          loading={loading}
+        >
           <>
             <p>Are you sure you want to delete this transaction?</p>
             This action cannot be undone.
