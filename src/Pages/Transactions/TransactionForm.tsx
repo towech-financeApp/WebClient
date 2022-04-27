@@ -35,7 +35,7 @@ interface Props {
 
 const TransactionForm = (props: Props): JSX.Element => {
   // Authentication Token Context
-  const { authToken, dispatchAuthToken } = useContext(MainStore);
+  const { authToken, dispatchAuthToken, dispatchWallets } = useContext(MainStore);
   const { transactionState, dispatchTransactionState } = useContext(TransactionPageStore);
 
   // Starts the servicees
@@ -63,7 +63,7 @@ const TransactionForm = (props: Props): JSX.Element => {
     try {
       // console.log(transactionForm.values);
       if (transactionForm.values.category_id === '-2') {
-        return console.log('Transfer');
+        return //console.log('Transfer');
       }
 
       // If no wallet was entered, returns an error
@@ -84,8 +84,11 @@ const TransactionForm = (props: Props): JSX.Element => {
       // Clears the form, adds the transaction to the list and closes the modal
       transactionForm.clear();
 
+      dispatchWallets({
+        type: 'UPDATE-AMOUNT',
+        payload: { wallets: [], updateAmount: { new: [res.data] } },
+      });
       dispatchTransactionState({ type: 'ADD', payload: [res.data] });
-      // TODO: updateWalletAmounts(transaction);
 
       props.setState(false);
     } catch (err: any) {
@@ -111,17 +114,21 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       props.setState(false);
 
-      dispatchTransactionState({ type: 'EDIT', payload: [res.data] });
-      // TODO updateWalletAmounts(oldTransaction, true, newTransaction);
+      dispatchWallets({
+        type: 'UPDATE-AMOUNT',
+        payload: {
+          wallets: [],
+          updateAmount: { new: [res.data], old: props.initialTransaction ? [props.initialTransaction] : [] },
+        },
+      });
 
-      // if (props.editTransaction)
-      //   props.editTransaction(res.data, props.initialTransaction || ({} as Objects.Transaction));
+      dispatchTransactionState({ type: 'EDIT', payload: [res.data] });
     } catch (err: any) {
       if (err.response.status === 304) props.setState(false);
       else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err.response); //eslint-disable-line no-console
     }
-  }  
+  }
 
   async function deleteTransaction() {
     try {
@@ -132,8 +139,11 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       await transactionService.deleteTransaction(props.initialTransaction._id);
 
+      dispatchWallets({
+        type: 'UPDATE-AMOUNT',
+        payload: { wallets: [], updateAmount: { new: [props.initialTransaction], reverse: true } },
+      });
       dispatchTransactionState({ type: 'DELETE', payload: [props.initialTransaction] });
-      // TODO: updateWalletAmounts(transaction, true);
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }

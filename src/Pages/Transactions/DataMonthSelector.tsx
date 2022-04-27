@@ -72,7 +72,9 @@ const DataMonthSelector = (): JSX.Element => {
       <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(-1)}>
         {displayDataMonth(prevMonth)}
       </Button>
-      <Button className="Transactions__MonthSelector__Button selected">{displayDataMonth(transactionState.dataMonth)}</Button>
+      <Button className="Transactions__MonthSelector__Button selected">
+        {displayDataMonth(transactionState.dataMonth)}
+      </Button>
       <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(1)}>
         {displayDataMonth(nextMonth)}
       </Button>

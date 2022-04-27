@@ -12,9 +12,6 @@ import * as FaIcons from 'react-icons/fa';
 import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
 import useTransactions from '../../Hooks/UseTransactions';
 
-// Models
-import { Objects } from '../../models';
-
 // Components
 import Button from '../../Components/Button';
 import Page from '../../Components/Page';
@@ -93,7 +90,14 @@ const Transactions = (): JSX.Element => {
   // Gets the transactions from the API of the selected wallet
   const loadTransactions = async (walletId: string, dataMonth: string): Promise<void> => {
     const res = await transactionService.getWalletTransactions(walletId, dataMonth, setLoadingTransactions);
-    dispatchTransactionState({ type: 'ADD', payload: res.data });
+    dispatchTransactionState({
+      type: 'SET',
+      payload: {
+        dataMonth: transactionState.dataMonth,
+        selectedWallet: transactionState.selectedWallet,
+        transactions: res.data,
+      },
+    });
   };
 
   // Redirects to the wallet when the header selector changes
@@ -103,7 +107,7 @@ const Transactions = (): JSX.Element => {
       dispatchTransactionState({ type: 'SELECT-WALLET', payload: data });
     }
   };
-  
+
   // Extracted HTML components
   const header =
     loaded && wallets.length > 0 ? (
