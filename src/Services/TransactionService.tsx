@@ -14,8 +14,9 @@ import CustomAxios from './CustomAxios';
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-import { Objects } from '../models';
+import { Objects, Requests } from '../models';
 
+// TODO: Assign types to all responses
 export default class TransactionService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
@@ -68,6 +69,13 @@ export default class TransactionService {
       `${this.SERVICE_URL}/wallets/${walletid}/transactions?datamonth=${dataMonth}`,
       loading,
     );
+  }
+
+  async transferBetweenWallets(
+    payload: Requests.WorkerTransfer,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Objects.Transaction[]>> {
+    return await this.instance.post(`${this.SERVICE_URL}/wallets/transfer`, payload, loading);
   }
 
   async newTransaction(

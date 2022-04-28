@@ -58,15 +58,13 @@ const TransactionForm = (props: Props): JSX.Element => {
         .getDate()
         .toString()
         .padStart(2, '0')}`,
+    // Values exclusive to transfers
+    from_id: '-1',
+    to_id: '-1',
   });
 
   async function newTransactionCallback() {
     try {
-      // console.log(transactionForm.values);
-      // if (transactionForm.values.category_id === '-2') {
-      //   return //console.log('Transfer');
-      // }
-
       // If no wallet was entered, returns an error
       if (transactionForm.values.wallet_id === '' || transactionForm.values.wallet_id === '-1') {
         setErrors({ wallet_id: 'Select a wallet' });
@@ -75,14 +73,12 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       // If no category was entered, returns an error
       if (transactionForm.values.category_id === '' || transactionForm.values.category_id === '-1') {
-        setErrors({ wallet_id: 'Select a category' });
+        setErrors({ category_id: 'Select a category' });
         return;
       }
 
       // Sends the transaction to the API
-      setLoading(true);
-      const res = await transactionService.newTransaction(transactionForm.values);
-      setLoading(false);
+      const res = await transactionService.newTransaction(transactionForm.values, setLoading);
 
       // Clears the form, adds the transaction to the list and closes the modal
       transactionForm.clear();
@@ -114,9 +110,7 @@ const TransactionForm = (props: Props): JSX.Element => {
       }
 
       // Sends the transaction to the API
-      setLoading(true);
-      const res = await transactionService.editTransaction(props.initialTransaction?._id || '', transactionForm.values);
-      setLoading(false);
+      const res = await transactionService.editTransaction(props.initialTransaction?._id || '', transactionForm.values, setLoading);
 
       props.setState(false);
 
@@ -144,9 +138,7 @@ const TransactionForm = (props: Props): JSX.Element => {
           response: `Somehow you managed to delete a transaction without an initial transaction, stop messing with the app pls`,
         };
 
-      setLoading(true);
-      await transactionService.deleteTransaction(props.initialTransaction._id);
-      setLoading(false);
+      await transactionService.deleteTransaction(props.initialTransaction._id, setLoading);
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
@@ -154,12 +146,58 @@ const TransactionForm = (props: Props): JSX.Element => {
       });
       dispatchTransactionState({ type: 'DELETE', payload: [props.initialTransaction] });
     } catch (err: any) {
-      setLoading(false);
       console.log(err.response); // eslint-disable-line no-console
     }
   }
 
+  async function transferTransactionCallback() {
+    try {
+      const errorHolder = {} as any;
+
+      // If no wallets were entered, returns an error
+      if (transactionForm.values.from_id === '' || transactionForm.values.from_id === '-1') {
+        errorHolder.from_id = 'Select an origin wallet';
+      }
+      if (transactionForm.values.to_id === '' || transactionForm.values.to_id === '-1') {
+        errorHolder.to_id = 'Select a destination wallet';
+      }
+
+      // If no category was entered, returns an error
+      if (transactionForm.values.category_id === '' || transactionForm.values.category_id === '-1') {
+        errorHolder.category_id = 'Select a category';
+        return;
+      }
+
+      if (Object.keys(errorHolder).length > 0) return setErrors(errorHolder);
+
+      const res = await transactionService.transferBetweenWallets(transactionForm.values, setLoading);
+
+      // Clears the form, adds the transaction to the list and closes the modal
+      transactionForm.clear();
+
+      dispatchWallets({
+        type: 'UPDATE-AMOUNT',
+        payload: { wallets: [], updateAmount: { new: res.data } },
+      });
+      dispatchTransactionState({ type: 'ADD', payload: res.data });
+
+      props.setState(false); 
+    } catch (err: any) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      else console.log(err); //eslint-disable-line no-console
+    }
+  }
+
   const acceptIcon = <FaIcons.FaSave />;
+  const acceptCallback = () => {
+    if (props.initialTransaction) {
+      return editTransactionCallback();
+    }
+    if (transactionForm.values.category_id === '-2') {
+      return transferTransactionCallback();
+    }
+    return newTransactionCallback();
+  };
 
   return (
     <>
@@ -170,9 +208,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         loading={loading}
         title={props.initialTransaction ? 'Edit Transaction' : 'New Transaction'}
         accept={acceptIcon}
-        onAccept={() => {
-          props.initialTransaction ? editTransactionCallback() : newTransactionCallback();
-        }}
+        onAccept={acceptCallback}
         onClose={() => {
           transactionForm.clear();
           setErrors([]);
@@ -193,7 +229,7 @@ const TransactionForm = (props: Props): JSX.Element => {
             {/* Category selector */}
             <CategorySelector
               edit={props.initialTransaction ? true : false}
-              error={errors.category_id ? true : false}
+              error={errors.category_id}
               name="category_id"
               onChange={transactionForm.onChange}
               transfer={props.initialTransaction?.transfer_id ? true : false}
@@ -201,13 +237,69 @@ const TransactionForm = (props: Props): JSX.Element => {
               visible={props.state}
             ></CategorySelector>
 
-            {/* Regular and from wallet selector */}
-            <WalletSelector
-              onChange={transactionForm.onChange}
-              name="wallet_id"
-              value={transactionForm.values.wallet_id}
-              visible={props.state}
-            ></WalletSelector>
+            {/* Wallet selector and date picker for regular transactions */}
+            {transactionForm.values.category_id !== '-2' && (
+              <div className="NewTransactionForm__Content__Splitted">
+                <div style={{ flex: 4 }}>
+                  <WalletSelector
+                    onChange={transactionForm.onChange}
+                    name="wallet_id"
+                    value={transactionForm.values.wallet_id}
+                    visible={props.state}
+                    error={errors.wallet_id}
+                  ></WalletSelector>
+                </div>
+
+                {/* Date field */}
+                <Input
+                  error={errors.transactionDate ? true : false}
+                  label="Date"
+                  name="transactionDate"
+                  type="text"
+                  value={transactionForm.values.transactionDate}
+                  onChange={transactionForm.onChange}
+                />
+              </div>
+            )}
+
+            {/* Wallet selectors and datepicker for transference transactions */}
+            {transactionForm.values.category_id === '-2' && (
+              <>
+                <div className="NewTransactionForm__Content__Splitted">
+                  <div className="NewTransactionForm__Content__Splitted__Label">From</div>
+                  <div className="NewTransactionForm__Content__Splitted__Label">To</div>
+                </div>
+                <div className="NewTransactionForm__Content__Splitted">
+                  <div style={{ flex: 1 }}>
+                    <WalletSelector
+                      error={errors.from_id}
+                      name="from_id"
+                      onChange={transactionForm.onChange}
+                      value={transactionForm.values.from_id}
+                      visible={props.state}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <WalletSelector
+                      error={errors.to_id}
+                      name="to_id"
+                      onChange={transactionForm.onChange}
+                      value={transactionForm.values.to_id}
+                      visible={props.state}
+                    />
+                  </div>
+                </div>
+                {/* Date field */}
+                <Input
+                  error={errors.transactionDate ? true : false}
+                  label="Date"
+                  name="transactionDate"
+                  type="text"
+                  value={transactionForm.values.transactionDate}
+                  onChange={transactionForm.onChange}
+                />
+              </>
+            )}
 
             {/* Concept field */}
             <Input
@@ -219,15 +311,6 @@ const TransactionForm = (props: Props): JSX.Element => {
               onChange={transactionForm.onChange}
             />
 
-            {/* Date field */}
-            <Input
-              error={errors.transactionDate ? true : false}
-              label="Date"
-              name="transactionDate"
-              type="text"
-              value={transactionForm.values.transactionDate}
-              onChange={transactionForm.onChange}
-            />
             {/* Exclude from report checkbox */}
             <Checkbox
               dark
@@ -277,6 +360,7 @@ const TransactionForm = (props: Props): JSX.Element => {
   );
 };
 
+// ------------------------------------------------------------------------------------------
 interface WalletSelectorProps {
   error?: boolean;
   value?: string;
@@ -307,13 +391,15 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
 
   const setWalletCallback = (id: string): void => {
     searchAndSetView(id);
-    props.onChange({
-      target: {
-        type: 'custom-select',
-        name: props.name,
-        value: id,
-      },
-    });
+    if (props.onChange) {
+      props.onChange({
+        target: {
+          type: 'custom-select',
+          name: props.name,
+          value: id,
+        },
+      });
+    }
     setShowModal(false);
   };
 
@@ -361,7 +447,7 @@ interface CategorySelectorProps {
 
 const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   const { categories } = useContext(MainStore);
-  const [categoryType, setCategoryType] = useState(1);
+  const [categoryType, setCategoryType] = useState(2);
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null as Objects.Category | null);
 
@@ -402,11 +488,9 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   };
 
   return (
-    <>
+    <div className={props.transfer ? 'loading' : ''}>
       <div
-        className={
-          props.transfer ? 'NewTransactionForm__CategorySelector loading' : 'NewTransactionForm__CategorySelector'
-        }
+        className={props.error ? 'NewTransactionForm__CategorySelector error' : 'NewTransactionForm__CategorySelector'}
         onClick={() => setShowModal(true)}
       >
         <div className="NewTransactionForm__CategorySelector__Icon" />
