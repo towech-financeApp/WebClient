@@ -328,28 +328,27 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
         <div className="NewTransactionForm__WalletSelector__Triangle" />
       </div>
 
-      <div className="NewTransactionForm__WalletSelector__Modal">
-        <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
-          <div className="NewTransactionForm__WalletSelector__Container">
-            {wallets.map((wallet: Objects.Wallet) => (
-              <div
-                className="NewTransactionForm__WalletSelector__Wallet"
-                key={wallet._id}
-                onClick={() => setWalletCallback(wallet._id)}
-              >
-                <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                  <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
-                  <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
-                </div>
+      <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
+        <div className="NewTransactionForm__WalletSelector__Container">
+          {wallets.map((wallet: Objects.Wallet) => (
+            <div
+              className="NewTransactionForm__WalletSelector__Wallet"
+              key={wallet._id}
+              onClick={() => setWalletCallback(wallet._id)}
+            >
+              <div className="NewTransactionForm__WalletSelector__Wallet__Container">
+                <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
+                <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
               </div>
-            ))}
-          </div>
-        </Modal>
-      </div>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </>
   );
 };
 
+// ------------------------------------------------------------------------------------------
 interface CategorySelectorProps {
   error?: boolean;
   value?: string;
@@ -415,62 +414,60 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
         <div className="NewTransactionForm__CategorySelector__Triangle" />
       </div>
 
-      <div className="NewTransactionForm__WalletSelector__Modal">
-        <Modal setModal={setShowModal} showModal={showModal}>
-          <>
-            <div className="NewTransactionForm__CategorySelector__Container">
-              {!props.edit && (
-                <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
-                  Other
+      <Modal setModal={setShowModal} showModal={showModal}>
+        <>
+          <div className="NewTransactionForm__CategorySelector__Container">
+            {!props.edit && (
+              <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
+                Other
+              </div>
+            )}
+            <div className={categoryType === 1 ? 'selected' : ''} onClick={() => setCategoryType(1)}>
+              Income
+            </div>
+            <div className={categoryType === 2 ? 'selected' : ''} onClick={() => setCategoryType(2)}>
+              Expense
+            </div>
+          </div>
+          <div className="NewTransactionForm__CategorySelector__ListContainer">
+            {categoryType === 0 ? (
+              <>
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key="-2"
+                  onClick={() => setCategoryCallback('-2')}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
                 </div>
-              )}
-              <div className={categoryType === 1 ? 'selected' : ''} onClick={() => setCategoryType(1)}>
-                Income
-              </div>
-              <div className={categoryType === 2 ? 'selected' : ''} onClick={() => setCategoryType(2)}>
-                Expense
-              </div>
-            </div>
-            <div className="NewTransactionForm__CategorySelector__ListContainer">
-              {categoryType === 0 ? (
-                <>
-                  <div
-                    className="NewTransactionForm__CategorySelector__Category"
-                    key="-2"
-                    onClick={() => setCategoryCallback('-2')}
-                  >
-                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                    <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
-                  </div>
-                </>
-              ) : categoryType === 1 ? (
-                categories.Income.map((cat: Objects.Category) => (
-                  <div
-                    className="NewTransactionForm__CategorySelector__Category"
-                    key={cat._id}
-                    onClick={() => setCategoryCallback(cat._id)}
-                  >
-                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                  </div>
-                ))
-              ) : (
-                categories.Expense.map((cat: Objects.Category) => (
-                  <div
-                    className="NewTransactionForm__CategorySelector__Category"
-                    key={cat._id}
-                    onClick={() => setCategoryCallback(cat._id)}
-                  >
-                    <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                    <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
-                  </div>
-                ))
-              )}
-            </div>
-          </>
-        </Modal>
-      </div>
-    </>
+              </>
+            ) : categoryType === 1 ? (
+              categories.Income.map((cat: Objects.Category) => (
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key={cat._id}
+                  onClick={() => setCategoryCallback(cat._id)}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                </div>
+              ))
+            ) : (
+              categories.Expense.map((cat: Objects.Category) => (
+                <div
+                  className="NewTransactionForm__CategorySelector__Category"
+                  key={cat._id}
+                  onClick={() => setCategoryCallback(cat._id)}
+                >
+                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                </div>
+              ))
+            )}
+          </div>
+        </>
+      </Modal>
+    </div>
   );
 };
 

@@ -35,7 +35,6 @@ const TransactionHeader = (): JSX.Element => {
   // Hooks
   const [showModal, setModal] = useState(false);
 
-
   // Functions
   const selectWallet = (id: string) => {
     if (id !== transactionState.selectedWallet) {
@@ -89,18 +88,16 @@ const TransactionHeader = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="Transactions__Header__Modals">
-        <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
-          <div className="Transactions__Header__Selector">
-            <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
-          </div>
-          <div className="Transactions__Header__Selector">
-            {wallets.map((wallet: Objects.Wallet) => (
-              <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
-            ))}
-          </div>
-        </Modal>
-      </div>
+      <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
+        <div className="Transactions__Header__Selector">
+          <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
+        </div>
+        <div className="Transactions__Header__Selector">
+          {wallets.map((wallet: Objects.Wallet) => (
+            <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
+          ))}
+        </div>
+      </Modal>
     </>
   );
 };

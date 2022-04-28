@@ -68,7 +68,6 @@ const Modal = (props: Props): JSX.Element => {
   }, [keyPress]);
 
   return (
-    // <div className="Modal">
     <div className={props.showModal ? 'Modal active' : 'Modal'}>
       <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
         <div className={props.float ? 'ModalFloat__Content' : 'Modal__Content'}>

@@ -33,15 +33,10 @@ const WalletCard = (props: Props): JSX.Element => {
             </div>
           </div>
         </div>
-        {/* <div className="WalletCard__Name" onClick={() => navigate(`/home?wallet=${props.wallet._id}`)}>
-          {props.wallet.name}
-        </div> */}
       </div>
-      {/*Modals. inside a div to ignore the margin set by the container*/}
-      <div className="WalletCard__Modals">
-        {/* Edit Wallet Modal */}
-        <WalletForm set={setEdit} state={showEdit} initialWallet={props.wallet} />
-      </div>
+      {/*Modals*/}
+      {/* Edit Wallet Modal */}
+      <WalletForm set={setEdit} state={showEdit} initialWallet={props.wallet} />
     </>
   );
 };

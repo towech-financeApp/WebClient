@@ -64,43 +64,41 @@ const ChangePasswordForm = (props: Props): JSX.Element => {
   }
 
   return (
-    <div className="Settings__EditName__Modal">
-      <Modal
-        showModal={props.state}
-        setModal={props.setState}
-        title={'Change password'}
-        accept={acceptIcon}
-        onAccept={changePasswordCallback}
-        onClose={clearModal}
-      >
-        <form onSubmit={changePasswordForm.onSubmit}>
-          <Input
-            error={errors.password ? true : false}
-            label="Old password"
-            name="oldPassword"
-            type="password"
-            value={changePasswordForm.values.oldPassword}
-            onChange={changePasswordForm.onChange}
-          />
-          <Input
-            error={errors.confirmPassword ? true : false}
-            label="New password"
-            name="newPassword"
-            type="password"
-            value={changePasswordForm.values.newPassword}
-            onChange={changePasswordForm.onChange}
-          />
-          <Input
-            error={errors.confirmPassword ? true : false}
-            label="Confirm new password"
-            name="confirmPassword"
-            type="password"
-            value={changePasswordForm.values.confirmPassword}
-            onChange={changePasswordForm.onChange}
-          />
-        </form>
-      </Modal>
-    </div>
+    <Modal
+      showModal={props.state}
+      setModal={props.setState}
+      title={'Change password'}
+      accept={acceptIcon}
+      onAccept={changePasswordCallback}
+      onClose={clearModal}
+    >
+      <form onSubmit={changePasswordForm.onSubmit}>
+        <Input
+          error={errors.password ? true : false}
+          label="Old password"
+          name="oldPassword"
+          type="password"
+          value={changePasswordForm.values.oldPassword}
+          onChange={changePasswordForm.onChange}
+        />
+        <Input
+          error={errors.confirmPassword ? true : false}
+          label="New password"
+          name="newPassword"
+          type="password"
+          value={changePasswordForm.values.newPassword}
+          onChange={changePasswordForm.onChange}
+        />
+        <Input
+          error={errors.confirmPassword ? true : false}
+          label="Confirm new password"
+          name="confirmPassword"
+          type="password"
+          value={changePasswordForm.values.confirmPassword}
+          onChange={changePasswordForm.onChange}
+        />
+      </form>
+    </Modal>
   );
 };
 

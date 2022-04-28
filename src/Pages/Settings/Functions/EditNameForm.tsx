@@ -71,27 +71,25 @@ const EditNameForm = (props: Props): JSX.Element => {
   }
 
   return (
-    <div className="Settings__EditName__Modal">
-      <Modal
-        showModal={props.state}
-        setModal={props.setState}
-        title={'Change Name'}
-        accept={acceptIcon}
-        onAccept={editNameCallback}
-        onClose={clearModal}
-      >
-        <form onSubmit={editNameForm.onSubmit}>
-          <Input
-            error={errors.name ? true : false}
-            label="Name"
-            name="name"
-            type="text"
-            value={editNameForm.values.name}
-            onChange={editNameForm.onChange}
-          />
-        </form>
-      </Modal>
-    </div>
+    <Modal
+      showModal={props.state}
+      setModal={props.setState}
+      title={'Change Name'}
+      accept={acceptIcon}
+      onAccept={editNameCallback}
+      onClose={clearModal}
+    >
+      <form onSubmit={editNameForm.onSubmit}>
+        <Input
+          error={errors.name ? true : false}
+          label="Name"
+          name="name"
+          type="text"
+          value={editNameForm.values.name}
+          onChange={editNameForm.onChange}
+        />
+      </form>
+    </Modal>
   );
 };
 

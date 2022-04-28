@@ -47,22 +47,20 @@ const ResendVerification = (props: Props): JSX.Element => {
   }, [props.state]);
 
   return (
-    <div className="Settings__EditName__Modal">
-      <Modal showModal={props.state} setModal={props.setState} title={'Resend verification mail'} accept={'OK'}>
-        <div>
-          {sent && 'The email verification has been sent'}
-          {Object.keys(errors).length > 0 && (
-            <div className="ui error message">
-              <ul className="list">
-                {Object.values(errors).map((value: any) => (
-                  <li key={value}>{value}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </Modal>
-    </div>
+    <Modal showModal={props.state} setModal={props.setState} title={'Resend verification mail'} accept={'OK'}>
+      <div>
+        {sent && 'The email verification has been sent'}
+        {Object.keys(errors).length > 0 && (
+          <div className="ui error message">
+            <ul className="list">
+              {Object.values(errors).map((value: any) => (
+                <li key={value}>{value}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </Modal>
   );
 };
 

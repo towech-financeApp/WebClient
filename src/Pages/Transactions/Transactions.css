@@ -319,10 +319,6 @@
   width: 0;
 }
 
-.NewTransactionForm__WalletSelector__Modal {
-  margin-left: -23px;
-}
-
 .NewTransactionForm__WalletSelector__Container {
   background-color: var(--black);
   border-radius: 25px;

@@ -10,6 +10,7 @@
   z-index: 1000000000000;
 
   top: 200%;
+  left: 0;
   transition: top 850ms;
 
   --free-space: 30px;
