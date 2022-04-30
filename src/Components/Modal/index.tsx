@@ -53,7 +53,7 @@ const Modal = (props: Props): JSX.Element => {
 
   // Keypress detector
   const keyPress = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape' && props.showModal) {
         closeModal();
       }
