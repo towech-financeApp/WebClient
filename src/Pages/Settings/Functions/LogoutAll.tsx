@@ -10,7 +10,7 @@ import React, { useContext } from 'react';
 import Modal from '../../../Components/Modal';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../../Hooks/ContextStore';
+import { MainStore } from '../../../Hooks/ContextStore';
 
 // Services
 import AuthService from '../../../Services/AuthenticationService';
@@ -22,7 +22,7 @@ interface Props {
 
 const LogoutAll = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(MainStore);
 
   // Starts the services
   const authService = new AuthService(authToken, dispatchAuthToken);
@@ -40,18 +40,16 @@ const LogoutAll = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="Settings__EditName__Modal">
-      <Modal
-        float
-        showModal={props.state}
-        setModal={props.setState}
-        title={'Logout from all devices'}
-        accept={'Logout'}
-        onAccept={runLogout}
-      >
-        <div className="Settings__EditName__Modal__Text">Are you sure you want to logout from all devices?</div>
-      </Modal>
-    </div>
+    <Modal
+      float
+      showModal={props.state}
+      setModal={props.setState}
+      title={'Logout from all devices'}
+      accept={'Logout'}
+      onAccept={runLogout}
+    >
+      <div className="Settings__EditName__Modal__Text">Are you sure you want to logout from all devices?</div>
+    </Modal>
   );
 };
 

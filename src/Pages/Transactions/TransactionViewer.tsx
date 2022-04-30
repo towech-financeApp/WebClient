@@ -3,37 +3,34 @@
  * All rights reserved
  * Componet that shows all the given transactions
  */
+// Libraries
+import { useContext } from 'react';
+
 // Models
 import { Objects } from '../../models';
+
+// Hooks
+import { TransactionPageStore } from '../../Hooks/ContextStore';
 
 // Styles
 import './Transactions.css';
 import TransactionCard from './TransactionCard';
 
-interface Props {
-  wallets: Objects.Wallet[];
-  transactions: Objects.Transaction[];
-  edit: (transaction: Objects.Transaction) => void;
-  delete: (transaction: Objects.Transaction) => void;
-}
+const TransactionViewer = (): JSX.Element => {
+  const { transactionState } = useContext(TransactionPageStore);
 
-const TransactionViewer = (props: Props): JSX.Element => {
   return (
-    <div className={props.transactions.length == 0 ? 'Transactions__Viewer emptytrans' : 'Transactions__Viewer'}>
-      {props.transactions.length == 0 ? (
+    <div
+      className={transactionState.transactions.length == 0 ? 'Transactions__Viewer emptytrans' : 'Transactions__Viewer'}
+    >
+      {transactionState.transactions.length == 0 ? (
         <div className="Transactions__Empty">
           <h1>There are no transactions for this period</h1>
         </div>
       ) : (
         <div className="Transactions__Viewer__List">
-          {props.transactions.map((transaction: Objects.Transaction) => (
-            <TransactionCard
-              key={transaction._id}
-              transaction={transaction}
-              wallets={props.wallets}
-              edit={props.edit}
-              delete={props.delete}
-            />
+          {transactionState.transactions.map((transaction: Objects.Transaction) => (
+            <TransactionCard key={transaction._id} transaction={transaction} />
           ))}
           <div className="Transactions__Viewer__Filler" />
         </div>

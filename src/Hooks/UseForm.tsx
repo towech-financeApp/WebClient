@@ -34,6 +34,7 @@ const UseForm = (callback: any, initialState: any) => {
       case 'text':
       case 'number':
       case 'password':
+      case 'custom-select':
         setValues({ ...values, [data.target.name]: data.target.value });
         break;
       case 'select-one':

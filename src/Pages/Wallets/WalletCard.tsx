@@ -6,16 +6,14 @@
  */
 import { useState } from 'react';
 
-// Components
-import NewWalletForm from './NewWalletForm';
+// Hooks
+import WalletForm from './WalletForm';
 
 // Models
 import { Objects } from '../../models';
 
 interface Props /*extends RouteComponentProps*/ {
   wallet: Objects.Wallet;
-  editWallet: (wallet: Objects.Wallet) => void;
-  deleteWallet: (wallet: Objects.Wallet) => void;
 }
 
 const WalletCard = (props: Props): JSX.Element => {
@@ -35,36 +33,10 @@ const WalletCard = (props: Props): JSX.Element => {
             </div>
           </div>
         </div>
-        {/* <div className="WalletCard__Name" onClick={() => navigate(`/home?wallet=${props.wallet._id}`)}>
-          {props.wallet.name}
-        </div> */}
       </div>
-      {/*Modals. inside a div to ignore the margin set by the container*/}
-      <div className="WalletCard__Modals">
-        {/* Edit Wallet Modal */}
-        <NewWalletForm
-          editWallet={props.editWallet}
-          deleteWallet={props.deleteWallet}
-          set={setEdit}
-          state={showEdit}
-          initialWallet={props.wallet}
-        />
-        {/* Delete Wallet Modal */}
-        {/* <Modal
-          showModal={showDelete}
-          setModal={setDelete}
-          title={`Delete ${props.wallet.name}`}
-          accept="Delete"
-          onAccept={deleteWallet}
-        >
-          <p>
-            <br />
-            Are you sure you want to delete this wallet?
-            <br />
-            <br /> This cannot be undone
-          </p>
-        </Modal> */}
-      </div>
+      {/*Modals*/}
+      {/* Edit Wallet Modal */}
+      <WalletForm set={setEdit} state={showEdit} initialWallet={props.wallet} />
     </>
   );
 };

@@ -5,37 +5,42 @@
  * Header that allows to change the selected wallet
  */
 // Libraries
-import Modal from '../../Components/Modal';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// hooks
+import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
 
 // Models
 import { Objects } from '../../models';
 
 // Components
-import { useState } from 'react';
+import Modal from '../../Components/Modal';
 
 // Styles
 import './Transactions.css';
 
 // Interfaces
-interface HeaderProps {
-  selectedWallet_id: string;
-  wallets: Objects.Wallet[];
-  onChange: (id: string) => void;
-}
-
 interface WalletProps {
   onClick: (id: string) => void;
   wallet?: Objects.Wallet;
   total?: number;
 }
 
-const TransactionHeader = (props: HeaderProps): JSX.Element => {
+const TransactionHeader = (): JSX.Element => {
+  const { wallets } = useContext(MainStore);
+  const { transactionState, dispatchTransactionState } = useContext(TransactionPageStore);
+  const navigate = useNavigate();
+
   // Hooks
   const [showModal, setModal] = useState(false);
 
   // Functions
   const selectWallet = (id: string) => {
-    props.onChange(id);
+    if (id !== transactionState.selectedWallet) {
+      navigate(`/home?wallet=${id}`);
+      dispatchTransactionState({ type: 'SELECT-WALLET', payload: id });
+    }
     setModal(false);
   };
 
@@ -58,13 +63,13 @@ const TransactionHeader = (props: HeaderProps): JSX.Element => {
       }
     }
 
-    if (props.selectedWallet_id === '-1') output.money = output.total;
+    if (transactionState.selectedWallet === '-1') output.money = output.total;
 
     return output;
   };
 
   // Variables
-  const displayed = getNameAndTotal(props.wallets, props.selectedWallet_id);
+  const displayed = getNameAndTotal(wallets, transactionState.selectedWallet);
 
   return (
     <>
@@ -83,18 +88,16 @@ const TransactionHeader = (props: HeaderProps): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="Transactions__Header__Modals">
-        <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
-          <div className="Transactions__Header__Selector">
-            <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
-          </div>
-          <div className="Transactions__Header__Selector">
-            {props.wallets.map((wallet: Objects.Wallet) => (
-              <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
-            ))}
-          </div>
-        </Modal>
-      </div>
+      <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
+        <div className="Transactions__Header__Selector">
+          <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
+        </div>
+        <div className="Transactions__Header__Selector">
+          {wallets.map((wallet: Objects.Wallet) => (
+            <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
+          ))}
+        </div>
+      </Modal>
     </>
   );
 };

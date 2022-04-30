@@ -21,8 +21,10 @@ import VerifyAccount from './Pages/VerifyAccount/VerifyAccount';
 import NotFound from './Components/NotFound';
 
 // Hooks
-import { AuthenticationTokenStore } from './Hooks/ContextStore';
+import { MainStore } from './Hooks/ContextStore';
 import useToken from './Hooks/UseToken';
+import useCategories from './Hooks/UseCategories';
+import useWallets from './Hooks/UseWallets';
 
 // Services
 import AuthenticationService from './Services/AuthenticationService';
@@ -36,21 +38,25 @@ function App(): JSX.Element {
 
   // Hooks
   const [authToken, dispatchAuthToken] = useToken('authToken');
+  const [categories, dispatchCategories] = useCategories();
+  const [wallets, dispatchWallets] = useWallets();
   const [loaded, setLoaded] = useState(false);
 
   // use Effect for first load
   useEffect(() => {
     const firstLoad = async () => {
       if (!loaded) {
-        setLoaded(true);
         authService
           .refreshToken()
           .then((res) => {
-            dispatchAuthToken({ type: 'LOGIN', payload: res.data });
+            // The keep session is ignored for this call
+            dispatchAuthToken({ type: 'REFRESH', payload: { ...res.data, keepSession: false } });
+
+            setLoaded(true);
           })
           .catch(() => {
-            //console.log(err.response);
             dispatchAuthToken({ type: 'LOGOUT', payload: { token: '', keepSession: false } });
+            setLoaded(true);
           });
       }
     };
@@ -59,7 +65,9 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
-      <AuthenticationTokenStore.Provider value={{ authToken, dispatchAuthToken }}>
+      <MainStore.Provider
+        value={{ authToken, dispatchAuthToken, categories, dispatchCategories, wallets, dispatchWallets }}
+      >
         <Router>
           <Routes>
             <Route
@@ -93,7 +101,7 @@ function App(): JSX.Element {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
-      </AuthenticationTokenStore.Provider>
+      </MainStore.Provider>
     </div>
   );
 }

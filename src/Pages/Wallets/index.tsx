@@ -8,27 +8,24 @@ import { useContext, useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
-
-// Models
-import { Objects } from '../../models';
+import { MainStore } from '../../Hooks/ContextStore';
+import WalletForm from './WalletForm';
 
 // Components
+import Button from '../../Components/Button';
 import NoWalletsCard from './NoWalletsCard';
 import Page from '../../Components/Page';
+import WalletCard from './WalletCard';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
 
 // Styles
 import './Wallets.css';
-import Button from '../../Components/Button';
-import NewWalletForm from './NewWalletForm';
-import WalletCard from './WalletCard';
 
 const Wallets = (): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken, wallets, dispatchWallets } = useContext(MainStore);
 
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
@@ -36,46 +33,20 @@ const Wallets = (): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [modal, setModal] = useState(false);
-  const [wallets, setWallets] = useState([] as Objects.Wallet[]);
 
   // Main API call
   useEffect(() => {
-    const firstLoad = async () => {
-      if (!loaded) {
-        transactionService
-          .getWallets()
-          .then((res) => {
-            setWallets(res.data);
-            setLoaded(true);
-          })
-          .catch(() => {
-            // console.log(err.response);
-            setLoaded(true);
-          });
-      }
-    };
-    firstLoad();
-  });
-
-  const addWallet = (wallet: Objects.Wallet): void => {
-    setWallets([...wallets, wallet]);
-  };
-
-  const editWallet = (wallet: Objects.Wallet): void => {
-    const editedWallets = wallets;
-
-    for (const i in editedWallets) {
-      if (editedWallets[i]._id == wallet._id) {
-        editedWallets[i] = wallet;
-        break;
-      }
-    }
-    setWallets([...editedWallets]);
-  };
-
-  const deleteWallet = (wallet: Objects.Wallet): void => {
-    setWallets(wallets.filter((o) => o._id !== wallet._id));
-  };
+    transactionService
+      .getWallets()
+      .then((res) => {
+        dispatchWallets({ type: 'SET', payload: { wallets: res.data } });
+        setLoaded(true);
+      })
+      .catch(() => {
+        // console.log(err.response);
+        setLoaded(true);
+      });
+  }, []);
 
   const header = (
     <div className="Wallets__Header">
@@ -97,7 +68,7 @@ const Wallets = (): JSX.Element => {
         </Button>
 
         {/*Add/edit wallet Form*/}
-        <NewWalletForm state={modal} set={setModal} addWallet={addWallet} />
+        <WalletForm state={modal} set={setModal} />
 
         {/*Lists all the wallets, if none available, returns a "No Wallets" text*/}
         {loaded ? (
@@ -107,7 +78,7 @@ const Wallets = (): JSX.Element => {
             <div className="Wallets__Container">
               <div className="Wallets__Container__Section">
                 {wallets.map((wallet) => (
-                  <WalletCard key={wallet._id} wallet={wallet} editWallet={editWallet} deleteWallet={deleteWallet} />
+                  <WalletCard key={wallet._id} wallet={wallet} />
                 ))}
               </div>
             </div>

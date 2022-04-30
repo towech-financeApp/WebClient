@@ -8,7 +8,7 @@ import { useContext, useRef, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../Hooks/ContextStore';
+import { MainStore } from '../../Hooks/ContextStore';
 
 // Services
 import AuthenticationService from '../../Services/AuthenticationService';
@@ -23,7 +23,7 @@ interface Props {
 
 const NavBar = (props: Props): JSX.Element => {
   // Context
-  const { dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { dispatchAuthToken } = useContext(MainStore);
 
   // Starts the services
   const authService = new AuthenticationService();

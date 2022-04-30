@@ -104,12 +104,6 @@
   padding-top: 11.5px;
 }
 
-.WalletCard__Modals {
-  position: fixed;
-  margin: calc(-1 * var(--cardContainerMargin));
-  z-index: 999999;
-}
-
 .WalletCard__Icon {
   background-color: var(--gray2);
   border-radius: 50%;

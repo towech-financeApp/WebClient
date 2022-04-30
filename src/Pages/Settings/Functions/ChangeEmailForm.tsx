@@ -12,7 +12,7 @@ import Input from '../../../Components/Input';
 import Modal from '../../../Components/Modal';
 
 // Hooks
-import { AuthenticationTokenStore } from '../../../Hooks/ContextStore';
+import { MainStore } from '../../../Hooks/ContextStore';
 import UseForm from '../../../Hooks/UseForm';
 
 // Services
@@ -29,7 +29,7 @@ interface Props {
 
 const ChangeEmailForm = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken } = useContext(AuthenticationTokenStore);
+  const { authToken, dispatchAuthToken } = useContext(MainStore);
 
   // Starts the services
   const userService = new UserService(authToken, dispatchAuthToken);
@@ -64,27 +64,25 @@ const ChangeEmailForm = (props: Props): JSX.Element => {
   }
 
   return (
-    <div className="Settings__EditName__Modal">
-      <Modal
-        showModal={props.state}
-        setModal={props.setState}
-        title={'Change Email'}
-        accept={acceptIcon}
-        onAccept={changeEmailCallback}
-        onClose={clearModal}
-      >
-        <form onSubmit={changeEmailForm.onSubmit}>
-          <Input
-            error={errors.password ? true : false}
-            label="New email"
-            name="email"
-            type="text"
-            value={changeEmailForm.values.email}
-            onChange={changeEmailForm.onChange}
-          />
-        </form>
-      </Modal>
-    </div>
+    <Modal
+      showModal={props.state}
+      setModal={props.setState}
+      title={'Change Email'}
+      accept={acceptIcon}
+      onAccept={changeEmailCallback}
+      onClose={clearModal}
+    >
+      <form onSubmit={changeEmailForm.onSubmit}>
+        <Input
+          error={errors.password ? true : false}
+          label="New email"
+          name="email"
+          type="text"
+          value={changeEmailForm.values.email}
+          onChange={changeEmailForm.onChange}
+        />
+      </form>
+    </Modal>
   );
 };
 

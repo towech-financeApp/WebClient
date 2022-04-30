@@ -13,6 +13,9 @@ import CustomAxios from './CustomAxios';
 // Stores
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
+// Models
+import { Responses } from '../models';
+
 export default class AuthenticationService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;
@@ -26,19 +29,24 @@ export default class AuthenticationService {
     this.SERVICE_URL = this.instance.ROOT_URL + '/authentication';
   }
 
-  async login(payload: any, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+  async login(
+    payload: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/login`, payload, loading);
   }
 
-  async logout(): Promise<AxiosResponse<any>> {
+  async logout(): Promise<AxiosResponse<null>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/logout`, null);
   }
 
-  async logoutAll(): Promise<AxiosResponse<any>> {
+  async logoutAll(): Promise<AxiosResponse<null>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/logout-all`, null);
   }
 
-  async refreshToken(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+  async refreshToken(
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/refresh`, null, loading);
   }
 }

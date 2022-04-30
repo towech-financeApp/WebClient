@@ -53,7 +53,7 @@ const Modal = (props: Props): JSX.Element => {
 
   // Keypress detector
   const keyPress = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape' && props.showModal) {
         closeModal();
       }
@@ -68,12 +68,11 @@ const Modal = (props: Props): JSX.Element => {
   }, [keyPress]);
 
   return (
-    // <div className="Modal">
     <div className={props.showModal ? 'Modal active' : 'Modal'}>
       <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
         <div className={props.float ? 'ModalFloat__Content' : 'Modal__Content'}>
           {!props.float && (
-            <div className="Modal__header">
+            <div className={props.loading ? 'Modal__header loading' : 'Modal__header'}>
               <Button className="Modal__header__button" onClick={closeModal}>
                 <FaIcons.FaTimes />
               </Button>
@@ -92,7 +91,7 @@ const Modal = (props: Props): JSX.Element => {
             {props.children}
           </div>
           {props.float && (
-            <div className="Modal__Footer">
+            <div className={props.loading ? 'Modal__Footer loading' : 'Modal__Footer'}>
               <div className="Modal__Confirm">
                 <Button dark onClick={() => props.setModal(false)}>
                   {props.onAccept ? 'Cancel' : props.accept || 'Ok'}

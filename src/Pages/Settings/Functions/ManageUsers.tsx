@@ -18,11 +18,9 @@ interface MenuProps {
 export default class ManageUsers {
   static Menu = (props: MenuProps): JSX.Element => {
     return (
-      <div className="Settings__ManageUsers__Modal">
-        <Modal float showModal={props.state} setModal={props.setState} title={'Manage users'}>
-          TODO
-        </Modal>
-      </div>
+      <Modal float showModal={props.state} setModal={props.setState} title={'Manage users'}>
+        TODO
+      </Modal>
     );
   };
 }

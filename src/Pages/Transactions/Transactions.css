@@ -28,12 +28,6 @@
   width: 35px;
 }
 
-.Transactions__Header__Modals {
-  position: fixed;
-  margin-left: -80px;
-  z-index: 999999;
-}
-
 .Transactions__Header__Wallet__Name {
   color: var(--gray2);
   font-size: 14px;
@@ -271,37 +265,33 @@
   flex: 2;
 }
 
-.TransactionCard__Content__Bottom__Date {
-  color: var(--gray3);
-  text-align: right;
-  flex: 1;
-}
-
 .NewTransactionForm__Content__Splitted {
   align-items: center;
   display: flex;
-  margin-top: -15px;
+  margin-bottom: -15px;
 }
 
-.NewTransactionForm__Content__Date {
-  flex: 5;
-  margin-left: 3px;
+.NewTransactionForm__Content__Splitted__Label {
+  color: var(--yellow);
+  flex: 1;
+  font-weight: 700;
+  margin: 7px 20px;
 }
 
 .NewTransactionForm__WalletSelector {
   align-items: center;
   background-color: var(--black);
+  border: 5px solid var(--black);
   border-radius: 10px;
   display: flex;
   flex: 4;
   height: 30px;
-  margin-right: 3px;
-  padding: 10px;
+  margin: 10px 5px;
+  padding: 5px 15px;
 }
 
 .NewTransactionForm__WalletSelector.error {
   border: 5px solid var(--red);
-  padding: 5px;
 }
 
 .NewTransactionForm__WalletSelector__Icon {
@@ -382,11 +372,16 @@
 .NewTransactionForm__CategorySelector {
   align-items: center;
   background-color: var(--black);
+  border: 5px solid var(--black);
   border-radius: 10px;
   display: flex;
   height: 50px;
   margin: 5px;
-  padding: 10px 15px;
+  padding: 5px 10px;
+}
+
+.NewTransactionForm__CategorySelector.error {
+  border: 5px solid var(--red);
 }
 
 .NewTransactionForm__CategorySelector__Icon {
@@ -399,7 +394,7 @@
 
 .NewTransactionForm__CategorySelector__Name {
   margin-left: 10px;
-  font-size: 28px;
+  font-size: 26px;
   flex: 1;
 }
 
@@ -416,7 +411,7 @@
   background-color: var(--black);
   border-radius: 20px 20px 0 0;
   display: flex;
-  font-size: 26px;
+  font-size: 22px;
   height: 40px;
   justify-content: space-around;
 }
