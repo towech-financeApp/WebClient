@@ -110,7 +110,11 @@ const TransactionForm = (props: Props): JSX.Element => {
       }
 
       // Sends the transaction to the API
-      const res = await transactionService.editTransaction(props.initialTransaction?._id || '', transactionForm.values, setLoading);
+      const res = await transactionService.editTransaction(
+        props.initialTransaction?._id || '',
+        transactionForm.values,
+        setLoading,
+      );
 
       props.setState(false);
 
@@ -181,7 +185,7 @@ const TransactionForm = (props: Props): JSX.Element => {
       });
       dispatchTransactionState({ type: 'ADD', payload: res.data });
 
-      props.setState(false); 
+      props.setState(false);
     } catch (err: any) {
       if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
       else console.log(err); //eslint-disable-line no-console

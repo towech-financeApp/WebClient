@@ -108,7 +108,7 @@ const useToken = (storageLocation?: string): [TokenState, React.Dispatch<TokenAc
       case 'REFRESH':
         item = jwt_decode(action.payload.token);
         item.token = action.payload.token;
-        return item
+        return item;
       case 'LOGOUT':
         removeFromStorage(storageLocation);
         return {} as TokenState;

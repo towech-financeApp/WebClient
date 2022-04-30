@@ -27,7 +27,9 @@ export default class CategoryService {
     this.SERVICE_URL = this.instance.ROOT_URL + '';
   }
 
-  async getCategories(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<Responses.GetCategoriesResponse>> {
+  async getCategories(
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Responses.GetCategoriesResponse>> {
     return await this.instance.get(`${this.SERVICE_URL}/categories`, loading);
   }
 }

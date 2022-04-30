@@ -29,7 +29,10 @@ export default class AuthenticationService {
     this.SERVICE_URL = this.instance.ROOT_URL + '/authentication';
   }
 
-  async login(payload: any, loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
+  async login(
+    payload: any,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/login`, payload, loading);
   }
 
@@ -41,7 +44,9 @@ export default class AuthenticationService {
     return await this.instance.postCookie(`${this.SERVICE_URL}/logout-all`, null);
   }
 
-  async refreshToken(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
+  async refreshToken(
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Responses.AuthenticationResponse>> {
     return await this.instance.postCookie(`${this.SERVICE_URL}/refresh`, null, loading);
   }
 }

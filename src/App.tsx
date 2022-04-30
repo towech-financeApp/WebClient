@@ -50,7 +50,7 @@ function App(): JSX.Element {
           .refreshToken()
           .then((res) => {
             // The keep session is ignored for this call
-            dispatchAuthToken({ type: 'REFRESH', payload: {...res.data, keepSession: false} });
+            dispatchAuthToken({ type: 'REFRESH', payload: { ...res.data, keepSession: false } });
 
             setLoaded(true);
           })
