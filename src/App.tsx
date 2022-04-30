@@ -49,7 +49,8 @@ function App(): JSX.Element {
         authService
           .refreshToken()
           .then((res) => {
-            dispatchAuthToken({ type: 'LOGIN', payload: res.data });
+            // The keep session is ignored for this call
+            dispatchAuthToken({ type: 'REFRESH', payload: {...res.data, keepSession: false} });
 
             setLoaded(true);
           })

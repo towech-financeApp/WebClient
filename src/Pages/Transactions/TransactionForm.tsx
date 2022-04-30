@@ -118,11 +118,11 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: {
           wallets: [],
-          updateAmount: { new: [res.data], old: props.initialTransaction ? [props.initialTransaction] : [] },
+          updateAmount: { new: res.data.new, old: res.data.old },
         },
       });
 
-      dispatchTransactionState({ type: 'EDIT', payload: [res.data] });
+      dispatchTransactionState({ type: 'EDIT', payload: res.data.new });
     } catch (err: any) {
       setLoading(false);
       if (err.response.status === 304) props.setState(false);
@@ -138,13 +138,13 @@ const TransactionForm = (props: Props): JSX.Element => {
           response: `Somehow you managed to delete a transaction without an initial transaction, stop messing with the app pls`,
         };
 
-      await transactionService.deleteTransaction(props.initialTransaction._id, setLoading);
+      const res = await transactionService.deleteTransaction(props.initialTransaction._id, setLoading);
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: [props.initialTransaction], reverse: true } },
+        payload: { wallets: [], updateAmount: { new: res.data, reverse: true } },
       });
-      dispatchTransactionState({ type: 'DELETE', payload: [props.initialTransaction] });
+      dispatchTransactionState({ type: 'DELETE', payload: res.data });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }

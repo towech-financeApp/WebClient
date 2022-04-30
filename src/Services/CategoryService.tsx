@@ -12,7 +12,7 @@ import CustomAxios from './CustomAxios';
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-//import { Category } from '../models';
+import { Responses } from '../models';
 
 export default class CategoryService {
   private token: TokenState;
@@ -27,7 +27,7 @@ export default class CategoryService {
     this.SERVICE_URL = this.instance.ROOT_URL + '';
   }
 
-  async getCategories(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<any>> {
+  async getCategories(loading?: React.Dispatch<React.SetStateAction<boolean>>): Promise<AxiosResponse<Responses.GetCategoriesResponse>> {
     return await this.instance.get(`${this.SERVICE_URL}/categories`, loading);
   }
 }

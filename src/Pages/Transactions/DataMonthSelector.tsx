@@ -5,7 +5,7 @@
  */
 // Libraries
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 import GetParameters from '../../Utils/GetParameters';
 
 // Hooks
