@@ -33,7 +33,7 @@ export default class TransactionService {
   async deleteTransaction(
     id: string,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
-  ): Promise<AxiosResponse<Objects.Transaction[]>> {
+  ): Promise<AxiosResponse<Responses.ChangeTransactionResponse>> {
     return await this.instance.delete(`${this.SERVICE_URL}/transactions/${id}`, loading);
   }
 
@@ -48,7 +48,7 @@ export default class TransactionService {
     transactionId: string,
     transaction: Objects.Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
-  ): Promise<AxiosResponse<Responses.EditTransactionResponse>> {
+  ): Promise<AxiosResponse<Responses.ChangeTransactionResponse>> {
     return await this.instance.patch(`${this.SERVICE_URL}/transactions/${transactionId}`, transaction, loading);
   }
 
@@ -77,14 +77,14 @@ export default class TransactionService {
   async transferBetweenWallets(
     payload: Requests.WorkerTransfer,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
-  ): Promise<AxiosResponse<Objects.Transaction[]>> {
+  ): Promise<AxiosResponse<Responses.ChangeTransactionResponse>> {
     return await this.instance.post(`${this.SERVICE_URL}/wallets/transfer`, payload, loading);
   }
 
   async newTransaction(
     payload: Objects.Transaction,
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
-  ): Promise<AxiosResponse<Objects.Transaction>> {
+  ): Promise<AxiosResponse<Responses.ChangeTransactionResponse>> {
     return await this.instance.post(`${this.SERVICE_URL}/transactions`, payload, loading);
   }
 

@@ -13,11 +13,6 @@ export interface WalletAction {
   type: 'SET' | 'ADD' | 'EDIT' | 'DELETE' | 'UPDATE-AMOUNT';
   payload: {
     wallets: Objects.Wallet[];
-    updateAmount?: {
-      new: Objects.Transaction[];
-      reverse?: boolean;
-      old?: Objects.Transaction[];
-    };
   };
 }
 
@@ -56,37 +51,45 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
       });
       return item;
     case 'UPDATE-AMOUNT':
-      if (action.payload.updateAmount) {
-        item = [...state];
+      item = [...state];
 
-        // calculates the new transactions
-        action.payload.updateAmount.new.map((transaction) => {
-          const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
-          const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
+      // Goes through every wallet and sets the new amount value
+      action.payload.wallets.map((wallet) => {
+        const index = state.findIndex((x) => x._id === wallet._id);
+        if (index >= 0) item[index].money = wallet.money;
+      });
 
-          if (index !== -1) {
-            item[index].money =
-              (item[index].money || 0) +
-              (transaction.category.type === 'Income'
-                ? multiplier * transaction.amount
-                : -1 * multiplier * transaction.amount);
-          }
-        });
+      // if (action.payload.updateAmount) {
+      //   item = [...state];
 
-        // Reverses the old transactions if provided
-        action.payload.updateAmount.old?.map((transaction) => {
-          const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
-          const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
+      //   // calculates the new transactions
+      //   action.payload.updateAmount.new.map((transaction) => {
+      //     const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
+      //     const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
 
-          if (index !== -1) {
-            item[index].money =
-              (item[index].money || 0) +
-              (transaction.category.type === 'Income'
-                ? multiplier * transaction.amount
-                : -1 * multiplier * transaction.amount);
-          }
-        });
-      }
+      //     if (index !== -1) {
+      //       item[index].money =
+      //         (item[index].money || 0) +
+      //         (transaction.category.type === 'Income'
+      //           ? multiplier * transaction.amount
+      //           : -1 * multiplier * transaction.amount);
+      //     }
+      //   });
+
+      //   // Reverses the old transactions if provided
+      //   action.payload.updateAmount.old?.map((transaction) => {
+      //     const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
+      //     const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
+
+      //     if (index !== -1) {
+      //       item[index].money =
+      //         (item[index].money || 0) +
+      //         (transaction.category.type === 'Income'
+      //           ? multiplier * transaction.amount
+      //           : -1 * multiplier * transaction.amount);
+      //     }
+      //   });
+      // }
 
       return state;
     default:

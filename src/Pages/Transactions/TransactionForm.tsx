@@ -85,9 +85,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: [res.data] } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: [res.data] });
+      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
 
       props.setState(false);
     } catch (err: any) {
@@ -120,13 +120,10 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: {
-          wallets: [],
-          updateAmount: { new: res.data.new, old: res.data.old },
-        },
+        payload: { wallets: res.data.wallets },
       });
 
-      dispatchTransactionState({ type: 'EDIT', payload: res.data.new });
+      dispatchTransactionState({ type: 'EDIT', payload: res.data.newTransactions });
     } catch (err: any) {
       setLoading(false);
       if (err.response.status === 304) props.setState(false);
@@ -146,9 +143,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: res.data, reverse: true } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'DELETE', payload: res.data });
+      dispatchTransactionState({ type: 'DELETE', payload: res.data.newTransactions });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -181,9 +178,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: res.data } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data });
+      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
 
       props.setState(false);
     } catch (err: any) {
