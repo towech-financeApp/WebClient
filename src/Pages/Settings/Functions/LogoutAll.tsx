@@ -36,7 +36,7 @@ const LogoutAll = (props: Props): JSX.Element => {
       // console.log(err);
     }
 
-    dispatchAuthToken({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
+    dispatchAuthToken({ type: 'LOGOUT', payload: { token: '' } });
   };
 
   return (

@@ -32,18 +32,6 @@ const NavBar = (props: Props): JSX.Element => {
   const [sidebar, setSidebar] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Adds the mouse listener event, it is used to close the sidebar when a click
-  // outside the menu is made
-  // useEffect(() => {
-  //   document.addEventListener('mousedown', (event) => {
-  //     if (menuRef.current) {
-  //       if (!menuRef.current.contains(event.target as Node) && sidebar) {
-  //         setSidebar(false);
-  //       }
-  //     }
-  //   });
-  // });
-
   // Callbacks
   async function logoutCallback() {
     try {
@@ -52,7 +40,7 @@ const NavBar = (props: Props): JSX.Element => {
       // console.log(err);
     }
 
-    dispatchAuthToken({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
+    dispatchAuthToken({ type: 'LOGOUT', payload: { token: '' } });
   }
 
   return (

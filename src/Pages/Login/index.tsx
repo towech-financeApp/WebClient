@@ -59,7 +59,7 @@ const Login = (): JSX.Element => {
       loginForm.values.username = loginForm.values.username.trim().toLowerCase();
       const res = await authService.login(loginForm.values, setLoading);
 
-      dispatchAuthToken({ type: 'LOGIN', payload: { ...res.data, keepSession: loginForm.values.keepSession } });
+      dispatchAuthToken({ type: 'LOGIN', payload: res.data });
     } catch (error: any) {
       // If any error happens, clears the password field
       loginForm.values.password = '';
