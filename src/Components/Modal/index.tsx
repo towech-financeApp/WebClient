@@ -51,21 +51,21 @@ const Modal = (props: Props): JSX.Element => {
     else props.setModal(false);
   };
 
-  // Keypress detector
-  const keyPress = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && props.showModal) {
-        closeModal();
-      }
-    },
-    [props.setModal, props.showModal],
-  );
+  // // Keypress detector
+  // const keyPress = useCallback(
+  //   (e: KeyboardEvent) => {
+  //     if (e.key === 'Escape' && props.showModal) {
+  //       closeModal();
+  //     }
+  //   },
+  //   [props.setModal, props.showModal],
+  // );
 
-  // useEffect for the keypress
-  useEffect(() => {
-    document.addEventListener('keydown', keyPress);
-    return () => document.removeEventListener('keydown', keyPress);
-  }, [keyPress]);
+  // // useEffect for the keypress
+  // useEffect(() => {
+  //   document.addEventListener('keydown', keyPress);
+  //   return () => document.removeEventListener('keydown', keyPress);
+  // }, [keyPress]);
 
   return (
     <div className={props.showModal ? 'Modal active' : 'Modal'}>

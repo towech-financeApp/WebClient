@@ -10,6 +10,7 @@ import * as FaIcons from 'react-icons/fa';
 // Components
 import Button from '../../Components/Button';
 import Input from '../../Components/Input';
+import Datepicker from '../../Components/Datepicker';
 import Modal from '../../Components/Modal';
 
 // Hooks
@@ -52,12 +53,7 @@ const TransactionForm = (props: Props): JSX.Element => {
     concept: props.initialTransaction?.concept || '',
     amount: props.initialTransaction?.amount || '',
     excludeFromReport: props.initialTransaction?.excludeFromReport || false,
-    transactionDate:
-      props.initialTransaction?.transactionDate?.toString().substr(0, 10) ||
-      `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date()
-        .getDate()
-        .toString()
-        .padStart(2, '0')}`,
+    transactionDate: props.initialTransaction?.transactionDate || new Date(),
     // Values exclusive to transfers
     from_id: '-1',
     to_id: '-1',
@@ -252,14 +248,20 @@ const TransactionForm = (props: Props): JSX.Element => {
                 </div>
 
                 {/* Date field */}
-                <Input
+                <Datepicker
+                  label="Date"
+                  name="transactionDate"
+                  value={transactionForm.values.transactionDate}
+                  // onChange={transactionForm.onSubmit}
+                />
+                {/* <Input
                   error={errors.transactionDate ? true : false}
                   label="Date"
                   name="transactionDate"
                   type="text"
                   value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
-                />
+                /> */}
               </div>
             )}
 
@@ -291,14 +293,20 @@ const TransactionForm = (props: Props): JSX.Element => {
                   </div>
                 </div>
                 {/* Date field */}
-                <Input
+                <Datepicker
+                  label="Date"
+                  name="transactionDate"
+                  value={transactionForm.values.transactionDate}
+                  onChange={transactionForm.onSubmit}
+                />
+                {/* <Input
                   error={errors.transactionDate ? true : false}
                   label="Date"
                   name="transactionDate"
                   type="text"
                   value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
-                />
+                /> */}
               </>
             )}
 
