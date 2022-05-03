@@ -84,6 +84,7 @@ const Datepicker = (props: Props): JSX.Element => {
   const [viewedDate, setViewedDate] = useState(props.value ? new Date(props.value) : new Date());
   const [weeks, setWeeks] = useState(getWeeksForMonth(viewedDate));
   const [showPicker, setShowPicker] = useState(false);
+  const [yearMode, setYearMode] = useState(false);
 
   const pickerRef = useRef();
 
@@ -107,7 +108,7 @@ const Datepicker = (props: Props): JSX.Element => {
 
   const closePickerRef = (e: any) => {
     if (pickerRef.current === e.target) {
-      setShowPicker(false);
+      closePicker()
     }
   };
 
@@ -129,8 +130,12 @@ const Datepicker = (props: Props): JSX.Element => {
     return false;
   };
 
-  const changeMonth = (change: number): void => {
-    const nuDate = new Date(viewedDate.getFullYear(), viewedDate.getMonth() + change, 1);
+  const changeView = (change: number): void => {
+    let nuDate = new Date(viewedDate.getFullYear(), viewedDate.getMonth() + change, 1);
+
+    if (yearMode) {
+      nuDate = new Date((viewedDate.getFullYear() + change), viewedDate.getMonth(), 1);
+    }
 
     setViewedDate(nuDate);
     setWeeks(getWeeksForMonth(nuDate));
@@ -147,10 +152,11 @@ const Datepicker = (props: Props): JSX.Element => {
 
   const closePicker = (): void => {
     setShowPicker(false);
-    
+
     setViewedDate(selectedDate);
     setWeeks(getWeeksForMonth(selectedDate));
-  }
+    setYearMode(false);
+  };
 
   // // Keypress detector
   // const keyPress = useCallback(
@@ -182,51 +188,58 @@ const Datepicker = (props: Props): JSX.Element => {
           <div className="Datepicker__Container__Content">
             {/* Month and year selector */}
             <div className="Datepicker__Container__Content__Title">
-              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeMonth(-1)}>
+              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeView(-1)}>
                 {'<'}
               </div>
-              <div className="Datepicker__Container__Content__Title__Name">
-                {months[selectedDate.getMonth()]}, {selectedDate.getFullYear()}
+              <div className="Datepicker__Container__Content__Title__Name" onClick={() => setYearMode(!yearMode)}>
+                {!yearMode && `${months[viewedDate.getMonth()]},`} {viewedDate.getFullYear()}
               </div>
-              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeMonth(1)}>
+              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeView(1)}>
                 {'>'}
               </div>
             </div>
 
-            {/* Day Selector */}
-            <div className="Datepicker__Container__Content__Month">
-              {/* Day of the week view */}
-              <div className="Datepicker__Container__Content__Month__Weekdays">
-                {weekdays.map((day) => (
-                  <div className="Datepicker__Container__Content__Month__Weekdays__Day" key={day}>
-                    {day}
-                  </div>
-                ))}
-              </div>
+            {/* Month selector */}
+            {yearMode && <>a</>}
 
-              {/* Day grid */}
-              {weeks.map((week, indexA) => (
-                <div role="row" key={getDayKey(indexA)} className="Datepicker__Container__Content__Month__Week">
-                  {week.map((day, indexB) => (
-                    <div
-                      key={getDayKey(indexA, indexB)}
-                      className={
-                        compareDates(day, selectedDate)
-                          ? 'Datepicker__Container__Content__Month__Week__Day selected'
-                          : 'Datepicker__Container__Content__Month__Week__Day'
-                      }
-                      onClick={() => setDateCallback(day)}
-                    >
-                      {day?.getDate()}
+            {/* Day Selector */}
+            {!yearMode && (
+              <>
+                <div className="Datepicker__Container__Content__Month">
+                  {/* Day of the week view */}
+                  <div className="Datepicker__Container__Content__Month__Weekdays">
+                    {weekdays.map((day) => (
+                      <div className="Datepicker__Container__Content__Month__Weekdays__Day" key={day}>
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Day grid */}
+                  {weeks.map((week, indexA) => (
+                    <div role="row" key={getDayKey(indexA)} className="Datepicker__Container__Content__Month__Week">
+                      {week.map((day, indexB) => (
+                        <div
+                          key={getDayKey(indexA, indexB)}
+                          className={
+                            compareDates(day, selectedDate)
+                              ? 'Datepicker__Container__Content__Month__Week__Day selected'
+                              : 'Datepicker__Container__Content__Month__Week__Day'
+                          }
+                          onClick={() => setDateCallback(day)}
+                        >
+                          {day?.getDate()}
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
-              ))}
-            </div>
-            <div className="Datepicker__Container__Content__Bottom">
-              <div onClick={setToday}>Today</div>
-              <div onClick={closePicker}>Close</div>
-            </div>
+                <div className="Datepicker__Container__Content__Bottom">
+                  <div onClick={setToday}>Today</div>
+                  <div onClick={closePicker}>Close</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
