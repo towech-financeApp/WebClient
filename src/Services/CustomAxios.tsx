@@ -10,6 +10,7 @@ import jwtDecode from 'jwt-decode';
 
 // Stores
 import { TokenAction, TokenState } from '../Hooks/UseToken';
+import { Responses } from '../models';
 
 // Functions
 
@@ -22,13 +23,17 @@ const rootURL = process.env.REACT_APP_WEBAPI || '';
  */
 async function getAuthToken(tokenDispatch: React.Dispatch<TokenAction>): Promise<string> {
   try {
-    const res = await axios.post(`${rootURL}/authentication/refresh`, null, {
-      withCredentials: true,
-    });
-    tokenDispatch({ type: 'LOGIN', payload: res.data });
+    const res: AxiosResponse<Responses.AuthenticationResponse> = await axios.post(
+      `${rootURL}/authentication/refresh`,
+      null,
+      {
+        withCredentials: true,
+      },
+    );
+    tokenDispatch({ type: 'REFRESH', payload: res.data });
     return res.data.token;
   } catch (err) {
-    tokenDispatch({ type: 'LOGOUT', payload: { keepSession: false, token: '' } });
+    tokenDispatch({ type: 'LOGOUT', payload: { token: '' } });
     return '';
   }
 }

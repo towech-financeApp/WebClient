@@ -4,7 +4,7 @@
  *
  * Component that holds all pages and views
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css';
@@ -37,30 +37,21 @@ function App(): JSX.Element {
   const authService = new AuthenticationService();
 
   // Hooks
-  const [authToken, dispatchAuthToken] = useToken('authToken');
+  const [authToken, dispatchAuthToken] = useToken();
   const [categories, dispatchCategories] = useCategories();
   const [wallets, dispatchWallets] = useWallets();
-  const [loaded, setLoaded] = useState(false);
 
   // use Effect for first load
   useEffect(() => {
-    const firstLoad = async () => {
-      if (!loaded) {
-        authService
-          .refreshToken()
-          .then((res) => {
-            // The keep session is ignored for this call
-            dispatchAuthToken({ type: 'REFRESH', payload: { ...res.data, keepSession: false } });
-
-            setLoaded(true);
-          })
-          .catch(() => {
-            dispatchAuthToken({ type: 'LOGOUT', payload: { token: '', keepSession: false } });
-            setLoaded(true);
-          });
-      }
-    };
-    firstLoad();
+    authService
+      .refreshToken()
+      .then((res) => {
+        // The keep session is ignored for this call
+        dispatchAuthToken({ type: 'LOGIN', payload: res.data });
+      })
+      .catch(() => {
+        dispatchAuthToken({ type: 'LOGOUT', payload: { token: '' } });
+      });
   }, []);
 
   return (

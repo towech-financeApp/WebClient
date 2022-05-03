@@ -17,6 +17,9 @@ import { Objects } from '../../models';
 // Components
 import Modal from '../../Components/Modal';
 
+// Utils
+import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+
 // Styles
 import './Transactions.css';
 
@@ -83,7 +86,7 @@ const TransactionHeader = (): JSX.Element => {
           <div className="Transactions__Header__Wallet__Money">
             MXN:&nbsp;
             <div className={displayed.money >= 0 ? '' : 'Transactions__Header__Wallet__Money__Amount'}>
-              {(Math.round(displayed.money * 100) / 100).toFixed(2)}
+              {ParseMoneyAmount(displayed.money)}
             </div>
           </div>
         </div>
@@ -110,7 +113,7 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
         <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
         <div className="Transactions__Header__Selector__Item__Money">
           {props.wallet?.currency || 'MXN'}:{' '}
-          {(Math.round((props.wallet?.money || props.total || 0) * 100) / 100).toFixed(2)}
+          {ParseMoneyAmount(props.wallet?.money || props.total)}
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import * as FaIcons from 'react-icons/fa';
 // Components
 import Button from '../../Components/Button';
 import Input from '../../Components/Input';
+import Datepicker from '../../Components/Datepicker';
 import Modal from '../../Components/Modal';
 
 // Hooks
@@ -52,12 +53,7 @@ const TransactionForm = (props: Props): JSX.Element => {
     concept: props.initialTransaction?.concept || '',
     amount: props.initialTransaction?.amount || '',
     excludeFromReport: props.initialTransaction?.excludeFromReport || false,
-    transactionDate:
-      props.initialTransaction?.transactionDate?.toString().substr(0, 10) ||
-      `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date()
-        .getDate()
-        .toString()
-        .padStart(2, '0')}`,
+    transactionDate: props.initialTransaction?.transactionDate || new Date(),
     // Values exclusive to transfers
     from_id: '-1',
     to_id: '-1',
@@ -85,9 +81,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: [res.data] } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: [res.data] });
+      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
 
       props.setState(false);
     } catch (err: any) {
@@ -120,13 +116,10 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: {
-          wallets: [],
-          updateAmount: { new: res.data.new, old: res.data.old },
-        },
+        payload: { wallets: res.data.wallets },
       });
 
-      dispatchTransactionState({ type: 'EDIT', payload: res.data.new });
+      dispatchTransactionState({ type: 'EDIT', payload: res.data.newTransactions });
     } catch (err: any) {
       setLoading(false);
       if (err.response.status === 304) props.setState(false);
@@ -146,9 +139,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: res.data, reverse: true } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'DELETE', payload: res.data });
+      dispatchTransactionState({ type: 'DELETE', payload: res.data.newTransactions });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -181,9 +174,9 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       dispatchWallets({
         type: 'UPDATE-AMOUNT',
-        payload: { wallets: [], updateAmount: { new: res.data } },
+        payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data });
+      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
 
       props.setState(false);
     } catch (err: any) {
@@ -244,7 +237,7 @@ const TransactionForm = (props: Props): JSX.Element => {
             {/* Wallet selector and date picker for regular transactions */}
             {transactionForm.values.category_id !== '-2' && (
               <div className="NewTransactionForm__Content__Splitted">
-                <div style={{ flex: 4 }}>
+                <div className="NewTransactionForm__Content__Splitted__Wallet">
                   <WalletSelector
                     onChange={transactionForm.onChange}
                     name="wallet_id"
@@ -255,11 +248,9 @@ const TransactionForm = (props: Props): JSX.Element => {
                 </div>
 
                 {/* Date field */}
-                <Input
-                  error={errors.transactionDate ? true : false}
+                <Datepicker
                   label="Date"
                   name="transactionDate"
-                  type="text"
                   value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
                 />
@@ -274,7 +265,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                   <div className="NewTransactionForm__Content__Splitted__Label">To</div>
                 </div>
                 <div className="NewTransactionForm__Content__Splitted">
-                  <div style={{ flex: 1 }}>
+                  <div className="NewTransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.from_id}
                       name="from_id"
@@ -283,7 +274,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                       visible={props.state}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div className="NewTransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.to_id}
                       name="to_id"
@@ -294,11 +285,9 @@ const TransactionForm = (props: Props): JSX.Element => {
                   </div>
                 </div>
                 {/* Date field */}
-                <Input
-                  error={errors.transactionDate ? true : false}
+                <Datepicker
                   label="Date"
                   name="transactionDate"
-                  type="text"
                   value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
                 />

@@ -13,6 +13,9 @@ import NewTransactionForm from './TransactionForm';
 // Models
 import { Objects } from '../../models';
 
+// Utils
+import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+
 interface Props {
   transaction: Objects.Transaction;
 }
@@ -21,7 +24,7 @@ const TransactionCard = (props: Props): JSX.Element => {
   // Hooks
   const [showEdit, setEdit] = useState(false);
   const transDate = new Date(props.transaction.transactionDate);
-  const amount = Math.abs(props.transaction.amount).toFixed(2);
+  const amount = ParseMoneyAmount(props.transaction.amount);
 
   return (
     <>
@@ -39,8 +42,9 @@ const TransactionCard = (props: Props): JSX.Element => {
           <div className="TransactionCard__Content__Bottom">
             <div className="TransactionCard__Content__Bottom__Concept">{props.transaction.concept}</div>
             <div className="TransactionCard__Content__Bottom__Date">
-              {transDate.getDate().toString().padStart(2, '0')}-{(transDate.getMonth() + 1).toString().padStart(2, '0')}
-              -{transDate.getFullYear()}
+              {(transDate.getUTCDay() + 1).toString().padStart(2, '0')}/
+              {(transDate.getUTCMonth() + 1).toString().padStart(2, '0')}/
+              {transDate.getUTCFullYear().toString().padStart(4, '0')}
             </div>
           </div>
         </div>
