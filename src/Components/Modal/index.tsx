@@ -4,7 +4,8 @@
  *
  * Custom modal component
  */
-import React, { useRef, useEffect, useCallback } from 'react';
+// import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef } from 'react';
 import './Modal.css';
 import * as FaIcons from 'react-icons/fa';
 
