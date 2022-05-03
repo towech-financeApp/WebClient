@@ -237,7 +237,7 @@ const TransactionForm = (props: Props): JSX.Element => {
             {/* Wallet selector and date picker for regular transactions */}
             {transactionForm.values.category_id !== '-2' && (
               <div className="NewTransactionForm__Content__Splitted">
-                <div style={{ flex: 4 }}>
+                <div className="NewTransactionForm__Content__Splitted__Wallet">
                   <WalletSelector
                     onChange={transactionForm.onChange}
                     name="wallet_id"
@@ -252,16 +252,8 @@ const TransactionForm = (props: Props): JSX.Element => {
                   label="Date"
                   name="transactionDate"
                   value={transactionForm.values.transactionDate}
-                  // onChange={transactionForm.onSubmit}
-                />
-                {/* <Input
-                  error={errors.transactionDate ? true : false}
-                  label="Date"
-                  name="transactionDate"
-                  type="text"
-                  value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
-                /> */}
+                />
               </div>
             )}
 
@@ -273,7 +265,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                   <div className="NewTransactionForm__Content__Splitted__Label">To</div>
                 </div>
                 <div className="NewTransactionForm__Content__Splitted">
-                  <div style={{ flex: 1 }}>
+                  <div className="NewTransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.from_id}
                       name="from_id"
@@ -282,7 +274,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                       visible={props.state}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div className="NewTransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.to_id}
                       name="to_id"
@@ -297,16 +289,8 @@ const TransactionForm = (props: Props): JSX.Element => {
                   label="Date"
                   name="transactionDate"
                   value={transactionForm.values.transactionDate}
-                  onChange={transactionForm.onSubmit}
-                />
-                {/* <Input
-                  error={errors.transactionDate ? true : false}
-                  label="Date"
-                  name="transactionDate"
-                  type="text"
-                  value={transactionForm.values.transactionDate}
                   onChange={transactionForm.onChange}
-                /> */}
+                />
               </>
             )}
 

@@ -28,10 +28,18 @@
   width: 35px;
 }
 
+.Transactions__Header__Wallet {
+  max-width: 210px;
+}
+
 .Transactions__Header__Wallet__Name {
   color: var(--gray2);
   font-size: 14px;
   font-weight: 900;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .Transactions__Header__Wallet__Money {
@@ -71,6 +79,7 @@
 
 .Transactions__Header__Selector__Item__Text {
   flex: 1;
+  max-width: calc(100% - 100px);
 }
 
 .Transactions__Header__Selector__Item__Icon {
@@ -85,6 +94,10 @@
   color: var(--white);
   font-size: 20px;
   font-weight: 900;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .Transactions__Header__Selector__Item__Money {
@@ -159,7 +172,7 @@
 }
 
 .Transactions__Totals__Items {
-  width: 50%;
+  width: 30%;
 }
 
 .Transactions__Totals__Items > div {
@@ -167,7 +180,7 @@
 }
 .Transactions__Totals__Numbers {
   text-align: right;
-  width: 50%;
+  width: 70%;
 }
 
 .Transactions__Totals__Numbers > div {
@@ -233,6 +246,7 @@
 .TransactionCard__Content {
   flex: 1;
   padding-right: 15px;
+  max-width: calc(100% - 80px);
 }
 
 .TransactionCard__Content__Top {
@@ -242,12 +256,15 @@
 
 .Transaction__Content__Top__Category {
   flex: 1;
+  overflow: hidden;
+  padding-right: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .TransactionCard__Content__Top__Amount {
   color: var(--green);
   font-weight: 700;
-  flex: 2;
   text-align: right;
 }
 
@@ -263,12 +280,21 @@
 
 .TransactionCard__Content__Bottom__Concept {
   flex: 2;
+  padding-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .NewTransactionForm__Content__Splitted {
   align-items: center;
   display: flex;
   margin-bottom: -15px;
+}
+
+.NewTransactionForm__Content__Splitted__Wallet {
+  flex: 1;
+  max-width: 50%;
 }
 
 .NewTransactionForm__Content__Splitted__Label {
@@ -284,8 +310,8 @@
   border: 5px solid var(--black);
   border-radius: 10px;
   display: flex;
-  flex: 4;
   height: 30px;
+  justify-content: space-around;
   margin: 10px 5px;
   padding: 5px 15px;
 }
@@ -302,9 +328,12 @@
 }
 
 .NewTransactionForm__WalletSelector__Name {
-  margin-left: 10px;
   font-size: 20px;
-  flex: 1;
+  margin-left: 10px;
+  max-width: calc(100% - 65px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .NewTransactionForm__WalletSelector__Triangle {
@@ -348,7 +377,12 @@
 .NewTransactionForm__WalletSelector__Wallet__Name {
   font-size: 25px;
   font-weight: 700;
-  line-height: 0.6;
+  height: 50px;
+  line-height: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 65px);
+  white-space: nowrap;
 }
 
 .NewTransactionForm__Delete {
@@ -447,42 +481,3 @@
   margin-right: 15px;
   width: 50px;
 }
-
-/*
-.TransactionCard__Content__Data {
-  width: 60%;
-}
-
-.TransactionCard__Content__Amount {
-  color: #00b0f0;
-  font-size: 12pt;
-  font-weight: 650;
-  line-height: 2;
-  text-align: right;
-  padding-right: 10px;
-  width: 40%;
-}
-
-.TransactionCard__Content__Amount.negative {
-  color: #e43b07;
-}
-
-
-.Transactions__New__Modal__Bar {
-  display: flex;
-  width: 100%;
-} */
-
-/*@media screen and (min-width: 768px) {
-  .Transactions__Totals {
-    width: 75%;
-  }
-
-  .Transactions__Viewer {
-    width: 75%;
-  }
-
-  .Transactions__MonthSelector {
-    width: 75%;
-  }
-} */

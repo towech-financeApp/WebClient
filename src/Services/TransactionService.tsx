@@ -16,7 +16,6 @@ import { TokenAction, TokenState } from '../Hooks/UseToken';
 // Models
 import { Objects, Requests, Responses } from '../models';
 
-// TODO: Assign types to all responses
 export default class TransactionService {
   private token: TokenState;
   private tokenDispatch: React.Dispatch<TokenAction> | undefined;

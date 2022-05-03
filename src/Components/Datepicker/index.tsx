@@ -80,8 +80,9 @@ const displayDate = (date: Date): string => {
 };
 
 const Datepicker = (props: Props): JSX.Element => {
-  const [selectedDate, setSelectedDate] = useState(props.value || new Date());
-  const [weeks, setWeeks] = useState(getWeeksForMonth(selectedDate));
+  const [selectedDate, setSelectedDate] = useState(props.value ? new Date(props.value) : new Date());
+  const [viewedDate, setViewedDate] = useState(props.value ? new Date(props.value) : new Date());
+  const [weeks, setWeeks] = useState(getWeeksForMonth(viewedDate));
   const [showPicker, setShowPicker] = useState(false);
 
   const pickerRef = useRef();
@@ -128,6 +129,29 @@ const Datepicker = (props: Props): JSX.Element => {
     return false;
   };
 
+  const changeMonth = (change: number): void => {
+    const nuDate = new Date(viewedDate.getFullYear(), viewedDate.getMonth() + change, 1);
+
+    setViewedDate(nuDate);
+    setWeeks(getWeeksForMonth(nuDate));
+  };
+
+  const setToday = (): void => {
+    const nuDate = new Date();
+    setSelectedDate(nuDate);
+    setViewedDate(nuDate);
+    setWeeks(getWeeksForMonth(nuDate));
+
+    setShowPicker(false);
+  };
+
+  const closePicker = (): void => {
+    setShowPicker(false);
+    
+    setViewedDate(selectedDate);
+    setWeeks(getWeeksForMonth(selectedDate));
+  }
+
   // // Keypress detector
   // const keyPress = useCallback(
   //   (e: KeyboardEvent) => {
@@ -156,8 +180,22 @@ const Datepicker = (props: Props): JSX.Element => {
       <div className={showPicker ? 'Datepicker__Container active' : 'Datepicker__Container'}>
         <div className="Datepicker__Container__Background" ref={pickerRef as any} onClick={closePickerRef}>
           <div className="Datepicker__Container__Content">
-            <div className="Datepicker__Container__Content__Title">{months[selectedDate.getMonth()]}</div>
+            {/* Month and year selector */}
+            <div className="Datepicker__Container__Content__Title">
+              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeMonth(-1)}>
+                {'<'}
+              </div>
+              <div className="Datepicker__Container__Content__Title__Name">
+                {months[selectedDate.getMonth()]}, {selectedDate.getFullYear()}
+              </div>
+              <div className="Datepicker__Container__Content__Title__Button" onClick={() => changeMonth(1)}>
+                {'>'}
+              </div>
+            </div>
+
+            {/* Day Selector */}
             <div className="Datepicker__Container__Content__Month">
+              {/* Day of the week view */}
               <div className="Datepicker__Container__Content__Month__Weekdays">
                 {weekdays.map((day) => (
                   <div className="Datepicker__Container__Content__Month__Weekdays__Day" key={day}>
@@ -165,6 +203,8 @@ const Datepicker = (props: Props): JSX.Element => {
                   </div>
                 ))}
               </div>
+
+              {/* Day grid */}
               {weeks.map((week, indexA) => (
                 <div role="row" key={getDayKey(indexA)} className="Datepicker__Container__Content__Month__Week">
                   {week.map((day, indexB) => (
@@ -183,7 +223,10 @@ const Datepicker = (props: Props): JSX.Element => {
                 </div>
               ))}
             </div>
-            <div onClick={() => setShowPicker(false)}>Close</div>
+            <div className="Datepicker__Container__Content__Bottom">
+              <div onClick={setToday}>Today</div>
+              <div onClick={closePicker}>Close</div>
+            </div>
           </div>
         </div>
       </div>

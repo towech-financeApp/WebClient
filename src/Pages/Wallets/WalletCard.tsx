@@ -12,6 +12,9 @@ import WalletForm from './WalletForm';
 // Models
 import { Objects } from '../../models';
 
+// Utils
+import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+
 interface Props /*extends RouteComponentProps*/ {
   wallet: Objects.Wallet;
 }
@@ -29,7 +32,7 @@ const WalletCard = (props: Props): JSX.Element => {
           <div className="WalletCard__Info__Money">
             {props.wallet.currency}:&nbsp;
             <div className={(props.wallet.money || 0) >= 0 ? '' : 'WalletCard__Info__Money__Amount'}>
-              {(Math.round((props.wallet.money || 0) * 100) / 100).toFixed(2)}
+              {ParseMoneyAmount(props.wallet.money)}
             </div>
           </div>
         </div>
