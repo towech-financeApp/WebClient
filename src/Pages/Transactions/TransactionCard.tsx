@@ -24,8 +24,6 @@ const TransactionCard = (props: Props): JSX.Element => {
   // Hooks
   const [showEdit, setEdit] = useState(false);
   const transDate = new Date(props.transaction.transactionDate);
-  console.log(transDate);
-  console.log(props.transaction.transactionDate);
   const amount = ParseMoneyAmount(props.transaction.amount);
 
   return (
