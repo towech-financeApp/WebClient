@@ -24,6 +24,8 @@ const TransactionCard = (props: Props): JSX.Element => {
   // Hooks
   const [showEdit, setEdit] = useState(false);
   const transDate = new Date(props.transaction.transactionDate);
+  console.log(transDate);
+  console.log(props.transaction.transactionDate)
   const amount = ParseMoneyAmount(props.transaction.amount);
 
   return (
@@ -42,7 +44,7 @@ const TransactionCard = (props: Props): JSX.Element => {
           <div className="TransactionCard__Content__Bottom">
             <div className="TransactionCard__Content__Bottom__Concept">{props.transaction.concept}</div>
             <div className="TransactionCard__Content__Bottom__Date">
-              {(transDate.getUTCDay() + 1).toString().padStart(2, '0')}/
+              {(transDate.getUTCDate()).toString().padStart(2, '0')}/
               {(transDate.getUTCMonth() + 1).toString().padStart(2, '0')}/
               {transDate.getUTCFullYear().toString().padStart(4, '0')}
             </div>
