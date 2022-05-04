@@ -41,7 +41,7 @@ const TransactionHeader = (): JSX.Element => {
   // Functions
   const selectWallet = (id: string) => {
     if (id !== transactionState.selectedWallet) {
-      navigate(`/home?wallet=${id}`);
+      navigate(`/home?wallet=${id}&month=${transactionState.dataMonth}`);
       dispatchTransactionState({ type: 'SELECT-WALLET', payload: id });
     }
     setModal(false);

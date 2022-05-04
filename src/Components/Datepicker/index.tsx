@@ -5,7 +5,7 @@
  * Custom datepicker component
  */
 // Libraries
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Hooks
 import useDatapicker from './UseDatepicker';
@@ -49,10 +49,12 @@ const Datepicker = (props: Props): JSX.Element => {
 
   const pickerRef = useRef();
 
+  useEffect(() => {
+    dispatch({ type: 'SET-DATE', payload: { date: props.value ? new Date(props.value) : new Date() } });
+  }, [props.value]);
+
   // Functions
   const setDayCallback = (day: Date): void => {
-    dispatch({ type: 'SET-DATE', payload: { date: day } });
-
     if (props.onChange) {
       props.onChange({
         target: {
@@ -62,6 +64,8 @@ const Datepicker = (props: Props): JSX.Element => {
         },
       });
     }
+
+    dispatch({ type: 'SET-DATE', payload: { date: day } });
   };
 
   const closePickerRef = (e: any) => {
