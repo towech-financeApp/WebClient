@@ -50,6 +50,20 @@ const Datepicker = (props: Props): JSX.Element => {
   const pickerRef = useRef();
 
   // Functions
+  const setDayCallback = (day: Date): void => {
+    dispatch({ type: 'SET-DATE', payload: { date: day } });
+
+    if (props.onChange) {
+      props.onChange({
+        target: {
+          type: 'custom-select',
+          name: props.name,
+          value: day,
+        },
+      });
+    }
+  };
+
   const closePickerRef = (e: any) => {
     if (pickerRef.current === e.target) {
       dispatch({ type: 'SET-PICKER', payload: { bool: false } });
@@ -192,7 +206,9 @@ const Datepicker = (props: Props): JSX.Element => {
                               ? 'Datepicker__Container__Content__Month__Week__Day'
                               : 'Datepicker__Container__Content__Month__Week__Day outside'
                           }
-                          onClick={() => dispatch({ type: 'SET-DATE', payload: { date: day } })}
+                          onClick={() => {
+                            setDayCallback(day);
+                          }}
                         >
                           {day?.getDate()}
                         </div>
