@@ -51,7 +51,7 @@ const cleanAndSort = (
   const output = cleaned.sort((a, b) => {
     if (a.transactionDate > b.transactionDate) return -1;
     if (a.transactionDate < b.transactionDate) return 1;
-    
+
     // If transaction date is the same, sorts them by creation date
     if (a.createdAt > b.createdAt) return -1;
     if (a.createdAt < b.createdAt) return 1;
