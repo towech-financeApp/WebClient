@@ -45,7 +45,7 @@ const displayDate = (date: Date): string => {
 };
 
 const Datepicker = (props: Props): JSX.Element => {
-  const [state, dispatch] = useDatapicker(props.value);
+  const [state, dispatch] = useDatapicker(props.value ? new Date(props.value) : new Date());
 
   const pickerRef = useRef();
 
