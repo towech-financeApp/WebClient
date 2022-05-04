@@ -87,7 +87,7 @@
   background-color: var(--gray1);
   border-radius: 20px;
   padding: 20px;
-  width: 90%;
+  width: 80%;
 }
 
 .Datepicker__Container__Content__Title {
@@ -131,7 +131,7 @@
   aspect-ratio: 1 / 1;
   background: transparent;
   display: block;
-  line-height: 1.2;
+  line-height: 1;
   flex: 1 0 0%;
   font-size: 20px;
   font-weight: 600;
@@ -143,7 +143,30 @@
   background-color: var(--gray2);
 }
 
+.Datepicker__Container__Content__Month__Week__Day.outside {
+  color: var(--gray2);
+}
+
 .Datepicker__Container__Content__Month__Week__Day.selected {
+  background-color: var(--yellow);
+  border-radius: 50%;
+  color: var(--black);
+  font-weight: 900;
+}
+
+.Datepicker__Container__Content__Month__Week__M {
+  aspect-ratio: 1 / 1;
+  background: transparent;
+  display: block;
+  line-height: 3;
+  flex: 1 0 0%;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px;
+  text-align: center;
+}
+
+.Datepicker__Container__Content__Month__Week__M.selected {
   background-color: var(--yellow);
   border-radius: 50%;
   color: var(--black);
