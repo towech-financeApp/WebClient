@@ -112,8 +112,7 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
       <div className="Transactions__Header__Selector__Item__Text">
         <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
         <div className="Transactions__Header__Selector__Item__Money">
-          {props.wallet?.currency || 'MXN'}:{' '}
-          {ParseMoneyAmount(props.wallet?.money || props.total)}
+          {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
         </div>
       </div>
     </div>

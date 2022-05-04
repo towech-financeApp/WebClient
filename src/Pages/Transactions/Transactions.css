@@ -427,9 +427,12 @@
 }
 
 .NewTransactionForm__CategorySelector__Name {
-  margin-left: 10px;
-  font-size: 26px;
   flex: 1;
+  font-size: 26px;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .NewTransactionForm__CategorySelector__Triangle {
