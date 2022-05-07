@@ -46,6 +46,7 @@ const WalletForm = (props: Props): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
   const [deleteWarn, setDeleteWarn] = useState(false);
+  const [showSubWallets, setShowSubWallets] = useState(false);
 
   // Creates the new walletForm
   const walletForm = UseForm(null, {
@@ -170,17 +171,42 @@ const WalletForm = (props: Props): JSX.Element => {
             <Errorbox errors={errors} setErrors={setErrors}></Errorbox>
           </div>
 
+          {/* Subwallets and delete wallet button, only available if editing the wallet */}
           {props.initialWallet && (
-            <div>
-              <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
-                <>
-                  <div className="NewWalletForm__Delete__Icon">
-                    <FaIcons.FaTrashAlt />
+            <>
+              {/* Subwallets */}
+              <div className="NewWalletForm__Subwallets">
+                <div className="NewWalletForm__Subwallets__Title">Subwallets</div>
+                <div className="NewWalletForm__Subwallets__Content">
+                  {/* <div>List</div> */}
+                  <div
+                    className="NewWalletForm__Subwallets__Add"
+                    onClick={() => {
+                      setShowSubWallets(true);
+                    }}
+                  >
+                    <div className="NewWalletForm__Subwallets__Add__Icon">
+                      <FaIcons.FaPlusCircle />
+                    </div>
+                    <div>Add new subwallet</div>
                   </div>
-                  Delete Wallet
-                </>
-              </Button>
-            </div>
+                </div>
+
+                <SubWalletForm state={showSubWallets} set={setShowSubWallets} />
+              </div>
+
+              {/* Delete wallet button */}
+              <div>
+                <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
+                  <>
+                    {/* <div className="NewWalletForm__Delete__Icon"> */}
+                    <FaIcons.FaTrashAlt className="NewWalletForm__Delete__Icon" />
+                    {/* </div> */}
+                    Delete Wallet
+                  </>
+                </Button>
+              </div>
+            </>
           )}
         </div>
       </Modal>
@@ -194,6 +220,25 @@ const WalletForm = (props: Props): JSX.Element => {
         </Modal>
       )}
     </>
+  );
+};
+
+// SubWalletsForm -----------------------------------------------------------------
+
+interface SubWalletProps {
+  set: React.Dispatch<React.SetStateAction<boolean>>;
+  state: boolean;
+  initialWallet?: Objects.Wallet;
+}
+
+const SubWalletForm = (props: SubWalletProps): JSX.Element => {
+  return (
+    <Modal
+      setModal={props.set}
+      showModal={props.state}
+    >
+      aaaa
+    </Modal>
   );
 };
 

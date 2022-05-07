@@ -135,6 +135,32 @@
   color: var(--red);
 }
 
+.NewWalletForm__Subwallets__Title {
+  font-size: 26px;
+  font-weight: 900;
+  padding: 10px 0;
+}
+
+.NewWalletForm__Subwallets__Content {
+  background-color: var(--black);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.NewWalletForm__Subwallets__Add {
+  align-items: center;
+  color: var(--gray3);
+  display: flex;
+  font-size: 18px;
+  height: 25px;
+}
+
+.NewWalletForm__Subwallets__Add__Icon {
+  font-size: 25px;
+  line-height: 0.7;
+  padding-right: 10px;
+}
+
 /* @media screen and (min-width: 768px) {
   .Wallets__Header {
     margin-left: 25px;
