@@ -5,7 +5,7 @@
  */
 const ParseMoneyAmount = (amount = 0): string => {
   // Adds cents
-  const output = (Math.round(amount * 100) / 100).toFixed(2);
+  const output = (Math.round(amount) / 100).toFixed(2);
   return output.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 

@@ -378,27 +378,6 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
 
   // Functions
   const searchAndSetView = (id: string): void => {
-    // let p: Objects.Wallet | null = null;
-
-    // for (let i = 0; i < wallets.length; i++) {
-    //   if (wallets[i]._id === id) {
-    //     p = wallets[i];
-    //     break;
-    //   }
-
-    //   let inSubWallets = false;
-    //   for (let j = 0; j < (wallets[i].child_id?.length || 0); j++) {
-    //     // eslint-disable-next-line
-    //     if (wallets[i].child_id![j]._id === id) {
-    //       p = wallets[i].child_id![j]; // eslint-disable-line
-    //       inSubWallets = true;
-    //       break;
-    //     }
-    //   }
-
-    //   if (inSubWallets) break;
-    // }
-
     const p = wallets.find((wallet) => wallet._id === id);
     setSelectedWallet(p || null);
   };
