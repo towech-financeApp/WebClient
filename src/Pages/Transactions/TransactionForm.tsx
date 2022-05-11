@@ -387,7 +387,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
       }
 
       let inSubWallets = false;
-      for (let j = 0; i < (wallets[i].child_id?.length || 0); j++) {
+      for (let j = 0; j < (wallets[i].child_id?.length || 0); j++) {
         // eslint-disable-next-line
         if (wallets[i].child_id![j]._id === id) {
           p = wallets[i].child_id![j]; // eslint-disable-line
