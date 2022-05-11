@@ -51,7 +51,7 @@ const WalletForm = (props: Props): JSX.Element => {
   // Creates the new walletForm
   const walletForm = UseForm(null, {
     name: props.initialWallet?.name || '',
-    money: props.initialWallet?.money?.toString() || '0',
+    money: ((props.initialWallet?.money || 0) / 100).toString(),
     currency: props.initialWallet?.currency || 'MXN',
   });
 
