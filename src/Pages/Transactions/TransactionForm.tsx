@@ -51,7 +51,7 @@ const TransactionForm = (props: Props): JSX.Element => {
     wallet_id: props.initialTransaction?.wallet_id || transactionState.selectedWallet || '',
     category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
-    amount: props.initialTransaction?.amount || '',
+    amount: ((props.initialTransaction?.amount || 0) / 100).toString(),
     excludeFromReport: props.initialTransaction?.excludeFromReport || false,
     transactionDate: props.initialTransaction?.transactionDate || new Date(),
     // Values exclusive to transfers
