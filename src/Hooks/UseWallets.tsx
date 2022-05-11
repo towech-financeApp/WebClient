@@ -16,39 +16,111 @@ export interface WalletAction {
   };
 }
 
+// Functions
+const cleanAndSort = (input: Objects.Wallet[]): Objects.Wallet[] => {
+  const cleaned = [] as Objects.Wallet[];
+
+  // Removes all subwallets in case they got mixed
+  input.map((x) => {
+    if (x.parent_id === undefined || x.parent_id === null) {
+      cleaned.push(x);
+    }
+  });
+
+  // Sorts the wallets by alphabetical order
+  const output = cleaned.sort((a, b) => {
+    const textA = a.name.toUpperCase();
+    const textB = b.name.toUpperCase();
+
+    if (textA < textB) return -1;
+    if (textA > textB) return 1;
+
+    return 0;
+  });
+
+  return output;
+};
+
 // Reducer function, controls the dispatch commands
 const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[] => {
   let item: Objects.Wallet[];
 
   switch (action.type.toUpperCase().trim()) {
     case 'SET':
-      item = action.payload.wallets;
+      item = cleanAndSort(action.payload.wallets);
       return item;
     case 'ADD':
       item = [...state];
 
       // only adds the wallets that are not already in the state
       action.payload.wallets.map((wallet) => {
-        const index = state.findIndex((x) => x._id === wallet._id);
-        if (index === -1) state.push(wallet);
+        // First checks if the payload wallet is a subwallet
+
+        if (wallet.parent_id !== null && wallet.parent_id !== undefined) {
+          // Gets the index of the parent wallet and adds the wallet if unexistent
+          const parentIndex = state.findIndex((x) => x._id === wallet.parent_id);
+
+          // Only adds if the parent wallet exists
+          if (parentIndex !== -1) {
+            // Gets the missing wallet and only adds it if not already in the wallet
+            let index = state[parentIndex].child_id?.findIndex((x) => x._id === wallet._id);
+            if (index === undefined) index = -1;
+
+            if (index === -1) state[parentIndex].child_id?.push(wallet);
+          }
+        } else {
+          const index = state.findIndex((x) => x._id === wallet._id);
+          if (index === -1) state.push(wallet);
+        }
       });
 
-      return item;
+      return cleanAndSort(item);
     case 'EDIT':
       item = [...state];
 
       // only changes the wallets that are already in the state
       action.payload.wallets.map((wallet) => {
-        const index = state.findIndex((x) => x._id === wallet._id);
-        if (index >= 0) state[index] = wallet;
+        // First checks if the payload wallet is a subwallet
+        if (wallet.parent_id !== null && wallet.parent_id !== undefined) {
+          // Gets the index of the parent wallet and adds the wallet if unexistent
+          const parentIndex = state.findIndex((x) => x._id === wallet.parent_id);
+
+          // Only edits the wallet if found
+          if (parentIndex !== -1) {
+            let index = state[parentIndex].child_id?.findIndex((x) => x._id === wallet._id);
+            if (index === undefined) index = -1;
+
+            if (index >= 0) state[parentIndex].child_id![index] = wallet; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+          }
+        } else {
+          const index = state.findIndex((x) => x._id === wallet._id);
+          if (index >= 0) state[index] = wallet;
+        }
       });
 
-      return item;
+      return cleanAndSort(item);
     case 'DELETE':
+      // First removes all main wallets that where given
       item = state.filter((wallet) => {
         const index = action.payload.wallets.findIndex((x) => x._id === wallet._id);
         return index < 0;
       });
+
+      // Then removes any subwallet that was given
+      action.payload.wallets.map((wallet) => {
+        if (wallet.parent_id !== null && wallet.parent_id !== undefined) {
+          // Gets the index of the parent wallet and adds the wallet if unexistent
+          const parentIndex = state.findIndex((x) => x._id === wallet.parent_id);
+
+          // Only removes the wallet if found
+          if (parentIndex !== -1) {
+            item[parentIndex].child_id = item[parentIndex].child_id?.filter((x) => {
+              x._id === wallet._id;
+            });
+          }
+        }
+      });
+
       return item;
     case 'UPDATE-AMOUNT':
       item = [...state];
@@ -56,41 +128,11 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
       // Goes through every wallet and sets the new amount value
       action.payload.wallets.map((wallet) => {
         const index = state.findIndex((x) => x._id === wallet._id);
-        if (index >= 0) item[index].money = wallet.money;
+        if (index >= 0) {
+          item[index].money = wallet.money;
+          item[index].child_id = wallet.child_id;
+        }
       });
-
-      // if (action.payload.updateAmount) {
-      //   item = [...state];
-
-      //   // calculates the new transactions
-      //   action.payload.updateAmount.new.map((transaction) => {
-      //     const multiplier = action.payload.updateAmount?.reverse ? -1 : 1;
-      //     const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
-
-      //     if (index !== -1) {
-      //       item[index].money =
-      //         (item[index].money || 0) +
-      //         (transaction.category.type === 'Income'
-      //           ? multiplier * transaction.amount
-      //           : -1 * multiplier * transaction.amount);
-      //     }
-      //   });
-
-      //   // Reverses the old transactions if provided
-      //   action.payload.updateAmount.old?.map((transaction) => {
-      //     const multiplier = action.payload.updateAmount?.reverse ? 1 : -1;
-      //     const index = item.findIndex((wallet) => wallet._id === transaction.wallet_id);
-
-      //     if (index !== -1) {
-      //       item[index].money =
-      //         (item[index].money || 0) +
-      //         (transaction.category.type === 'Income'
-      //           ? multiplier * transaction.amount
-      //           : -1 * multiplier * transaction.amount);
-      //     }
-      //   });
-      // }
-
       return state;
     default:
       return state;
