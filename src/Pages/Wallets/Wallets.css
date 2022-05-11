@@ -135,6 +135,61 @@
   color: var(--red);
 }
 
+.NewWalletForm__Subwallets__Title {
+  font-size: 26px;
+  font-weight: 900;
+  padding: 10px 0;
+}
+
+.NewWalletForm__Subwallets__Content {
+  background-color: var(--black);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.NewWalletForm__Subwallets__Add {
+  align-items: center;
+  color: var(--gray3);
+  display: flex;
+  font-size: 18px;
+  height: 25px;
+}
+
+.NewWalletForm__Subwallets__Add__Icon {
+  font-size: 25px;
+  line-height: 0.7;
+  padding-right: 10px;
+}
+
+.SubWalletCard {
+  align-items: center;
+  display: flex;
+  margin: 10px 0;
+  border-bottom: 2px solid var(--yellow);
+  padding-bottom: 9.5px;
+}
+
+.SubWalletCard__Icon {
+  background-color: var(--gray2);
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+}
+
+.SubWalletCard__Info {
+  padding-left: 8px;
+  font-weight: 600;
+  max-width: calc(100% - 35px);
+}
+
+.SubWalletCard__Info__Name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-size: 12pt;
+}
+
 /* @media screen and (min-width: 768px) {
   .Wallets__Header {
     margin-left: 25px;

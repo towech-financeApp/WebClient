@@ -15,11 +15,11 @@ import { Objects } from '../../models';
 // Utils
 import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
 
-interface Props /*extends RouteComponentProps*/ {
+interface WalletCardProps {
   wallet: Objects.Wallet;
 }
 
-const WalletCard = (props: Props): JSX.Element => {
+const WalletCard = (props: WalletCardProps): JSX.Element => {
   // Hooks
   const [showEdit, setEdit] = useState(false);
 

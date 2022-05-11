@@ -64,6 +64,14 @@ const TransactionHeader = (): JSX.Element => {
         output.name = wallets[i].name;
         output.money = wallets[i].money || 0;
       }
+
+      for (let j = 0; j < (wallets[i].child_id?.length || 0); j++) {
+        // eslint-disable-next-line
+        if (wallets[i].child_id![j]._id === selected) {
+          output.name = wallets[i].child_id![j].name; // eslint-disable-line
+          output.money = wallets[i].child_id![j].money || 0; // eslint-disable-line
+        }
+      }
     }
 
     if (transactionState.selectedWallet === '-1') output.money = output.total;
@@ -76,6 +84,7 @@ const TransactionHeader = (): JSX.Element => {
 
   return (
     <>
+      {/* Header */}
       <div className="Transactions__Header" onClick={() => setModal(true)}>
         <div className="Transactions__Header__Icon">
           <div className="Transactions__Header__Icon__Triangle" />
@@ -91,6 +100,8 @@ const TransactionHeader = (): JSX.Element => {
           </div>
         </div>
       </div>
+
+      {/* Selector */}
       <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
         <div className="Transactions__Header__Selector">
           <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
@@ -107,15 +118,28 @@ const TransactionHeader = (): JSX.Element => {
 
 const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
   return (
-    <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet?._id || '-1')}>
-      <div className="Transactions__Header__Selector__Item__Icon" />
-      <div className="Transactions__Header__Selector__Item__Text">
-        <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
-        <div className="Transactions__Header__Selector__Item__Money">
-          {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
+    <>
+      <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet?._id || '-1')}>
+        <div className="Transactions__Header__Selector__Item__Icon" />
+        <div className="Transactions__Header__Selector__Item__Text">
+          <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
+          <div className="Transactions__Header__Selector__Item__Money">
+            {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
+          </div>
         </div>
       </div>
-    </div>
+      {props.wallet?.child_id?.map((x) => (
+        <div key={x._id} className="Transactions__Header__Selector__SubItem" onClick={() => props.onClick(x._id)}>
+          <div className="Transactions__Header__Selector__SubItem__Icon" />
+          <div className="Transactions__Header__Selector__Item__Text">
+            <div className="Transactions__Header__Selector__SubItem__Name">{x.name}</div>
+            <div className="Transactions__Header__Selector__SubItem__Money">
+              {x.currency}: {ParseMoneyAmount(x.money)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 

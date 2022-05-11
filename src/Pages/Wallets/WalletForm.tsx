@@ -46,6 +46,7 @@ const WalletForm = (props: Props): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
   const [deleteWarn, setDeleteWarn] = useState(false);
+  const [showSubWallets, setShowSubWallets] = useState(false);
 
   // Creates the new walletForm
   const walletForm = UseForm(null, {
@@ -170,17 +171,50 @@ const WalletForm = (props: Props): JSX.Element => {
             <Errorbox errors={errors} setErrors={setErrors}></Errorbox>
           </div>
 
+          {/* Subwallets and delete wallet button, only available if editing the wallet */}
           {props.initialWallet && (
-            <div>
-              <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
-                <>
-                  <div className="NewWalletForm__Delete__Icon">
-                    <FaIcons.FaTrashAlt />
+            <>
+              {/* Subwallets */}
+              <div className="NewWalletForm__Subwallets">
+                <div className="NewWalletForm__Subwallets__Title">Subwallets</div>
+                <div className="NewWalletForm__Subwallets__Content">
+                  <div>
+                    {props.initialWallet.child_id?.map((x) => (
+                      <SubWalletCard
+                        key={x._id}
+                        parentWallet={props.initialWallet || ({} as Objects.Wallet)}
+                        wallet={x}
+                      />
+                    ))}
                   </div>
-                  Delete Wallet
-                </>
-              </Button>
-            </div>
+                  <div
+                    className="NewWalletForm__Subwallets__Add"
+                    onClick={() => {
+                      setShowSubWallets(true);
+                    }}
+                  >
+                    <div className="NewWalletForm__Subwallets__Add__Icon">
+                      <FaIcons.FaPlusCircle />
+                    </div>
+                    <div>Add new subwallet</div>
+                  </div>
+                </div>
+
+                <SubWalletForm state={showSubWallets} set={setShowSubWallets} parentWallet={props.initialWallet} />
+              </div>
+
+              {/* Delete wallet button */}
+              <div>
+                <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
+                  <>
+                    {/* <div className="NewWalletForm__Delete__Icon"> */}
+                    <FaIcons.FaTrashAlt className="NewWalletForm__Delete__Icon" />
+                    {/* </div> */}
+                    Delete Wallet
+                  </>
+                </Button>
+              </div>
+            </>
           )}
         </div>
       </Modal>
@@ -197,4 +231,166 @@ const WalletForm = (props: Props): JSX.Element => {
   );
 };
 
+// SubWalletsForm -----------------------------------------------------------------
+
+interface SubWalletProps {
+  set: React.Dispatch<React.SetStateAction<boolean>>;
+  state: boolean;
+  parentWallet: Objects.Wallet;
+  initialWallet?: Objects.Wallet;
+}
+
+const SubWalletForm = (props: SubWalletProps): JSX.Element => {
+  const { authToken, dispatchAuthToken, dispatchWallets } = useContext(MainStore);
+  const transactionService = new TransactionService(authToken, dispatchAuthToken);
+
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({} as any);
+  const [showDelete, setDelete] = useState(false);
+
+  // Creates the new walletForm
+  const subWalletForm = UseForm(null, {
+    name: props.initialWallet?.name || '',
+    money: props.initialWallet?.money?.toString() || '0',
+    currency: props.initialWallet?.currency || props.parentWallet.currency,
+    parent_id: props.initialWallet?.parent_id || props.parentWallet._id,
+  });
+
+  // Functions
+  async function newWalletCallback() {
+    try {
+      // Sends the wallet to the API
+      const res = await transactionService.newWallet(subWalletForm.values, setLoading);
+
+      // Clears the form, sets wallets and closes the modal
+      subWalletForm.clear();
+      dispatchWallets({ type: 'ADD', payload: { wallets: [res.data] } });
+      props.set(false);
+    } catch (err: any) {
+      if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      else console.log(err.response); // eslint-disable-line no-console
+    }
+  }
+
+  async function editWalletCallback() {
+    try {
+      if (!props.initialWallet)
+        throw {
+          response: `Somehow you managed to edit a wallet without an initial wallet, stop messing with the app pls`,
+        };
+
+      const editedWallet = subWalletForm.values as Objects.Wallet;
+      editedWallet._id = props.initialWallet._id;
+
+      // Sends the wallet to the API
+      const res = await transactionService.editWallet(editedWallet, setLoading);
+
+      // Sets the wallet and closes the modal
+      dispatchWallets({ type: 'EDIT', payload: { wallets: [res.data] } });
+      props.set(false);
+    } catch (err: any) {
+      // If there is a 304 status, then the modal is closed
+      if (err.response.status == 304) props.set(false);
+      else if (CheckNested(err, 'response', 'data', 'errors')) setErrors(err.response.data.errors);
+      else console.log(err.response); // eslint-disable-line no-console
+    }
+  }
+
+  async function deleteWallet() {
+    try {
+      if (!props.initialWallet)
+        throw {
+          response: `Somehow you managed to delete a wallet without an initial wallet, stop messing with the app pls`,
+        };
+
+      await transactionService.deleteWallet(props.initialWallet._id, setLoading);
+
+      dispatchWallets({ type: 'DELETE', payload: { wallets: [props.initialWallet] } });
+    } catch (err: any) {
+      console.log(err.response); // eslint-disable-line no-console
+    }
+  }
+
+  const acceptIcon = <FaIcons.FaSave />;
+
+  return (
+    <>
+      <Modal
+        setModal={props.set}
+        loading={loading}
+        showModal={props.state}
+        title={props.initialWallet ? 'Edit subWallet' : 'New subWallet'}
+        accept={acceptIcon}
+        onAccept={() => {
+          props.initialWallet ? editWalletCallback() : newWalletCallback();
+        }}
+        onClose={() => {
+          subWalletForm.clear();
+          setErrors([]);
+        }}
+      >
+        <>
+          <div className="NewWalletForm__MainWallet__FirstRow">
+            <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
+            <Input
+              error={errors.name ? true : false}
+              label="Name"
+              name="name"
+              type="text"
+              value={subWalletForm.values.name}
+              onChange={subWalletForm.onChange}
+            />
+          </div>
+
+          {/* Delete subwallet button */}
+          {props.initialWallet && (
+            <div>
+              <Button warn className="NewWalletForm__Delete" onClick={() => setDelete(true)}>
+                <>
+                  {/* <div className="NewWalletForm__Delete__Icon"> */}
+                  <FaIcons.FaTrashAlt className="NewWalletForm__Delete__Icon" />
+                  {/* </div> */}
+                  Delete SubWallet
+                </>
+              </Button>
+            </div>
+          )}
+        </>
+      </Modal>
+
+      {props.initialWallet && (
+        <Modal float setModal={setDelete} showModal={showDelete} accept="Delete" onAccept={deleteWallet}>
+          <>
+            <p>Are you sure you want to delete the subWallet: {props.initialWallet.name}?</p>
+            This action cannot be undone.
+          </>
+        </Modal>
+      )}
+    </>
+  );
+};
+
 export default WalletForm;
+
+// SubWalletCard ------------------------------------------------------------
+interface SubWalletCardProps {
+  parentWallet: Objects.Wallet;
+  wallet: Objects.Wallet;
+}
+
+const SubWalletCard = (props: SubWalletCardProps): JSX.Element => {
+  // Hooks
+  const [showEdit, setEdit] = useState(false);
+
+  return (
+    <>
+      <div className="SubWalletCard" onClick={() => setEdit(true)}>
+        <div className="SubWalletCard__Icon"></div>
+        <div className="SubWalletCard__Info">
+          <div className="SubWalletCard__Info__Name">{props.wallet.name}</div>
+        </div>
+      </div>
+      <SubWalletForm set={setEdit} state={showEdit} initialWallet={props.wallet} parentWallet={props.parentWallet} />
+    </>
+  );
+};
