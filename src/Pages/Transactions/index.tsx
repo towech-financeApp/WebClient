@@ -33,6 +33,7 @@ import ParseDataMonth from '../../Utils/ParseDataMonth';
 // Styles
 import './Transactions.css';
 import TransactionHeader from './TransactionsHeader';
+import { Objects } from '../../models';
 
 const Transactions = (): JSX.Element => {
   // Context
@@ -47,7 +48,7 @@ const Transactions = (): JSX.Element => {
   const [loaded, setLoaded] = useState(false);
   const [loadingTransactions, setLoadingTransactions] = useState(false);
   const [transactionState, dispatchTransactionState] = useTransactions({
-    selectedWallet: GetParameters(location.search, 'wallet') || '-1',
+    selectedWallet: { _id: GetParameters(location.search, 'wallet') || '-1' } as Objects.Wallet,
     dataMonth: ParseDataMonth(GetParameters(location.search, 'month')),
     report: { earnings: 0, expenses: 0 },
     transactions: [],
@@ -83,7 +84,7 @@ const Transactions = (): JSX.Element => {
 
   // Code that is run everytime the selectedWalletId changes
   useEffect(() => {
-    loadTransactions(transactionState.selectedWallet, transactionState.dataMonth);
+    loadTransactions(transactionState.selectedWallet._id, transactionState.dataMonth);
   }, [transactionState.selectedWallet, transactionState.dataMonth]);
 
   // Gets the transactions from the API of the selected wallet

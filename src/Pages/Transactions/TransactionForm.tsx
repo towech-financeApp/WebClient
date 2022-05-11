@@ -83,7 +83,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'ADD', payload: { transactions: res.data.newTransactions } });
 
       props.setState(false);
     } catch (err: any) {
@@ -119,7 +119,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         payload: { wallets: res.data.wallets },
       });
 
-      dispatchTransactionState({ type: 'EDIT', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'EDIT', payload: { transactions: res.data.newTransactions } });
     } catch (err: any) {
       setLoading(false);
       if (err.response.status === 304) props.setState(false);
@@ -141,7 +141,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'DELETE', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'DELETE', payload: { transactions: res.data.newTransactions } });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -176,7 +176,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'ADD', payload: { transactions: res.data.newTransactions } });
 
       props.setState(false);
     } catch (err: any) {

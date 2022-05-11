@@ -58,7 +58,10 @@ const DataMonthSelector = (): JSX.Element => {
   const setCurrentMonth = (amount: number): void => {
     // sets the buttons month to change
     setNextMonth(addMonths(nextMonth, amount));
-    dispatchTransactionState({ type: 'SELECT-DATAMONTH', payload: addMonths(transactionState.dataMonth, amount) });
+    dispatchTransactionState({
+      type: 'SELECT-DATAMONTH',
+      payload: { dataMonth: addMonths(transactionState.dataMonth, amount) },
+    });
     setPrevMonth(addMonths(prevMonth, amount));
 
     // redirects to the new datamonth

@@ -13,7 +13,7 @@ import { Objects } from '../models';
 import ParseDataMonth from '../Utils/ParseDataMonth';
 
 export interface TransactionState {
-  selectedWallet: string;
+  selectedWallet: Objects.Wallet;
   dataMonth: string;
   report: { earnings: number; expenses: number };
   transactions: Objects.Transaction[];
@@ -21,7 +21,11 @@ export interface TransactionState {
 
 export interface TransAction {
   type: 'SELECT-WALLET' | 'SELECT-DATAMONTH' | 'SET' | 'ADD' | 'EDIT' | 'DELETE';
-  payload: any;
+  payload: {
+    dataMonth?: string;
+    selectedWallet?: Objects.Wallet;
+    transactions?: Objects.Transaction[];
+  };
 }
 
 /** useWallets
@@ -35,20 +39,50 @@ export interface TransAction {
 // Functions
 const cleanAndSort = (
   input: Objects.Transaction[],
-  selectedWallet: string,
+  selectedWallet: Objects.Wallet,
   dataMonth: string,
+  forceSet = false,
 ): Objects.Transaction[] => {
+  // Removes transactions outside the datamonth and wallet/subwallets
   const cleaned = [] as Objects.Transaction[];
   input.map((x) => {
+    const validWallets = [selectedWallet._id];
+    selectedWallet.child_id?.map((x) => validWallets.push(x._id));
+
     if (
-      (selectedWallet === '-1' || selectedWallet === x.wallet_id) &&
-      `${x.transactionDate.toString().substring(0, 4)}${x.transactionDate.toString().substring(5, 7)}` === dataMonth
+      ((selectedWallet._id === '-1' || validWallets.includes(x.wallet_id)) &&
+        `${x.transactionDate.toString().substring(0, 4)}${x.transactionDate.toString().substring(5, 7)}` ===
+          dataMonth) ||
+      forceSet
     ) {
       cleaned.push(x);
     }
   });
 
-  const output = cleaned.sort((a, b) => {
+  // Gets the index of all transfers that are both contained in the array
+  const transferClean = [];
+  for (let i = 0; i < cleaned.length; i++) {
+    // Quickly skips if the transaction is not a transfer
+    if (cleaned[i].transfer_id === undefined || cleaned[i].transfer_id === null) {
+      transferClean.push(cleaned[i]);
+      continue;
+    }
+
+    // Looks if the other half of the transaction is located here
+    let brotherPresent = false;
+    for (let j = 0; j < cleaned.length; j++) {
+      if (cleaned[j]._id === cleaned[i].transfer_id) {
+        brotherPresent = true;
+        break;
+      }
+    }
+
+    if (!brotherPresent) transferClean.push(cleaned[i]);
+
+    // TODO: ADD a 'transference' transaction indicator
+  }
+
+  const output = transferClean.sort((a, b) => {
     if (a.transactionDate > b.transactionDate) return -1;
     if (a.transactionDate < b.transactionDate) return 1;
 
@@ -65,13 +99,13 @@ const cleanAndSort = (
 // Reads the transactions and separates the income and expenses as well as the total in the header
 const calculateReport = (
   input: Objects.Transaction[],
-  selectedWallet: string,
+  selectedWallet: Objects.Wallet,
 ): { earnings: number; expenses: number } => {
   let earnings = 0;
   let expenses = 0;
 
   input.map((x) => {
-    if (!x.excludeFromReport && !(x.transfer_id && selectedWallet === '-1')) {
+    if (!x.excludeFromReport && !(x.transfer_id && selectedWallet._id === '-1')) {
       if (x.category.type === 'Income') {
         earnings += x.amount;
       } else {
@@ -89,19 +123,24 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
   switch (action.type.toUpperCase().trim()) {
     case 'SELECT-WALLET':
       item = { ...state };
-      item.selectedWallet = action.payload;
+      item.selectedWallet = action.payload.selectedWallet || ({ _id: '-1' } as Objects.Wallet);
 
       return item;
     case 'SELECT-DATAMONTH':
       item = { ...state };
-      item.dataMonth = ParseDataMonth(action.payload);
+      item.dataMonth = ParseDataMonth(action.payload.dataMonth || state.dataMonth);
 
       return item;
     case 'SET':
       item = {
-        dataMonth: action.payload.dataMonth,
-        selectedWallet: action.payload.selectedWallet,
-        transactions: cleanAndSort(action.payload.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth)),
+        dataMonth: action.payload.dataMonth || state.dataMonth,
+        selectedWallet: action.payload.selectedWallet || state.selectedWallet,
+        transactions: cleanAndSort(
+          action.payload.transactions || state.transactions,
+          state.selectedWallet,
+          ParseDataMonth(state.dataMonth),
+          true,
+        ),
         report: { earnings: 0, expenses: 0 },
       };
 
@@ -111,8 +150,8 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
       item = { ...state };
 
       // only adds the transactions that are not already in the state
-      action.payload.map((transaction: Objects.Transaction) => {
-        if (state.selectedWallet === '-1' || state.selectedWallet === transaction.wallet_id) {
+      action.payload.transactions?.map((transaction: Objects.Transaction) => {
+        if (state.selectedWallet._id === '-1' || state.selectedWallet._id === transaction.wallet_id) {
           const index = state.transactions.findIndex((x) => x._id === transaction._id);
           if (index === -1) {
             item.transactions.push(transaction);
@@ -128,7 +167,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
       item = { ...state };
 
       // only changes the transactions that are in the state
-      action.payload.map((transaction: Objects.Transaction) => {
+      action.payload.transactions?.map((transaction: Objects.Transaction) => {
         const index = state.transactions.findIndex((x) => x._id === transaction._id);
         if (index >= 0) {
           item.transactions[index] = transaction;
@@ -143,8 +182,8 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
 
       // Filters the array
       item.transactions = state.transactions.filter((transaction) => {
-        const index = action.payload.findIndex((x: Objects.Transaction) => x._id === transaction._id);
-        return index < 0;
+        const index = action.payload.transactions?.findIndex((x: Objects.Transaction) => x._id === transaction._id);
+        return (index || -1) < 0;
       });
 
       item.report = calculateReport(item.transactions, item.selectedWallet);
@@ -157,7 +196,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
 const useTransactions = (initial?: TransactionState): [TransactionState, React.Dispatch<TransAction>] => {
   // The initial state is an empty array
   const initialState: TransactionState = initial || {
-    selectedWallet: '-1',
+    selectedWallet: { _id: '-1' } as Objects.Wallet,
     dataMonth: ParseDataMonth('-1'),
     report: { earnings: 0, expenses: 0 },
     transactions: [],
