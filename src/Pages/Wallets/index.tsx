@@ -27,6 +27,10 @@ const Wallets = (): JSX.Element => {
   // Context
   const { authToken, dispatchAuthToken, wallets, dispatchWallets } = useContext(MainStore);
 
+  const visibleWallets = wallets.filter((x) => {
+    return x.parent_id === undefined || x.parent_id === null;
+  });
+
   // Starts the services
   const transactionService = new TransactionService(authToken, dispatchAuthToken);
 
@@ -72,12 +76,12 @@ const Wallets = (): JSX.Element => {
 
         {/*Lists all the wallets, if none available, returns a "No Wallets" text*/}
         {loaded ? (
-          wallets.length == 0 ? (
+          visibleWallets.length == 0 ? (
             <NoWalletsCard />
           ) : (
             <div className="Wallets__Container">
               <div className="Wallets__Container__Section">
-                {wallets.map((wallet) => (
+                {visibleWallets.map((wallet) => (
                   <WalletCard key={wallet._id} wallet={wallet} />
                 ))}
               </div>
