@@ -83,7 +83,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'ADD', payload: { transactions: res.data.newTransactions } });
 
       props.setState(false);
     } catch (err: any) {
@@ -119,7 +119,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         payload: { wallets: res.data.wallets },
       });
 
-      dispatchTransactionState({ type: 'EDIT', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'EDIT', payload: { transactions: res.data.newTransactions } });
     } catch (err: any) {
       setLoading(false);
       if (err.response.status === 304) props.setState(false);
@@ -141,7 +141,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'DELETE', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'DELETE', payload: { transactions: res.data.newTransactions } });
     } catch (err: any) {
       console.log(err.response); // eslint-disable-line no-console
     }
@@ -176,7 +176,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         type: 'UPDATE-AMOUNT',
         payload: { wallets: res.data.wallets },
       });
-      dispatchTransactionState({ type: 'ADD', payload: res.data.newTransactions });
+      dispatchTransactionState({ type: 'ADD', payload: { transactions: res.data.newTransactions } });
 
       props.setState(false);
     } catch (err: any) {
@@ -378,29 +378,8 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
 
   // Functions
   const searchAndSetView = (id: string): void => {
-    let p: Objects.Wallet | null = null;
-
-    for (let i = 0; i < wallets.length; i++) {
-      if (wallets[i]._id === id) {
-        p = wallets[i];
-        break;
-      }
-
-      let inSubWallets = false;
-      for (let j = 0; j < (wallets[i].child_id?.length || 0); j++) {
-        // eslint-disable-next-line
-        if (wallets[i].child_id![j]._id === id) {
-          p = wallets[i].child_id![j]; // eslint-disable-line
-          inSubWallets = true;
-          break;
-        }
-      }
-
-      if (inSubWallets) break;
-    }
-
-    //const p = wallets.find((wallet) => wallet._id === id);
-    setSelectedWallet(p);
+    const p = wallets.find((wallet) => wallet._id === id);
+    setSelectedWallet(p || null);
   };
 
   const setWalletCallback = (id: string): void => {
@@ -431,25 +410,33 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
       <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
         <div className="NewTransactionForm__WalletSelector__Container">
           {wallets.map((wallet: Objects.Wallet) => (
-            <div key={wallet._id}>
-              <div className="NewTransactionForm__WalletSelector__Wallet" onClick={() => setWalletCallback(wallet._id)}>
-                <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                  <div className="NewTransactionForm__WalletSelector__Wallet__Icon" />
-                  <div className="NewTransactionForm__WalletSelector__Wallet__Name">{wallet.name}</div>
+            <div
+              key={wallet._id}
+              className={
+                wallet.parent_id === undefined || wallet.parent_id === null
+                  ? 'NewTransactionForm__WalletSelector__Wallet'
+                  : 'NewTransactionForm__WalletSelector__SubWallet'
+              }
+              onClick={() => setWalletCallback(wallet._id)}
+            >
+              <div className="NewTransactionForm__WalletSelector__Wallet__Container">
+                <div
+                  className={
+                    wallet.parent_id === undefined || wallet.parent_id === null
+                      ? 'NewTransactionForm__WalletSelector__Wallet__Icon'
+                      : 'NewTransactionForm__WalletSelector__SubWallet__Icon'
+                  }
+                />
+                <div
+                  className={
+                    wallet.parent_id === undefined || wallet.parent_id === null
+                      ? 'NewTransactionForm__WalletSelector__Wallet__Name'
+                      : 'NewTransactionForm__WalletSelector__SubWallet__Name'
+                  }
+                >
+                  {wallet.name}
                 </div>
               </div>
-              {wallet.child_id?.map((x) => (
-                <div
-                  className="NewTransactionForm__WalletSelector__SubWallet"
-                  key={x._id}
-                  onClick={() => setWalletCallback(x._id)}
-                >
-                  <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                    <div className="NewTransactionForm__WalletSelector__SubWallet__Icon" />
-                    <div className="NewTransactionForm__WalletSelector__SubWallet__Name">{x.name}</div>
-                  </div>
-                </div>
-              ))}
             </div>
           ))}
         </div>

@@ -18,19 +18,12 @@ export interface WalletAction {
 
 // Functions
 const cleanAndSort = (input: Objects.Wallet[]): Objects.Wallet[] => {
-  const cleaned = [] as Objects.Wallet[];
-
-  // Removes all subwallets in case they got mixed
-  input.map((x) => {
-    if (x.parent_id === undefined || x.parent_id === null) {
-      cleaned.push(x);
-    }
-  });
-
   // Sorts the wallets by alphabetical order
-  const output = cleaned.sort((a, b) => {
+  const output = input.sort((a, b) => {
     const textA = a.name.toUpperCase();
     const textB = b.name.toUpperCase();
+
+    if (a._id === (b.parent_id || '-1')) return -1;
 
     if (textA < textB) return -1;
     if (textA > textB) return 1;
@@ -54,8 +47,7 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
 
       // only adds the wallets that are not already in the state
       action.payload.wallets.map((wallet) => {
-        // First checks if the payload wallet is a subwallet
-
+        // If the added wallet is a subwallet, it also gets added to it's parent
         if (wallet.parent_id !== null && wallet.parent_id !== undefined) {
           // Gets the index of the parent wallet and adds the wallet if unexistent
           const parentIndex = state.findIndex((x) => x._id === wallet.parent_id);
@@ -68,10 +60,11 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
 
             if (index === -1) state[parentIndex].child_id?.push(wallet);
           }
-        } else {
-          const index = state.findIndex((x) => x._id === wallet._id);
-          if (index === -1) state.push(wallet);
         }
+
+        // Adds the new wallet to the list
+        const index = state.findIndex((x) => x._id === wallet._id);
+        if (index === -1) state.push(wallet);
       });
 
       return cleanAndSort(item);
@@ -80,7 +73,7 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
 
       // only changes the wallets that are already in the state
       action.payload.wallets.map((wallet) => {
-        // First checks if the payload wallet is a subwallet
+        // If the payload wallet is a subwallet the parent wallet also gets edited
         if (wallet.parent_id !== null && wallet.parent_id !== undefined) {
           // Gets the index of the parent wallet and adds the wallet if unexistent
           const parentIndex = state.findIndex((x) => x._id === wallet.parent_id);
@@ -92,10 +85,11 @@ const reducer = (state: Objects.Wallet[], action: WalletAction): Objects.Wallet[
 
             if (index >= 0) state[parentIndex].child_id![index] = wallet; // eslint-disable-line @typescript-eslint/no-non-null-assertion
           }
-        } else {
-          const index = state.findIndex((x) => x._id === wallet._id);
-          if (index >= 0) state[index] = wallet;
         }
+
+        // Edits the wallet
+        const index = state.findIndex((x) => x._id === wallet._id);
+        if (index >= 0) state[index] = wallet;
       });
 
       return cleanAndSort(item);

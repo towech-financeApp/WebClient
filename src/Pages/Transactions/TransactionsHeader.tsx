@@ -25,7 +25,7 @@ import './Transactions.css';
 
 // Interfaces
 interface WalletProps {
-  onClick: (id: string) => void;
+  onClick: (id?: Objects.Wallet) => void;
   wallet?: Objects.Wallet;
   total?: number;
 }
@@ -39,10 +39,11 @@ const TransactionHeader = (): JSX.Element => {
   const [showModal, setModal] = useState(false);
 
   // Functions
-  const selectWallet = (id: string) => {
-    if (id !== transactionState.selectedWallet) {
-      navigate(`/home?wallet=${id}&month=${transactionState.dataMonth}`);
-      dispatchTransactionState({ type: 'SELECT-WALLET', payload: id });
+  const selectWallet = (wallet?: Objects.Wallet) => {
+    if ((wallet?._id || '-1') !== transactionState.selectedWallet._id) {
+      navigate(`/home?wallet=${wallet?._id || '-1'}&month=${transactionState.dataMonth}`);
+
+      dispatchTransactionState({ type: 'SELECT-WALLET', payload: { selectedWallet: wallet } });
     }
     setModal(false);
   };
@@ -64,23 +65,15 @@ const TransactionHeader = (): JSX.Element => {
         output.name = wallets[i].name;
         output.money = wallets[i].money || 0;
       }
-
-      for (let j = 0; j < (wallets[i].child_id?.length || 0); j++) {
-        // eslint-disable-next-line
-        if (wallets[i].child_id![j]._id === selected) {
-          output.name = wallets[i].child_id![j].name; // eslint-disable-line
-          output.money = wallets[i].child_id![j].money || 0; // eslint-disable-line
-        }
-      }
     }
 
-    if (transactionState.selectedWallet === '-1') output.money = output.total;
+    if (transactionState.selectedWallet._id === '-1') output.money = output.total;
 
     return output;
   };
 
   // Variables
-  const displayed = getNameAndTotal(wallets, transactionState.selectedWallet);
+  const displayed = getNameAndTotal(wallets, transactionState.selectedWallet._id);
 
   return (
     <>
@@ -119,26 +112,27 @@ const TransactionHeader = (): JSX.Element => {
 const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
   return (
     <>
-      <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet?._id || '-1')}>
-        <div className="Transactions__Header__Selector__Item__Icon" />
-        <div className="Transactions__Header__Selector__Item__Text">
-          <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
-          <div className="Transactions__Header__Selector__Item__Money">
-            {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
-          </div>
-        </div>
-      </div>
-      {props.wallet?.child_id?.map((x) => (
-        <div key={x._id} className="Transactions__Header__Selector__SubItem" onClick={() => props.onClick(x._id)}>
-          <div className="Transactions__Header__Selector__SubItem__Icon" />
+      {props.wallet?.parent_id === undefined || props.wallet?.parent_id === null ? (
+        <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet)}>
+          <div className="Transactions__Header__Selector__Item__Icon" />
           <div className="Transactions__Header__Selector__Item__Text">
-            <div className="Transactions__Header__Selector__SubItem__Name">{x.name}</div>
-            <div className="Transactions__Header__Selector__SubItem__Money">
-              {x.currency}: {ParseMoneyAmount(x.money)}
+            <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
+            <div className="Transactions__Header__Selector__Item__Money">
+              {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
             </div>
           </div>
         </div>
-      ))}
+      ) : (
+        <div className="Transactions__Header__Selector__SubItem" onClick={() => props.onClick(props.wallet)}>
+          <div className="Transactions__Header__Selector__SubItem__Icon" />
+          <div className="Transactions__Header__Selector__Item__Text">
+            <div className="Transactions__Header__Selector__SubItem__Name">{props.wallet?.name || 'Total'}</div>
+            <div className="Transactions__Header__Selector__SubItem__Money">
+              {props.wallet?.currency || 'MXN'}: {ParseMoneyAmount(props.wallet?.money || props.total)}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
