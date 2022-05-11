@@ -25,20 +25,34 @@ export interface CategoryAction {
 
 // Functions
 const cleanAndSort = (input: Objects.Category[]): Objects.Category[] => {
-  // Sorts the categories, by parent and alphabetically
-  // const output = input.sort((a, b) => {
-  //   const textA = a.name.toUpperCase();
-  //   const textB = b.name.toUpperCase();
+  // Gets the main wallets and sorts them
+  let mainCategories: Objects.Category[] = [];
+  input.map((x) => {
+    if (x.parent_id === '-1') mainCategories.push(x);
+  });
+  mainCategories = mainCategories.sort((a, b) => {
+    if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+    if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
+    return 0;
+  });
 
-  //   if (a._id === (b.parent_id || '-1')) return -1;
+  let output: Objects.Category[] = [];
+  // Fetches the subwallets, sorts them and adds them
+  mainCategories.map((mC) => {
+    // Gets the subwallets for the main wallet
+    let subCategories = input.filter((x) => {
+      return x.parent_id === mC._id;
+    });
+    subCategories = subCategories.sort((a, b) => {
+      if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+      if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
+      return 0;
+    });
 
-  //   if (textA < textB) return -1;
-  //   if (textA > textB) return 1;
+    output = [...output, mC, ...subCategories];
+  });
 
-  //   return 0;
-  // });
-
-  return input;
+  return output;
 };
 
 // Reducer function, controls the dispatch commands
