@@ -18,17 +18,31 @@ export interface WalletAction {
 
 // Functions
 const cleanAndSort = (input: Objects.Wallet[]): Objects.Wallet[] => {
-  // Sorts the wallets by alphabetical order
-  const output = input.sort((a, b) => {
-    const textA = a.name.toUpperCase();
-    const textB = b.name.toUpperCase();
-
-    if (a._id === (b.parent_id || '-1')) return -1;
-
-    if (textA < textB) return -1;
-    if (textA > textB) return 1;
-
+  // Gets the main wallets and sorts them
+  let mainWallets: Objects.Wallet[] = [];
+  input.map((x) => {
+    if (x.parent_id === undefined || x.parent_id === null) mainWallets.push(x);
+  });
+  mainWallets = mainWallets.sort((a, b) => {
+    if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+    if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
     return 0;
+  });
+
+  let output: Objects.Wallet[] = [];
+  // Fetches the subwallets, sorts them and adds them
+  mainWallets.map((mW) => {
+    // Gets the subwallets for the main wallet
+    let subWallets = input.filter((x) => {
+      return x.parent_id === mW._id;
+    });
+    subWallets = subWallets.sort((a, b) => {
+      if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+      if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
+      return 0;
+    });
+
+    output = [...output, mW, ...subWallets];
   });
 
   return output;
