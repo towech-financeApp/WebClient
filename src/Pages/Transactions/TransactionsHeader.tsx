@@ -59,7 +59,7 @@ const TransactionHeader = (): JSX.Element => {
     };
 
     for (let i = 0; i < wallets.length; i++) {
-      output.total += wallets[i].money || 0;
+      if (wallets[i].parent_id === undefined || wallets[i].parent_id === null) output.total += wallets[i].money || 0;
 
       if (wallets[i]._id === selected) {
         output.name = wallets[i].name;
