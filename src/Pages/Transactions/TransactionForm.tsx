@@ -48,7 +48,7 @@ const TransactionForm = (props: Props): JSX.Element => {
   const [deleteWarn, setDeleteWarn] = useState(false);
 
   const transactionForm = UseForm(null, {
-    wallet_id: props.initialTransaction?.wallet_id || transactionState.selectedWallet || '',
+    wallet_id: props.initialTransaction?.wallet_id || transactionState.selectedWallet._id || '',
     category_id: props.initialTransaction?.category._id || '-1',
     concept: props.initialTransaction?.concept || '',
     amount: ((props.initialTransaction?.amount || 0) / 100).toString(),
@@ -84,7 +84,6 @@ const TransactionForm = (props: Props): JSX.Element => {
         payload: { wallets: res.data.wallets },
       });
       dispatchTransactionState({ type: 'ADD', payload: { transactions: res.data.newTransactions } });
-
       props.setState(false);
     } catch (err: any) {
       setLoading(false);
@@ -396,6 +395,19 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
     setShowModal(false);
   };
 
+  const getSelectedWalletClass = (wallet: Objects.Wallet): string => {
+    let output =
+      wallet.parent_id === undefined || wallet.parent_id === null
+        ? 'NewTransactionForm__WalletSelector__Wallet__Icon'
+        : 'NewTransactionForm__WalletSelector__SubWallet__Icon';
+
+    if (wallet._id === props.value) {
+      output += ' selected';
+    }
+
+    return output;
+  };
+
   return (
     <>
       <div
@@ -420,13 +432,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
               onClick={() => setWalletCallback(wallet._id)}
             >
               <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                <div
-                  className={
-                    wallet.parent_id === undefined || wallet.parent_id === null
-                      ? 'NewTransactionForm__WalletSelector__Wallet__Icon'
-                      : 'NewTransactionForm__WalletSelector__SubWallet__Icon'
-                  }
-                />
+                <div className={getSelectedWalletClass(wallet)} />
                 <div
                   className={
                     wallet.parent_id === undefined || wallet.parent_id === null
@@ -498,6 +504,19 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
     setShowModal(false);
   };
 
+  const getSelectedCategoryClass = (category: Objects.Category): string => {
+    let output =
+      category.parent_id === '-1'
+        ? 'NewTransactionForm__CategorySelector__Category__Icon'
+        : 'NewTransactionForm__CategorySelector__SubCategory__Icon';
+
+    if (category._id === selectedCategory?._id) {
+      output += ' selected';
+    }
+
+    return output;
+  };
+
   return (
     <div className={props.transfer ? 'loading' : ''}>
       <div
@@ -539,23 +558,53 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
             ) : categoryType === 1 ? (
               categories.Income.map((cat: Objects.Category) => (
                 <div
-                  className="NewTransactionForm__CategorySelector__Category"
+                  className={
+                    cat.parent_id === '-1'
+                      ? 'NewTransactionForm__CategorySelector__Category'
+                      : 'NewTransactionForm__CategorySelector__SubCategory'
+                  }
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  <div className={getSelectedCategoryClass(cat)} />
+                  <div
+                    className={
+                      cat.parent_id === '-1'
+                        ? 'NewTransactionForm__CategorySelector__Category__Name'
+                        : 'NewTransactionForm__CategorySelector__SubCategory__Name'
+                    }
+                  >
+                    {cat.name}
+                  </div>
                 </div>
               ))
             ) : (
               categories.Expense.map((cat: Objects.Category) => (
                 <div
-                  className="NewTransactionForm__CategorySelector__Category"
+                  className={
+                    cat.parent_id === '-1'
+                      ? 'NewTransactionForm__CategorySelector__Category'
+                      : 'NewTransactionForm__CategorySelector__SubCategory'
+                  }
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">{cat.name}</div>
+                  <div
+                    className={
+                      cat.parent_id === '-1'
+                        ? 'NewTransactionForm__CategorySelector__Category__Icon'
+                        : 'NewTransactionForm__CategorySelector__SubCategory__Icon'
+                    }
+                  />
+                  <div
+                    className={
+                      cat.parent_id === '-1'
+                        ? 'NewTransactionForm__CategorySelector__Category__Name'
+                        : 'NewTransactionForm__CategorySelector__SubCategory__Name'
+                    }
+                  >
+                    {cat.name}
+                  </div>
                 </div>
               ))
             )}
