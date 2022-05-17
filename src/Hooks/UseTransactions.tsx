@@ -12,11 +12,16 @@ import { Objects } from '../models';
 // Utilities
 import ParseDataMonth from '../Utils/ParseDataMonth';
 
+export interface FrontendTransaction extends Objects.Transaction {
+  from_wallet?: string;
+  to_wallet?: string;
+}
+
 export interface TransactionState {
   selectedWallet: Objects.Wallet;
   dataMonth: string;
   report: { earnings: number; expenses: number };
-  transactions: Objects.Transaction[];
+  transactions: FrontendTransaction[];
 }
 
 export interface TransAction {
@@ -42,9 +47,9 @@ const cleanAndSort = (
   selectedWallet: Objects.Wallet,
   dataMonth: string,
   forceSet = false,
-): Objects.Transaction[] => {
+): FrontendTransaction[] => {
   // Removes transactions outside the datamonth and wallet/subwallets
-  const cleaned = [] as Objects.Transaction[];
+  const cleaned = [] as FrontendTransaction[];
   input.map((x) => {
     const validWallets = [selectedWallet._id];
     selectedWallet.child_id?.map((x) => validWallets.push(x._id));
@@ -68,18 +73,24 @@ const cleanAndSort = (
       continue;
     }
 
-    // Looks if the other half of the transaction is located here
-    let brotherPresent = false;
-    for (let j = 0; j < cleaned.length; j++) {
-      if (cleaned[j]._id === cleaned[i].transfer_id) {
-        brotherPresent = true;
-        break;
-      }
+    // Looks if the sibling transactions has not been added yet
+    const transferred = transferClean.find((x) => x._id === cleaned[i]._id || x.transfer_id === cleaned[i]._id);
+
+    // Either adds or pushes the transaction along with its from-to
+    if (transferred) {
+      // If both transactions are present, it automatically gets excluded
+      transferred.excludeFromReport = true;
+      cleaned[i].category.type === 'Expense'
+        ? (transferred.from_wallet = cleaned[i].wallet_id)
+        : (transferred.to_wallet = cleaned[i].wallet_id);
+    } else {
+      cleaned[i].wallet_id = selectedWallet._id;
+      cleaned[i].category.type === 'Expense'
+        ? (cleaned[i].from_wallet = cleaned[i].wallet_id)
+        : (cleaned[i].to_wallet = cleaned[i].wallet_id);
+
+      transferClean.push(cleaned[i]);
     }
-
-    if (!brotherPresent) transferClean.push(cleaned[i]);
-
-    // TODO: ADD a 'transference' transaction indicator
   }
 
   const output = transferClean.sort((a, b) => {
