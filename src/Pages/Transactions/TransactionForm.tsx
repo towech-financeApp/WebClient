@@ -27,6 +27,7 @@ import TransactionService from '../../Services/TransactionService';
 import CheckNested from '../../Utils/CheckNested';
 import Errorbox from '../../Components/ErrorBox';
 import Checkbox from '../../Components/Checkbox';
+import { IdIcons } from '../../Icons';
 
 interface Props {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -414,7 +415,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
         className={props.error ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'}
         onClick={() => setShowModal(true)}
       >
-        <div className="NewTransactionForm__WalletSelector__Icon" />
+        <IdIcons iconid={selectedWallet?.icon_id || 0} className="NewTransactionForm__WalletSelector__Icon" />
         <div className="NewTransactionForm__WalletSelector__Name">{selectedWallet?.name || 'Select Wallet'}</div>
         <div className="NewTransactionForm__WalletSelector__Triangle" />
       </div>
@@ -483,7 +484,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
 
     switch (id) {
       case '-2':
-        selected = { _id: '-2', name: 'Transfer', type: 'Expense', user_id: '-1', parent_id: '-1' };
+        selected = { _id: '-2', name: 'Transfer', type: 'Expense', user_id: '-1', parent_id: '-1', icon_id: -2 };
         break;
       default:
         selected = allCats.find((cat) => cat._id === id);
@@ -523,7 +524,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
         className={props.error ? 'NewTransactionForm__CategorySelector error' : 'NewTransactionForm__CategorySelector'}
         onClick={() => setShowModal(true)}
       >
-        <div className="NewTransactionForm__CategorySelector__Icon" />
+        <IdIcons iconid={selectedCategory?.icon_id || 0} className="NewTransactionForm__CategorySelector__Icon" />
         <div className="NewTransactionForm__CategorySelector__Name">{selectedCategory?.name || 'Select Category'}</div>
         <div className="NewTransactionForm__CategorySelector__Triangle" />
       </div>
@@ -551,7 +552,15 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key="-2"
                   onClick={() => setCategoryCallback('-2')}
                 >
-                  <div className="NewTransactionForm__CategorySelector__Category__Icon" />
+                  <IdIcons
+                    iconid={-2}
+                    className={getSelectedCategoryClass({
+                      parent_id: '-1',
+                      _id: '-2',
+                      icon_id: -2,
+                      name: 'transfer',
+                    } as Objects.Category)}
+                  />
                   <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
                 </div>
               </>
@@ -566,7 +575,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <div className={getSelectedCategoryClass(cat)} />
+                  <IdIcons iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
                   <div
                     className={
                       cat.parent_id === '-1'
@@ -589,13 +598,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <div
-                    className={
-                      cat.parent_id === '-1'
-                        ? 'NewTransactionForm__CategorySelector__Category__Icon'
-                        : 'NewTransactionForm__CategorySelector__SubCategory__Icon'
-                    }
-                  />
+                  <IdIcons iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
                   <div
                     className={
                       cat.parent_id === '-1'

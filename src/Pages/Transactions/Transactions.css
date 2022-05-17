@@ -266,7 +266,7 @@
 }
 
 .TransactionCard__Icon {
-  background-color: var(--gray3);
+  background-color: transparent;
   border-radius: 50%;
   height: 50px;
   margin-right: 15px;
@@ -282,6 +282,7 @@
 .TransactionCard__Content__Top {
   display: flex;
   font-size: 20px;
+  font-weight: 800;
 }
 
 .Transaction__Content__Top__Category {
@@ -294,7 +295,6 @@
 
 .TransactionCard__Content__Top__Amount {
   color: var(--green);
-  font-weight: 700;
   text-align: right;
 }
 
@@ -303,6 +303,7 @@
 }
 
 .TransactionCard__Content__Bottom {
+  color: var(--gray3);
   display: flex;
   font-size: 16px;
   padding-top: 3px;
@@ -351,7 +352,7 @@
 }
 
 .NewTransactionForm__WalletSelector__Icon {
-  background-color: var(--white);
+  background-color: transparent;
   border-radius: 50%;
   height: 30px;
   width: 30px;
@@ -485,7 +486,7 @@
 }
 
 .NewTransactionForm__CategorySelector__Icon {
-  background-color: var(--white);
+  background-color: transparent;
   border-radius: 50%;
   height: 45px;
   margin-right: 10px;
@@ -544,7 +545,7 @@
 }
 
 .NewTransactionForm__CategorySelector__Category__Icon {
-  background-color: var(--gray2);
+  background-color: transparent;
   border-radius: 50%;
   height: 50px;
   margin-right: 15px;
@@ -567,7 +568,7 @@
 }
 
 .NewTransactionForm__CategorySelector__SubCategory__Icon {
-  background-color: var(--gray2);
+  background-color: transparent;
   border-radius: 50%;
   height: 40px;
   margin-right: 15px;

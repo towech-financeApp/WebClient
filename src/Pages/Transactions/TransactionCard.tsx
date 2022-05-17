@@ -15,6 +15,7 @@ import { Objects } from '../../models';
 
 // Utils
 import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+import { IdIcons } from '../../Icons';
 
 interface Props {
   transaction: Objects.Transaction;
@@ -29,7 +30,7 @@ const TransactionCard = (props: Props): JSX.Element => {
   return (
     <>
       <div className="TransactionCard" onClick={() => setEdit(true)}>
-        <div className="TransactionCard__Icon" />
+        <IdIcons iconid={props.transaction.category.icon_id} className="TransactionCard__Icon" />
         <div className="TransactionCard__Content">
           <div className="TransactionCard__Content__Top">
             <div className="Transaction__Content__Top__Category">{props.transaction.category.name}</div>

@@ -183,7 +183,7 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
       // Filters the array
       item.transactions = state.transactions.filter((transaction) => {
         let index = action.payload.transactions?.findIndex((x: Objects.Transaction) => x._id === transaction._id);
-        if (index === undefined) index = -1
+        if (index === undefined) index = -1;
 
         return index < 0;
       });
