@@ -37,7 +37,16 @@ const IdIcons = (props: iconIdProps): JSX.Element => {
       return Icon13(props);
     case 13:
       return Icon12(props);
-
+    case 14:
+      return Icon14(props);
+    case 15:
+      return Icon15(props);
+    case 16:
+      return Icon16(props);
+    case 17:
+      return Icon17(props);
+    case 18:
+      return Icon18(props);
     default:
       return defaultIcon(props);
   }
@@ -782,6 +791,166 @@ const Icon13 = (props: SVGProps<SVGSVGElement>) => (
         <path className="Recurso_21_svg__g" d="M36.85 53.11h26.16M37.15 60.7h25.48" />
       </g>
     </g>
+  </svg>
+);
+
+const Icon14 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>
+        {'.Recurso_23_svg__e{fill:#dfa300}.Recurso_23_svg__g{fill:#ab0036}.Recurso_23_svg__i{fill:#1b1464}'}
+      </style>
+    </defs>
+    <g id="Recurso_23_svg__b">
+      <circle className="Recurso_23_svg__e" cx={50} cy={50} r={50} id="Recurso_23_svg__c" />
+      <g id="Recurso_23_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_23_svg__i"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path className="Recurso_23_svg__g" d="M61 18h11v5H61z" />
+        <path
+          style={{
+            fill: '#bf5c17',
+          }}
+          d="M54.5 45.5H57V53h-2.5z"
+        />
+        <path
+          className="Recurso_23_svg__g"
+          d="M49.38 43.83 35.69 56.67c-.6.57-.2 1.58.62 1.58H63.7c.83 0 1.23-1.01.62-1.58L50.63 43.83a.913.913 0 0 0-1.25 0Z"
+        />
+        <path className="Recurso_23_svg__e" d="m50 46.2-12.5 12h25L50 46.2zM37.5 58.2h25v17h-25z" />
+        <path
+          style={{
+            fill: '#42210b',
+          }}
+          d="M47 64.2h6v11h-6z"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon15 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_24_svg__g{fill:#00b0f0}.Recurso_24_svg__h{fill:#1b1464}'}</style>
+    </defs>
+    <g id="Recurso_24_svg__b">
+      <circle className="Recurso_24_svg__g" cx={50} cy={50} r={50} id="Recurso_24_svg__c" />
+      <g id="Recurso_24_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_24_svg__h"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <path
+          className="Recurso_24_svg__g"
+          d="M59.24 71.61c-2.11 5.1-7.96 7.52-13.06 5.41s-7.52-7.96-5.41-13.07l9.24-22.3 9.24 22.3c.97 2.36 1.06 5.11 0 7.66Z"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon16 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#d864a2',
+      }}
+    />
+    <path
+      d="M80 45c0 4.27-1.66 8.48-4.88 11.71l-1.66 1.71L50 81.88 26.54 58.42l-1.66-1.71c-6.49-6.45-6.49-16.97 0-23.42 3.22-3.27 7.49-4.88 11.71-4.88s8.48 1.61 11.76 4.88l1.66 1.66 1.66-1.66c6.49-6.49 17.02-6.49 23.46 0 3.22 3.22 4.88 7.44 4.88 11.71Z"
+      style={{
+        fill: '#fff',
+      }}
+    />
+  </svg>
+);
+
+const Icon17 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_26_svg__h{fill:none;stroke:#e2de00;stroke-miterlimit:10}'}</style>
+    </defs>
+    <g id="Recurso_26_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#45b179',
+        }}
+        id="Recurso_26_svg__c"
+      />
+      <g id="Recurso_26_svg__d">
+        <path
+          d="M23.14 49.44h48.49v12.31c0 2.13-1.73 3.85-3.85 3.85H26.99c-2.13 0-3.85-1.73-3.85-3.85V49.44Z"
+          style={{
+            fill: '#2b3077',
+          }}
+        />
+        <path
+          style={{
+            fill: '#2b4999',
+          }}
+          d="m89 46.21-40 10-40-10 40-10 40 10z"
+        />
+        <path className="Recurso_26_svg__h" d="m49 46.21 20.2 4.04M68.56 49.44V65.6" />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon18 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#007dc9',
+      }}
+    />
+    <circle
+      cx={50}
+      cy={50}
+      r={32.5}
+      style={{
+        fill: '#54225d',
+      }}
+    />
+    <circle
+      cx={50}
+      cy={50}
+      r={15}
+      style={{
+        fill: '#ab0036',
+      }}
+    />
+    <path d="m65.18 68.926 2.909-6.554 6.554 2.908-2.909 6.554zM69.536 62.989 85.91 25.935l3.658 1.617-16.373 37.053z" />
+    <circle cx={50} cy={50} r={2.5} />
   </svg>
 );
 
