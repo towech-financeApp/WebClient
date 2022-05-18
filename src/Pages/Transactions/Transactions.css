@@ -266,11 +266,34 @@
 }
 
 .TransactionCard__Icon {
-  background-color: var(--gray3);
-  border-radius: 50%;
+  position: relative;
   height: 50px;
   margin-right: 15px;
   width: 50px;
+}
+
+.TransactionCard__Icon__Main {
+  background-color: transparent;
+  border-radius: 50%;
+  height: 50px;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  width: 50px;
+}
+
+.TransactionCard__Icon__Sub {
+  background-color: transparent;
+  border-radius: 50%;
+  height: 20px;
+  position: absolute;
+  top: 40px;
+  width: 20px;
+  z-index: 100;
+}
+
+.TransactionCard__Icon__Sub.r {
+  left: 40px;
 }
 
 .TransactionCard__Content {
@@ -282,6 +305,7 @@
 .TransactionCard__Content__Top {
   display: flex;
   font-size: 20px;
+  font-weight: 800;
 }
 
 .Transaction__Content__Top__Category {
@@ -293,9 +317,11 @@
 }
 
 .TransactionCard__Content__Top__Amount {
-  color: var(--green);
-  font-weight: 700;
   text-align: right;
+}
+
+.TransactionCard__Content__Top__Amount.positive {
+  color: var(--green);
 }
 
 .TransactionCard__Content__Top__Amount.negative {
@@ -303,6 +329,7 @@
 }
 
 .TransactionCard__Content__Bottom {
+  color: var(--gray3);
   display: flex;
   font-size: 16px;
   padding-top: 3px;
@@ -351,7 +378,7 @@
 }
 
 .NewTransactionForm__WalletSelector__Icon {
-  background-color: var(--white);
+  background-color: transparent;
   border-radius: 50%;
   height: 30px;
   width: 30px;
@@ -485,7 +512,7 @@
 }
 
 .NewTransactionForm__CategorySelector__Icon {
-  background-color: var(--white);
+  background-color: transparent;
   border-radius: 50%;
   height: 45px;
   margin-right: 10px;
@@ -544,7 +571,7 @@
 }
 
 .NewTransactionForm__CategorySelector__Category__Icon {
-  background-color: var(--gray2);
+  background-color: transparent;
   border-radius: 50%;
   height: 50px;
   margin-right: 15px;
@@ -567,7 +594,7 @@
 }
 
 .NewTransactionForm__CategorySelector__SubCategory__Icon {
-  background-color: var(--gray2);
+  background-color: transparent;
   border-radius: 50%;
   height: 40px;
   margin-right: 15px;
@@ -575,6 +602,12 @@
 }
 
 .NewTransactionForm__WalletSelector__SubCategory__Icon.selected {
+  border: 2px solid var(--yellow);
+  height: 36px;
+  width: 36px;
+}
+
+.NewTransactionForm__CategorySelector__SubCategory__Icon.selected {
   border: 2px solid var(--yellow);
   height: 36px;
   width: 36px;
