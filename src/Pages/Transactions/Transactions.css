@@ -606,3 +606,9 @@
   height: 36px;
   width: 36px;
 }
+
+.NewTransactionForm__CategorySelector__SubCategory__Icon.selected {
+  border: 2px solid var(--yellow);
+  height: 36px;
+  width: 36px;
+}

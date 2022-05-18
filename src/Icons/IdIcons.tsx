@@ -8,7 +8,7 @@ interface iconIdProps extends SVGProps<SVGSVGElement> {
 const IdIcons = (props: iconIdProps): JSX.Element => {
   switch (props.iconid) {
     case -2:
-      return Icon_2(props);
+      return Icon3(props, '#fab700', '#d28f00');
     case 0:
       return Icon0(props);
     case 1:
@@ -16,9 +16,9 @@ const IdIcons = (props: iconIdProps): JSX.Element => {
     case 2:
       return Icon2(props);
     case 3:
-      return Icon3(props);
+      return Icon3(props, '#00ab36', '#006f0e');
     case 4:
-      return Icon4(props);
+      return Icon3(props, '#ab0036', '#6f000e');
     case 5:
       return Icon5(props);
     case 6:
@@ -27,6 +27,17 @@ const IdIcons = (props: iconIdProps): JSX.Element => {
       return Icon7(props);
     case 8:
       return Icon8(props);
+    case 9:
+      return Icon9(props);
+    case 10:
+      return Icon10(props);
+    case 11:
+      return Icon11(props);
+    case 12:
+      return Icon13(props);
+    case 13:
+      return Icon12(props);
+
     default:
       return defaultIcon(props);
   }
@@ -56,55 +67,6 @@ const defaultIcon = (props: SVGProps<SVGSVGElement>) => (
         <circle className="Recurso_1_svg__cls-2" cx={52} cy={86} r={4.5} />
       </g>
     </g>
-  </svg>
-);
-
-const Icon_2 = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
-    <circle
-      cx={50}
-      cy={50}
-      r={50}
-      style={{
-        fill: '#22398e',
-      }}
-    />
-    <path
-      style={{
-        fill: '#a67c52',
-      }}
-      d="M50 81.66 20 64.34v-30l30 17.32v30z"
-    />
-    <path
-      style={{
-        fill: '#fab700',
-      }}
-      d="M50 70.66 20 53.34v-7l30 17.32v7z"
-    />
-    <path
-      style={{
-        fill: '#8c6239',
-      }}
-      d="m50 81.66 30-17.32v-30L50 51.66v30z"
-    />
-    <path
-      style={{
-        fill: '#d28f00',
-      }}
-      d="m50 70.66 30-17.32v-7L50 63.66v7z"
-    />
-    <path
-      style={{
-        fill: '#b0865a',
-      }}
-      d="M80 34.34 50 51.66 20 34.34l30-17.32 30 17.32z"
-    />
-    <path
-      style={{
-        fill: '#81ccdf',
-      }}
-      d="M66.76 26.7 36.77 44.02l-3.53-2.04 29.99-17.32 3.53 2.04z"
-    />
   </svg>
 );
 
@@ -352,7 +314,7 @@ const Icon2 = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Icon3 = (props: SVGProps<SVGSVGElement>) => (
+const Icon3 = (props: SVGProps<SVGSVGElement>, color1: string, color2: string) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
     <circle
       cx={50}
@@ -370,7 +332,7 @@ const Icon3 = (props: SVGProps<SVGSVGElement>) => (
     />
     <path
       style={{
-        fill: '#00ab36',
+        fill: color1,
       }}
       d="M50 70.66 20 53.34v-7l30 17.32v7z"
     />
@@ -382,56 +344,7 @@ const Icon3 = (props: SVGProps<SVGSVGElement>) => (
     />
     <path
       style={{
-        fill: '#006f0e',
-      }}
-      d="m50 70.66 30-17.32v-7L50 63.66v7z"
-    />
-    <path
-      style={{
-        fill: '#b0865a',
-      }}
-      d="M80 34.34 50 51.66 20 34.34l30-17.32 30 17.32z"
-    />
-    <path
-      style={{
-        fill: '#81ccdf',
-      }}
-      d="M66.76 26.7 36.77 44.02l-3.53-2.04 29.99-17.32 3.53 2.04z"
-    />
-  </svg>
-);
-
-const Icon4 = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
-    <circle
-      cx={50}
-      cy={50}
-      r={50}
-      style={{
-        fill: '#22398e',
-      }}
-    />
-    <path
-      style={{
-        fill: '#a67c52',
-      }}
-      d="M50 81.66 20 64.34v-30l30 17.32v30z"
-    />
-    <path
-      style={{
-        fill: '#ab0036',
-      }}
-      d="M50 70.66 20 53.34v-7l30 17.32v7z"
-    />
-    <path
-      style={{
-        fill: '#8c6239',
-      }}
-      d="m50 81.66 30-17.32v-30L50 51.66v30z"
-    />
-    <path
-      style={{
-        fill: '#6f000e',
+        fill: color2,
       }}
       d="m50 70.66 30-17.32v-7L50 63.66v7z"
     />
@@ -635,6 +548,238 @@ const Icon8 = (props: SVGProps<SVGSVGElement>) => (
           className="Recurso_15_svg__g"
           d="M31.11 39.82c-.11-.11-.32-.26-.61-.44-.3-.18-.66-.37-1.08-.56-.42-.19-.88-.35-1.38-.48-.5-.13-1-.19-1.51-.19-.9 0-1.57.16-2.03.49s-.68.8-.68 1.42c0 .46.14.83.43 1.1.29.27.72.5 1.3.69.58.19 1.3.4 2.16.62 1.12.27 2.09.6 2.92.99.82.39 1.46.9 1.9 1.53.44.63.66 1.47.66 2.52 0 .89-.17 1.66-.5 2.29s-.8 1.16-1.38 1.56c-.58.41-1.26.7-2.02.88-.76.18-1.56.27-2.41.27s-1.7-.09-2.54-.26-1.66-.43-2.44-.76-1.5-.72-2.17-1.19l1.46-2.86c.14.14.4.33.77.56s.82.46 1.34.7c.53.23 1.1.43 1.73.59.62.16 1.26.24 1.9.24.91 0 1.59-.15 2.04-.44.45-.29.67-.72.67-1.29 0-.51-.18-.91-.54-1.21-.36-.29-.87-.55-1.52-.76s-1.43-.44-2.33-.68c-1.09-.3-1.99-.65-2.7-1.03-.71-.38-1.25-.86-1.61-1.42-.36-.57-.54-1.28-.54-2.14 0-1.16.28-2.14.84-2.93.56-.79 1.31-1.39 2.26-1.79.94-.41 1.99-.61 3.14-.61.8 0 1.56.09 2.27.26.71.18 1.38.41 2 .7.62.29 1.18.6 1.68.94l-1.46 2.69ZM39.92 35.36h3.36l6.26 17.04h-3.41l-1.42-4.25h-6.26l-1.42 4.25h-3.41l6.29-17.04Zm4.02 10.46-2.34-7.03-2.36 7.03h4.7ZM51.42 52.4V35.36h3.31V49.5h8.69v2.9h-12ZM77.27 49.5v2.9H65.44V35.36h11.62v2.9h-8.3v4.1h7.15v2.69h-7.15v4.44h8.52Z"
         />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon9 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_17_svg__h{fill:#1b1464}'}</style>
+    </defs>
+    <g id="Recurso_17_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#981869',
+        }}
+        id="Recurso_17_svg__c"
+      />
+      <g id="Recurso_17_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_17_svg__h"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <path d="M56.8 55.89c-.1-.07-.36-.25-.79-.52-.43-.28-.97-.56-1.62-.85-.65-.29-1.36-.53-2.12-.74-.77-.2-1.54-.31-2.3-.31-1.01 0-1.78.18-2.32.54s-.81.89-.81 1.58c0 .55.2 1 .61 1.35.41.35 1.01.65 1.8.9s1.76.53 2.92.85c1.63.46 3.04.99 4.23 1.6 1.19.61 2.11 1.4 2.77 2.36s.99 2.23.99 3.82c0 1.42-.27 2.63-.81 3.65s-1.26 1.84-2.16 2.45a9.18 9.18 0 0 1-3.06 1.33c-1.14.28-2.33.41-3.58.41s-2.52-.13-3.82-.4c-1.3-.26-2.55-.64-3.76-1.12-1.21-.48-2.32-1.03-3.33-1.66l2.59-5.18c.12.14.44.37.95.68.52.31 1.17.64 1.96.99s1.66.66 2.61.94c.95.28 1.91.41 2.9.41 1.08 0 1.87-.17 2.38-.52.5-.35.76-.82.76-1.42s-.27-1.12-.81-1.49-1.27-.71-2.2-1.01c-.92-.3-1.99-.62-3.19-.95-1.56-.5-2.85-1.05-3.87-1.64-1.02-.59-1.78-1.31-2.27-2.18-.49-.86-.74-1.93-.74-3.2 0-1.82.43-3.35 1.28-4.59.85-1.24 2-2.17 3.44-2.81 1.44-.64 3.01-.95 4.72-.95 1.22 0 2.39.14 3.51.43 1.12.29 2.16.65 3.13 1.08.97.43 1.83.88 2.57 1.33l-2.56 4.82Zm-7.92-11.23h2.59v6.37l-2.59.47v-6.84Zm0 26.53h2.59v7.2h-2.59v-7.2Zm.4-.68V52.08l1.76-.47v18.97l-1.76-.07Z" />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon10 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_18_svg__h{fill:#fab700}.Recurso_18_svg__i{fill:#1b1464}'}</style>
+    </defs>
+    <g id="Recurso_18_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#d4bf00',
+        }}
+        id="Recurso_18_svg__c"
+      />
+      <g id="Recurso_18_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_18_svg__i"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <path
+          className="Recurso_18_svg__h"
+          d="M50.49 58.45 45.1 68.96c-.07.14-.11.29-.11.45v.68c0 .5.36.91.81.91.25 0 .49-.13.64-.35L55 58.1v-.09h-3.81c-.29 0-.55.17-.7.45Z"
+        />
+        <path className="Recurso_18_svg__h" d="m50.16 46-4.57 15h4.08l8.66-15h-8.17z" />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon11 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_19_svg__i{fill:#1b1464}'}</style>
+    </defs>
+    <g id="Recurso_19_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#ea581c',
+        }}
+        id="Recurso_19_svg__c"
+      />
+      <g id="Recurso_19_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_19_svg__i"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <path
+          d="M43 55h14c.55 0 1 .45 1 1v19c0 1.1-.9 2-2 2H44c-1.1 0-2-.9-2-2V56c0-.55.45-1 1-1Z"
+          style={{
+            fill: '#c4c4c4',
+          }}
+        />
+        <path
+          d="M54 48h-7c-1.1 0-2 .9-2 2v5h10v-6c0-.55-.45-1-1-1Zm-2 5h-4v-2h4v2Z"
+          style={{
+            fill: '#ea581c',
+          }}
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon12 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>{'.Recurso_20_svg__i{fill:#1b1464}'}</style>
+    </defs>
+    <g id="Recurso_20_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#324697',
+        }}
+        id="Recurso_20_svg__c"
+      />
+      <g id="Recurso_20_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_20_svg__i"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <path
+          d="M56.92 66.74c-3.64 1.76-9.2-.56-12.57-5.31-3.21-4.51-3.31-9.63-.4-11.94l-4.58-6.09c-3.75 3.6-2.62 11.92 2.97 19.64C48.18 71.11 56.75 75.58 62 73.48l-5.08-6.75Z"
+          style={{
+            fill: '#324697',
+          }}
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+const Icon13 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <defs>
+      <style>
+        {
+          '.Recurso_21_svg__f,.Recurso_21_svg__g{stroke:#28285b;stroke-miterlimit:10}.Recurso_21_svg__f{fill:#1caae2}.Recurso_21_svg__g{fill:none}.Recurso_21_svg__l{fill:#1b1464}'
+        }
+      </style>
+    </defs>
+    <g id="Recurso_21_svg__b">
+      <circle
+        cx={50}
+        cy={50}
+        r={50}
+        style={{
+          fill: '#1caae2',
+        }}
+        id="Recurso_21_svg__c"
+      />
+      <g id="Recurso_21_svg__d">
+        <path
+          style={{
+            fill: '#fff',
+          }}
+          d="M22.5 15h55v70h-55z"
+        />
+        <path
+          className="Recurso_21_svg__l"
+          d="M57 26v4H43v-4h14m.5-.5h-15v5h15v-5ZM72 26v4H58v-4h14m.5-.5h-15v5h15v-5ZM72 31v4H58v-4h14m.5-.5h-15v5h15v-5ZM57 31v4H43v-4h14m.5-.5h-15v5h15v-5ZM42 31v4H28v-4h14m.5-.5h-15v5h15v-5ZM42 26v4H28v-4h14m.5-.5h-15v5h15v-5Z"
+        />
+        <path
+          style={{
+            fill: '#ab0036',
+          }}
+          d="M61 18h11v5H61z"
+        />
+        <circle
+          cx={50}
+          cy={56}
+          r={13.5}
+          style={{
+            fill: '#1caae2',
+          }}
+        />
+        <path
+          d="M50 43c7.17 0 13 5.83 13 13s-5.83 13-13 13-13-5.83-13-13 5.83-13 13-13m0-1c-7.73 0-14 6.27-14 14s6.27 14 14 14 14-6.27 14-14-6.27-14-14-14Z"
+          style={{
+            fill: '#28285b',
+          }}
+        />
+        <path
+          className="Recurso_21_svg__f"
+          d="M49.02 69.56c-1.32-1.67-4.01-5.56-4.61-11.17-.91-8.38 3.48-14.45 4.56-15.85M50.2 69.71c1.32-1.67 4.01-5.56 4.61-11.17.91-8.38-3.48-14.45-4.56-15.85"
+        />
+        <path className="Recurso_21_svg__g" d="M36.85 53.11h26.16M37.15 60.7h25.48" />
       </g>
     </g>
   </svg>
