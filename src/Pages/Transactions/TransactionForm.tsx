@@ -475,7 +475,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null as Objects.Category | null);
 
-  // Start useEffect only updates the when the form is visible
+  // Start useEffect, only updates the when the form is visible
   useEffect(() => {
     if (props.visible && props.value !== (selectedCategory?._id || '-1')) {
       // TODO: When categories are editable, fetch to check if there are new ones
