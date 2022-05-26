@@ -9,6 +9,7 @@ import * as FaIcons from 'react-icons/fa';
 
 // Components
 import { MainStore } from '../../Hooks/ContextStore';
+import { IdIcons } from '../../Icons';
 import Errorbox from '../../Components/ErrorBox';
 import Input from '../../Components/Input';
 import Modal from '../../Components/Modal';
@@ -24,6 +25,7 @@ import TransactionService from '../../Services/TransactionService';
 
 // Utilities
 import CheckNested from '../../Utils/CheckNested';
+import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
 
 // Styles
 import './Wallets.css';
@@ -53,6 +55,7 @@ const WalletForm = (props: Props): JSX.Element => {
     name: props.initialWallet?.name || '',
     money: ((props.initialWallet?.money || 0) / 100).toString(),
     currency: props.initialWallet?.currency || 'MXN',
+    iconid: props.initialWallet?.icon_id || 0,
   });
 
   // Functions
@@ -112,6 +115,23 @@ const WalletForm = (props: Props): JSX.Element => {
 
   const acceptIcon = <FaIcons.FaSave />;
 
+  // Returns the amount of money that doesn't belong to subwallets
+  const calculateFree = (): string => {
+    if (!props.initialWallet) return '0.00';
+
+    let money = props.initialWallet.money || 0;
+
+    // Reads every subwallet
+    props.initialWallet.child_id?.map((x) => {
+      // Only substracts if the child wallet is into debt, this way, the debt is reflected on the parent as well
+      if ((x.money || 0) > 0) {
+        money -= x.money || 0;
+      }
+    });
+
+    return ParseMoneyAmount(money);
+  };
+
   return (
     <>
       <Modal
@@ -133,15 +153,17 @@ const WalletForm = (props: Props): JSX.Element => {
           <div className="NewWalletForm__MainWallet">
             {/* Form */}
             <div className="NewWalletForm__MainWallet__FirstRow">
-              <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
-              <Input
-                error={errors.name ? true : false}
-                label="Name"
-                name="name"
-                type="text"
-                value={walletForm.values.name}
-                onChange={walletForm.onChange}
-              />
+              <IdIcons iconid={walletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" />
+              <div className="NewWalletForm__MainWallet__FirstRow__Name">
+                <Input
+                  error={errors.name ? true : false}
+                  label="Name"
+                  name="name"
+                  type="text"
+                  value={walletForm.values.name}
+                  onChange={walletForm.onChange}
+                />
+              </div>
             </div>
             <div className="NewWalletForm__MainWallet__SecondRow">
               <div className="NewWalletForm__MainWallet__SecondRow__Money">
@@ -179,6 +201,11 @@ const WalletForm = (props: Props): JSX.Element => {
                 <div className="NewWalletForm__Subwallets__Title">Subwallets</div>
                 <div className="NewWalletForm__Subwallets__Content">
                   <div>
+                    {(props.initialWallet.child_id?.length || 0) > 0 && (
+                      <div>
+                        Unasigned: {props.initialWallet.currency}&nbsp;{calculateFree()}
+                      </div>
+                    )}
                     {props.initialWallet.child_id?.map((x) => (
                       <SubWalletCard
                         key={x._id}
@@ -254,6 +281,7 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
     money: props.initialWallet?.money?.toString() || '0',
     currency: props.initialWallet?.currency || props.parentWallet.currency,
     parent_id: props.initialWallet?.parent_id || props.parentWallet._id,
+    icon_id: props.initialWallet?.icon_id || 0,
   });
 
   // Functions
@@ -331,15 +359,18 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
       >
         <>
           <div className="NewWalletForm__MainWallet__FirstRow">
-            <div className="NewWalletForm__MainWallet__FirstRow__Icon" />
-            <Input
-              error={errors.name ? true : false}
-              label="Name"
-              name="name"
-              type="text"
-              value={subWalletForm.values.name}
-              onChange={subWalletForm.onChange}
-            />
+            <IdIcons iconid={subWalletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" />
+
+            <div className="NewWalletForm__MainWallet__FirstRow__Name">
+              <Input
+                error={errors.name ? true : false}
+                label="Name"
+                name="name"
+                type="text"
+                value={subWalletForm.values.name}
+                onChange={subWalletForm.onChange}
+              />
+            </div>
           </div>
 
           {/* Delete subwallet button */}
@@ -385,9 +416,15 @@ const SubWalletCard = (props: SubWalletCardProps): JSX.Element => {
   return (
     <>
       <div className="SubWalletCard" onClick={() => setEdit(true)}>
-        <div className="SubWalletCard__Icon"></div>
+        <IdIcons iconid={props.wallet.icon_id} className="SubWalletCard__Icon" />
         <div className="SubWalletCard__Info">
           <div className="SubWalletCard__Info__Name">{props.wallet.name}</div>
+          <div className="SubWalletCard__Info__Money">
+            {props.wallet.currency}:&nbsp;
+            <div className={(props.wallet.money || 0) >= 0 ? '' : 'SubWalletCard__Info__Money__Amount'}>
+              {ParseMoneyAmount(props.wallet.money)}
+            </div>
+          </div>
         </div>
       </div>
       <SubWalletForm set={setEdit} state={showEdit} initialWallet={props.wallet} parentWallet={props.parentWallet} />
