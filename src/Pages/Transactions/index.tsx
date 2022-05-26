@@ -28,7 +28,7 @@ import CategoryService from '../../Services/CategoryService';
 
 // Utilities
 import GetParameters from '../../Utils/GetParameters';
-import ParseDataMonth from '../../Utils/ParseDataMonth';
+import { ParseDataMonth } from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Transactions.css';

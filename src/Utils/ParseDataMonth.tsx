@@ -12,4 +12,8 @@ const ParseDataMonth = (dataMonth: string | null): string => {
   return dataMonth;
 };
 
-export default ParseDataMonth;
+const DateInsideDataMonth = (date: Date, dataMonth: string): boolean => {
+  return `${date.toString().substring(0, 4)}${date.toString().substring(5, 7)}` === dataMonth;
+};
+
+export { ParseDataMonth, DateInsideDataMonth };
