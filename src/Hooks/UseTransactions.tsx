@@ -10,7 +10,7 @@ import React, { useReducer } from 'react';
 import { Objects } from '../models';
 
 // Utilities
-import ParseDataMonth from '../Utils/ParseDataMonth';
+import { ParseDataMonth, DateInsideDataMonth } from '../Utils/ParseDataMonth';
 
 export interface FrontendTransaction extends Objects.Transaction {
   from_wallet?: string;
@@ -30,6 +30,7 @@ export interface TransAction {
     dataMonth?: string;
     selectedWallet?: Objects.Wallet;
     transactions?: Objects.Transaction[];
+    consolidateChildren?: boolean;
   };
 }
 
@@ -54,11 +55,14 @@ const cleanAndSort = (
     const validWallets = [selectedWallet._id];
     selectedWallet.child_id?.map((x) => validWallets.push(x._id));
 
+    /** First removes the transactions following the parameters
+     * - The transaction is part of the selected wallet or "Total" is selected
+     * - the transactions can also be inside the child wallets
+     * - The transaction is inside the selected dataMonth
+     */
     if (
-      ((selectedWallet._id === '-1' || validWallets.includes(x.wallet_id)) &&
-        `${x.transactionDate.toString().substring(0, 4)}${x.transactionDate.toString().substring(5, 7)}` ===
-          dataMonth) ||
-      forceSet
+      (selectedWallet._id === '-1' || validWallets.includes(x.wallet_id) || forceSet) &&
+      DateInsideDataMonth(x.transactionDate, dataMonth)
     ) {
       cleaned.push(x);
     }
@@ -170,7 +174,11 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
         }
       });
 
-      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
+      item.transactions = cleanAndSort(
+        item.transactions,
+        state.selectedWallet,
+        ParseDataMonth(state.dataMonth),
+      );
       item.report = calculateReport(item.transactions, item.selectedWallet);
 
       return item;
@@ -185,7 +193,11 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
         }
       });
 
-      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
+      item.transactions = cleanAndSort(
+        item.transactions,
+        state.selectedWallet,
+        ParseDataMonth(state.dataMonth),
+      );
       item.report = calculateReport(item.transactions, item.selectedWallet);
       return item;
     case 'DELETE':
