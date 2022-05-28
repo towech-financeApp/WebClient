@@ -63,6 +63,16 @@ const IdIcons = (props: iconIdProps): JSX.Element => {
       return Icon25(props);
     case 26:
       return Icon26(props);
+    case 27:
+      return Icon27(props);
+    case 28:
+      return Icon28(props);
+    case 29:
+      return Icon29(props);
+    case 30:
+      return Icon30(props);
+    case 31:
+      return Icon31(props);
     default:
       return defaultIcon(props);
   }
@@ -1288,6 +1298,218 @@ const Icon26 = (props: SVGProps<SVGSVGElement>) => (
         }}
         d="M56.07 85.46H43.93l-1.89-8.68h15.92l-1.89 8.68z"
       />
+    </g>
+  </svg>
+);
+
+const Icon27 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_38_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>{'.Recurso_38_svg__cls-2{fill:#27ade4}.Recurso_38_svg__cls-4{fill:#c4c4c4}'}</style>
+    </defs>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#634092',
+      }}
+      id="Recurso_38_svg__Capa_1-2"
+    />
+    <g id="Recurso_38_svg__Capa_2-2">
+      <path
+        d="M79 54v6H21v-7c0-.55.45-1 1-1h1.5l1.23-9.81A2.496 2.496 0 0 1 27.21 40h32.54c.79 0 1.53.37 2 1L70 52h7c1.1 0 2 .9 2 2Z"
+        style={{
+          fill: '#f15a24',
+        }}
+      />
+      <path className="Recurso_38_svg__cls-4" d="M20.5 57h6v2h-6c-.55 0-1-.45-1-1s.45-1 1-1Z" />
+      <path
+        className="Recurso_38_svg__cls-4"
+        d="M74.5 57h6v2h-6c-.55 0-1-.45-1-1s.45-1 1-1Z"
+        transform="rotate(-180 77 58)"
+      />
+      <circle cx={33} cy={61} r={5} />
+      <circle className="Recurso_38_svg__cls-4" cx={33} cy={61} r={2} />
+      <circle cx={67} cy={61} r={5} />
+      <circle className="Recurso_38_svg__cls-4" cx={67} cy={61} r={2} />
+      <path
+        className="Recurso_38_svg__cls-2"
+        d="M41.22 52H26.87c-.46 0-.83-.4-.78-.86l.84-8.43c.04-.4.38-.71.78-.71h13.51c.43 0 .78.35.78.78v8.43c0 .43-.35.78-.78.78ZM65.72 52H44.67a.67.67 0 0 1-.67-.67v-8.67c0-.37.3-.67.67-.67h14.99c.22 0 .42.11.55.28l6.07 8.67c.31.44 0 1.05-.55 1.05Z"
+      />
+    </g>
+  </svg>
+);
+
+const Icon28 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_39_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>
+        {'.Recurso_39_svg__cls-3{fill:#2c4b9b}.Recurso_39_svg__cls-4{fill:#94d9ff}.Recurso_39_svg__cls-5{fill:#c4c4c4}'}
+      </style>
+    </defs>
+    <circle className="Recurso_39_svg__cls-3" cx={50} cy={50} r={50} id="Recurso_39_svg__Capa_1-2" />
+    <g id="Recurso_39_svg__Capa_2-2">
+      <path className="Recurso_39_svg__cls-5" d="M35 22h30v60H35z" />
+      <path
+        style={{
+          fill: '#ab0036',
+        }}
+        d="M36 50h14v32H36z"
+      />
+      <path
+        style={{
+          fill: '#00942e',
+        }}
+        d="M50 50h14v32H50z"
+      />
+      <path d="M36 38h28v12H36z" />
+      <path className="Recurso_39_svg__cls-4" d="M38 42h10v4H38zM52 42h10v4H52z" />
+      <path className="Recurso_39_svg__cls-5" d="M34.5 81.5h31v1h-31z" />
+      <path className="Recurso_39_svg__cls-3" d="M36 24h28v12H36z" />
+    </g>
+  </svg>
+);
+
+const Icon29 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#d4d91e',
+      }}
+    />
+    <path
+      style={{
+        fill: '#c4c4c4',
+      }}
+      d="M48 52h4v48h-4z"
+    />
+    <path
+      d="M60 36v14c0 5.52-4.48 10-10 10s-10-4.48-10-10V36c0-5.52 4.48-10 10-10s10 4.48 10 10Z"
+      style={{
+        fill: '#4ba2da',
+      }}
+    />
+    <path
+      d="M57.22 34c-.88-3.17-3.77-5.5-7.22-5.5s-6.35 2.33-7.22 5.5h14.44Z"
+      style={{
+        fill: '#aaf4ff',
+      }}
+    />
+    <circle
+      cx={54}
+      cy={46}
+      r={2}
+      style={{
+        fill: '#ab0036',
+      }}
+    />
+  </svg>
+);
+
+const Icon30 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_41_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>{'.Recurso_41_svg__cls-2{fill:#c4c4c4}.Recurso_41_svg__cls-3{fill:#5ab679}'}</style>
+    </defs>
+    <circle className="Recurso_41_svg__cls-3" cx={50} cy={50} r={50} id="Recurso_41_svg__Capa_1-2" />
+    <g id="Recurso_41_svg__Capa_2-2">
+      <path className="Recurso_41_svg__cls-2" transform="rotate(43.78 48.616 49.451)" d="M45.62 25.94h6v47h-6z" />
+      <circle className="Recurso_41_svg__cls-2" cx={67.14} cy={29.8} r={7} />
+      <path
+        className="Recurso_41_svg__cls-3"
+        d="M67.11 26.22h6v5c0 1.66-1.34 3-3 3s-3-1.34-3-3v-5Z"
+        transform="rotate(97.94 70.115 30.219)"
+      />
+      <circle className="Recurso_41_svg__cls-2" cx={32.81} cy={66.15} r={7} />
+      <path
+        className="Recurso_41_svg__cls-3"
+        d="M26.81 61.95h6v5c0 1.66-1.34 3-3 3s-3-1.34-3-3v-5Z"
+        transform="rotate(-86.28 29.808 65.953)"
+      />
+      <path
+        transform="rotate(43.78 48.616 49.451)"
+        style={{
+          fill: '#848484',
+        }}
+        d="M48.12 33.44h1v32h-1z"
+      />
+    </g>
+  </svg>
+);
+
+const Icon31 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_42_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>
+        {'.Recurso_42_svg__cls-1{fill:#fff}.Recurso_42_svg__cls-3{fill:#27ade4}.Recurso_42_svg__cls-5{fill:#c4c4c4}'}
+      </style>
+    </defs>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#e7225a',
+      }}
+      id="Recurso_42_svg__Capa_1-2"
+    />
+    <g id="Recurso_42_svg__Capa_2-2">
+      <path
+        d="M79 51v6H21v-7c0-.55.45-1 1-1h1.5l1.23-9.81A2.496 2.496 0 0 1 27.21 37h32.54c.79 0 1.53.37 2 1L70 49h7c1.1 0 2 .9 2 2Z"
+        style={{
+          fill: '#e8e100',
+        }}
+      />
+      <path className="Recurso_42_svg__cls-5" d="M20.5 54h6v2h-6c-.55 0-1-.45-1-1s.45-1 1-1Z" />
+      <path
+        className="Recurso_42_svg__cls-5"
+        d="M74.5 54h6v2h-6c-.55 0-1-.45-1-1s.45-1 1-1Z"
+        transform="rotate(-180 77 55)"
+      />
+      <path
+        className="Recurso_42_svg__cls-3"
+        d="M41.22 49H26.87c-.46 0-.83-.4-.78-.86l.84-8.43c.04-.4.38-.71.78-.71h13.51c.43 0 .78.35.78.78v8.43c0 .43-.35.78-.78.78ZM65.72 49H44.67a.67.67 0 0 1-.67-.67v-8.67c0-.37.3-.67.67-.67h14.99c.22 0 .42.11.55.28l6.07 8.67c.31.44 0 1.05-.55 1.05Z"
+      />
+      <path
+        className="Recurso_42_svg__cls-1"
+        d="M39 53h2v2h-2zM35 53h2v2h-2zM31 53h2v2h-2zM41 55h2v2h-2zM37 55h2v2h-2zM45 55h2v2h-2zM49 55h2v2h-2zM53 55h2v2h-2zM57 55h2v2h-2zM61 55h2v2h-2zM43 53h2v2h-2zM47 53h2v2h-2zM51 53h2v2h-2zM55 53h2v2h-2zM59 53h2v2h-2zM63 53h2v2h-2zM67 53h2v2h-2z"
+      />
+      <circle cx={67} cy={58} r={5} />
+      <circle className="Recurso_42_svg__cls-5" cx={67} cy={58} r={2} />
+      <circle cx={33} cy={58} r={5} />
+      <circle className="Recurso_42_svg__cls-5" cx={33} cy={58} r={2} />
     </g>
   </svg>
 );
