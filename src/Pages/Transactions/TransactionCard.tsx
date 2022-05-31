@@ -40,7 +40,7 @@ const TransactionCard = (props: Props): JSX.Element => {
 
   const getWalletIconId = (id: string): number => {
     const wallet = wallets.find((x) => {
-      x._id === id;
+      return x._id.toString() === id;
     });
 
     return wallet?.icon_id || -1;

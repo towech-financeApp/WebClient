@@ -118,7 +118,10 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
     <>
       {props.wallet?.parent_id === undefined || props.wallet?.parent_id === null ? (
         <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet)}>
-          <IdIcons.Variable iconid={props.wallet?.icon_id || 0} className="Transactions__Header__Selector__Item__Icon"/>
+          <IdIcons.Variable
+            iconid={props.wallet?.icon_id || 0}
+            className="Transactions__Header__Selector__Item__Icon"
+          />
           <div className="Transactions__Header__Selector__Item__Text">
             <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
             <div className="Transactions__Header__Selector__Item__Money">
@@ -128,7 +131,10 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
         </div>
       ) : (
         <div className="Transactions__Header__Selector__SubItem" onClick={() => props.onClick(props.wallet)}>
-          <IdIcons.Variable iconid={props.wallet?.icon_id || 0} className="Transactions__Header__Selector__SubItem__Icon"/>
+          <IdIcons.Variable
+            iconid={props.wallet?.icon_id || 0}
+            className="Transactions__Header__Selector__SubItem__Icon"
+          />
           <div className="Transactions__Header__Selector__Item__Text">
             <div className="Transactions__Header__Selector__SubItem__Name">{props.wallet?.name || 'Total'}</div>
             <div className="Transactions__Header__Selector__SubItem__Money">

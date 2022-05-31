@@ -282,15 +282,15 @@
 .TransactionCard__Icon__Sub {
   background-color: transparent;
   border-radius: 50%;
-  height: 20px;
+  height: 25px;
   position: absolute;
-  top: 40px;
-  width: 20px;
+  top: 35px;
+  width: 25px;
   z-index: 100;
 }
 
 .TransactionCard__Icon__Sub.r {
-  left: 40px;
+  left: 35px;
 }
 
 .TransactionCard__Content {
