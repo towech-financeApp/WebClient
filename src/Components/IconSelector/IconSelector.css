@@ -1,5 +1,11 @@
+.IconSelector__Grid {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  grid-gap:10px;
+}
+
 .IconSelector__Grid__Icon {
   height: 60px;
-  margin: 10px;
   width: 60px;
 }
