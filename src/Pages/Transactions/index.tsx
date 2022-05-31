@@ -65,6 +65,16 @@ const Transactions = (): JSX.Element => {
         .then((res) => {
           // Sets the available wallets, the transactions are fetched later
           dispatchWallets({ type: 'SET', payload: { wallets: res.data } });
+
+          // Also generates and sets the selectedWallet to contain the children
+          const firstSelectedWallet = res.data.find(
+            (x) => x._id === (GetParameters(location.search, 'wallet') || '-1'),
+          );
+
+          dispatchTransactionState({
+            type: 'SELECT-WALLET',
+            payload: { selectedWallet: firstSelectedWallet || ({ _id: '-1' } as Objects.Wallet) },
+          });
           setLoaded(true);
         })
         .catch(() => {
@@ -84,6 +94,7 @@ const Transactions = (): JSX.Element => {
 
   // Code that is run everytime the selectedWalletId changes
   useEffect(() => {
+    if (!loaded) return;
     loadTransactions(transactionState.selectedWallet._id, transactionState.dataMonth);
   }, [transactionState.selectedWallet, transactionState.dataMonth]);
 
@@ -93,8 +104,6 @@ const Transactions = (): JSX.Element => {
     dispatchTransactionState({
       type: 'SET',
       payload: {
-        dataMonth: transactionState.dataMonth,
-        selectedWallet: transactionState.selectedWallet,
         transactions: res.data,
       },
     });

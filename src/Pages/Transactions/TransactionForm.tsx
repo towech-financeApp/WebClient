@@ -76,6 +76,7 @@ const TransactionForm = (props: Props): JSX.Element => {
 
       // Sends the transaction to the API
       const res = await transactionService.newTransaction(transactionForm.values, setLoading);
+      setErrors([]);
 
       // Clears the form, adds the transaction to the list and closes the modal
       transactionForm.clear();
@@ -111,6 +112,7 @@ const TransactionForm = (props: Props): JSX.Element => {
         transactionForm.values,
         setLoading,
       );
+      setErrors([]);
 
       props.setState(false);
 
@@ -168,6 +170,7 @@ const TransactionForm = (props: Props): JSX.Element => {
       if (Object.keys(errorHolder).length > 0) return setErrors(errorHolder);
 
       const res = await transactionService.transferBetweenWallets(transactionForm.values, setLoading);
+      setErrors([]);
 
       // Clears the form, adds the transaction to the list and closes the modal
       transactionForm.clear();
@@ -186,6 +189,7 @@ const TransactionForm = (props: Props): JSX.Element => {
   }
 
   const acceptIcon = <FaIcons.FaSave />;
+
   const acceptCallback = () => {
     if (props.initialTransaction) {
       return editTransactionCallback();
@@ -244,6 +248,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                     value={transactionForm.values.wallet_id}
                     visible={props.state}
                     error={errors.wallet_id}
+                    disabled={props.initialTransaction?.transfer_id ? true : false}
                   ></WalletSelector>
                 </div>
 
@@ -360,6 +365,7 @@ interface WalletSelectorProps {
   onChange?: any;
   name?: string;
   visible: boolean;
+  disabled?: boolean;
 }
 
 const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
@@ -410,7 +416,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
   };
 
   return (
-    <>
+    <div className={props.disabled ? 'loading' : ''}>
       <div
         className={props.error ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'}
         onClick={() => setShowModal(true)}
@@ -448,7 +454,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
           ))}
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 
@@ -469,7 +475,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null as Objects.Category | null);
 
-  // Start useEffect only updates the when the form is visible
+  // Start useEffect, only updates the when the form is visible
   useEffect(() => {
     if (props.visible && props.value !== (selectedCategory?._id || '-1')) {
       // TODO: When categories are editable, fetch to check if there are new ones
