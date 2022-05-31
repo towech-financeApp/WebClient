@@ -12,6 +12,9 @@ import WalletForm from './WalletForm';
 // Models
 import { Objects } from '../../models';
 
+// Components
+import { IdIcons } from '../../Icons';
+
 // Utils
 import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
 
@@ -26,7 +29,7 @@ const WalletCard = (props: WalletCardProps): JSX.Element => {
   return (
     <>
       <div className="WalletCard" onClick={() => setEdit(true)}>
-        <div className="WalletCard__Icon" />
+        <IdIcons iconid={props.wallet.icon_id} className="WalletCard__Icon" />
         <div className="WalletCard__Info">
           <div className="WalletCard__Info__Name">{props.wallet.name}</div>
           <div className="WalletCard__Info__Money">
