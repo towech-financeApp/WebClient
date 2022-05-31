@@ -56,11 +56,14 @@
 }
 
 .NewWalletForm__MainWallet__FirstRow__Icon {
-  background-color: var(--white);
   height: 65px;
-  width: 85px;
+  width: 65px;
   border-radius: 50%;
-  margin-right: 20px;
+}
+
+.NewWalletForm__MainWallet__FirstRow__Name {
+  margin-left: 20px;
+  flex: 1;
 }
 
 .NewWalletForm__MainWallet__SecondRow {
@@ -105,7 +108,6 @@
 }
 
 .WalletCard__Icon {
-  background-color: var(--gray2);
   border-radius: 50%;
   height: 60px;
   width: 60px;
@@ -147,11 +149,19 @@
   padding: 20px;
 }
 
+.NewWalletForm__Subwallets__Content__Unassigned {
+  border-bottom: 2px solid var(--yellow);
+  color: var(--gray3);
+  font-weight: 700;
+  padding: 10px;
+}
+
 .NewWalletForm__Subwallets__Add {
   align-items: center;
   color: var(--gray3);
   display: flex;
   font-size: 18px;
+  padding-top: 5px;
   height: 25px;
 }
 
@@ -169,15 +179,18 @@
   padding-bottom: 9.5px;
 }
 
+.SubWalletCard:first-child {
+  margin-top: 0;
+}
+
 .SubWalletCard__Icon {
-  background-color: var(--gray2);
   border-radius: 50%;
-  height: 20px;
-  width: 20px;
+  height: 40px;
+  width: 40px;
 }
 
 .SubWalletCard__Info {
-  padding-left: 8px;
+  padding-left: 12px;
   font-weight: 600;
   max-width: calc(100% - 35px);
 }
@@ -187,7 +200,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  font-size: 12pt;
+  font-size: 17pt;
+}
+
+.SubWalletCard__Info__Money {
+  font-size: 11pt;
+  display: flex;
+  color: var(--gray2);
+}
+
+.SubWalletCard__Info__Money__Amount {
+  color: var(--red);
 }
 
 /* @media screen and (min-width: 768px) {

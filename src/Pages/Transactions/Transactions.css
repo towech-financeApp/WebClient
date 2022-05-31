@@ -21,7 +21,6 @@
 }
 
 .Transactions__Header__Icon__Circle {
-  background-color: var(--gray2);
   border-radius: 50%;
   height: 35px;
   margin-left: 5px;
@@ -83,7 +82,6 @@
 }
 
 .Transactions__Header__Selector__Item__Icon {
-  background-color: var(--gray1);
   border-radius: 50%;
   margin-right: 15px;
   height: 50px;
@@ -113,7 +111,6 @@
 }
 
 .Transactions__Header__Selector__SubItem__Icon {
-  background-color: var(--gray1);
   border-radius: 50%;
   margin-right: 15px;
   height: 40px;
@@ -285,15 +282,15 @@
 .TransactionCard__Icon__Sub {
   background-color: transparent;
   border-radius: 50%;
-  height: 20px;
+  height: 25px;
   position: absolute;
-  top: 40px;
-  width: 20px;
+  top: 35px;
+  width: 25px;
   z-index: 100;
 }
 
 .TransactionCard__Icon__Sub.r {
-  left: 40px;
+  left: 35px;
 }
 
 .TransactionCard__Content {
@@ -425,7 +422,6 @@
 }
 
 .NewTransactionForm__WalletSelector__Wallet__Icon {
-  background-color: var(--gray2);
   border-radius: 50%;
   height: 50px;
   margin-right: 15px;
@@ -454,7 +450,6 @@
 }
 
 .NewTransactionForm__WalletSelector__SubWallet__Icon {
-  background-color: var(--gray2);
   border-radius: 50%;
   height: 40px;
   margin-right: 15px;

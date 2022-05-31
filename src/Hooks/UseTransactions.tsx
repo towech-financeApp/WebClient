@@ -47,7 +47,6 @@ const cleanAndSort = (
   input: Objects.Transaction[],
   selectedWallet: Objects.Wallet,
   dataMonth: string,
-  forceSet = false,
 ): FrontendTransaction[] => {
   // Removes transactions outside the datamonth and wallet/subwallets
   const cleaned = [] as FrontendTransaction[];
@@ -61,7 +60,7 @@ const cleanAndSort = (
      * - The transaction is inside the selected dataMonth
      */
     if (
-      (selectedWallet._id === '-1' || validWallets.includes(x.wallet_id) || forceSet) &&
+      (selectedWallet._id === '-1' || validWallets.includes(x.wallet_id)) &&
       DateInsideDataMonth(x.transactionDate, dataMonth)
     ) {
       cleaned.push(x);
@@ -71,24 +70,27 @@ const cleanAndSort = (
   // Gets the index of all transfers that are both contained in the array
   const transferClean = [];
   for (let i = 0; i < cleaned.length; i++) {
-    // Quickly skips if the transaction is not a transfer
+    // transferClean.push(cleaned[i]); continue; // Skip this and pass all transactions
+
+    // If the transaction is not part of a transfer, gets passed without other checks
     if (cleaned[i].transfer_id === undefined || cleaned[i].transfer_id === null) {
       transferClean.push(cleaned[i]);
       continue;
     }
 
-    // Looks if the sibling transactions has not been added yet
+    // All transactions beyond this point are transactions ---
+
+    // Checks if the partner transactions was already added
     const transferred = transferClean.find((x) => x._id === cleaned[i]._id || x.transfer_id === cleaned[i]._id);
 
     // Either adds or pushes the transaction along with its from-to
     if (transferred) {
-      // If both transactions are present, it automatically gets excluded
+      // If both transactions are present, it automatically gets excluded from the report
       transferred.excludeFromReport = true;
       cleaned[i].category.type === 'Expense'
         ? (transferred.from_wallet = cleaned[i].wallet_id)
         : (transferred.to_wallet = cleaned[i].wallet_id);
     } else {
-      cleaned[i].wallet_id = selectedWallet._id;
       cleaned[i].category.type === 'Expense'
         ? (cleaned[i].from_wallet = cleaned[i].wallet_id)
         : (cleaned[i].to_wallet = cleaned[i].wallet_id);
@@ -154,7 +156,6 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
           action.payload.transactions || state.transactions,
           state.selectedWallet,
           ParseDataMonth(state.dataMonth),
-          true,
         ),
         report: { earnings: 0, expenses: 0 },
       };
@@ -166,38 +167,35 @@ const reducer = (state: TransactionState, action: TransAction): TransactionState
 
       // only adds the transactions that are not already in the state
       action.payload.transactions?.map((transaction: Objects.Transaction) => {
-        if (state.selectedWallet._id === '-1' || state.selectedWallet._id === transaction.wallet_id) {
-          const index = state.transactions.findIndex((x) => x._id === transaction._id);
-          if (index === -1) {
-            item.transactions.push(transaction);
-          }
+        const index = state.transactions.findIndex((x) => x._id === transaction._id);
+        if (index === -1) {
+          item.transactions.push(transaction);
         }
       });
 
-      item.transactions = cleanAndSort(
-        item.transactions,
-        state.selectedWallet,
-        ParseDataMonth(state.dataMonth),
-      );
+      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
       item.report = calculateReport(item.transactions, item.selectedWallet);
 
       return item;
     case 'EDIT':
       item = { ...state };
 
-      // only changes the transactions that are in the state
       action.payload.transactions?.map((transaction: Objects.Transaction) => {
+        // only changes the transactions that are in the state
         const index = state.transactions.findIndex((x) => x._id === transaction._id);
         if (index >= 0) {
           item.transactions[index] = transaction;
         }
+        // If a transfer was edited, then the partner transaction also was updated, so it also gets added
+        else {
+          const transferIndex = state.transactions.findIndex((x) => x.transfer_id === transaction._id);
+          if (transferIndex >= 0) {
+            item.transactions.push(transaction);
+          }
+        }
       });
 
-      item.transactions = cleanAndSort(
-        item.transactions,
-        state.selectedWallet,
-        ParseDataMonth(state.dataMonth),
-      );
+      item.transactions = cleanAndSort(item.transactions, state.selectedWallet, ParseDataMonth(state.dataMonth));
       item.report = calculateReport(item.transactions, item.selectedWallet);
       return item;
     case 'DELETE':

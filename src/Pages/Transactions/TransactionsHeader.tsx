@@ -22,6 +22,7 @@ import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
 
 // Styles
 import './Transactions.css';
+import { IdIcons } from '../../Icons';
 
 // Interfaces
 interface WalletProps {
@@ -51,8 +52,9 @@ const TransactionHeader = (): JSX.Element => {
   const getNameAndTotal = (
     wallets: Objects.Wallet[],
     selected: string,
-  ): { name: string; total: number; money: number } => {
+  ): { name: string; total: number; money: number; id: number } => {
     const output = {
+      id: -1,
       name: 'Total',
       total: 0,
       money: 0,
@@ -64,6 +66,7 @@ const TransactionHeader = (): JSX.Element => {
       if (wallets[i]._id === selected) {
         output.name = wallets[i].name;
         output.money = wallets[i].money || 0;
+        output.id = wallets[i].icon_id;
       }
     }
 
@@ -81,7 +84,8 @@ const TransactionHeader = (): JSX.Element => {
       <div className="Transactions__Header" onClick={() => setModal(true)}>
         <div className="Transactions__Header__Icon">
           <div className="Transactions__Header__Icon__Triangle" />
-          <div className="Transactions__Header__Icon__Circle" />
+          {/* <div className="Transactions__Header__Icon__Circle" /> */}
+          <IdIcons.Variable iconid={displayed.id} className="Transactions__Header__Icon__Circle" />
         </div>
         <div className="Transactions__Header__Wallet">
           <div className="Transactions__Header__Wallet__Name">{displayed.name}</div>
@@ -114,7 +118,10 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
     <>
       {props.wallet?.parent_id === undefined || props.wallet?.parent_id === null ? (
         <div className="Transactions__Header__Selector__Item" onClick={() => props.onClick(props.wallet)}>
-          <div className="Transactions__Header__Selector__Item__Icon" />
+          <IdIcons.Variable
+            iconid={props.wallet?.icon_id || 0}
+            className="Transactions__Header__Selector__Item__Icon"
+          />
           <div className="Transactions__Header__Selector__Item__Text">
             <div className="Transactions__Header__Selector__Item__Name">{props.wallet?.name || 'Total'}</div>
             <div className="Transactions__Header__Selector__Item__Money">
@@ -124,7 +131,10 @@ const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
         </div>
       ) : (
         <div className="Transactions__Header__Selector__SubItem" onClick={() => props.onClick(props.wallet)}>
-          <div className="Transactions__Header__Selector__SubItem__Icon" />
+          <IdIcons.Variable
+            iconid={props.wallet?.icon_id || 0}
+            className="Transactions__Header__Selector__SubItem__Icon"
+          />
           <div className="Transactions__Header__Selector__Item__Text">
             <div className="Transactions__Header__Selector__SubItem__Name">{props.wallet?.name || 'Total'}</div>
             <div className="Transactions__Header__Selector__SubItem__Money">
