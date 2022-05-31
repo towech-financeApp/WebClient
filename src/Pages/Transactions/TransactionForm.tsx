@@ -439,7 +439,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
               onClick={() => setWalletCallback(wallet._id)}
             >
               <div className="NewTransactionForm__WalletSelector__Wallet__Container">
-                <div className={getSelectedWalletClass(wallet)} />
+                <IdIcons.Variable iconid={wallet.icon_id} className={getSelectedWalletClass(wallet)} />
                 <div
                   className={
                     wallet.parent_id === undefined || wallet.parent_id === null
