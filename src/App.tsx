@@ -16,6 +16,7 @@ import Wallets from './Pages/Wallets';
 import Settings from './Pages/Settings';
 import PasswordReset from './Pages/PasswordReset/PasswordReset';
 import VerifyAccount from './Pages/VerifyAccount/VerifyAccount';
+import Categories from './Pages/Categories';
 
 // Components
 import NotFound from './Components/NotFound';
@@ -74,6 +75,14 @@ function App(): JSX.Element {
               element={
                 <AuthRoute>
                   <Wallets />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <AuthRoute>
+                  <Categories />
                 </AuthRoute>
               }
             />
