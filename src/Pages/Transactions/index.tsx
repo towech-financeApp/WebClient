@@ -20,7 +20,11 @@ import TransactionViewer from './TransactionViewer';
 import WalletTotals from './walletTotals';
 import TransactionForm from './TransactionForm';
 import Loading from '../../Components/Loading';
+import TransactionHeader from './TransactionsHeader';
 import EmptyTransactions from './EmptyTransactions';
+
+// Models
+import { Objects } from '../../models';
 
 // Services
 import TransactionService from '../../Services/TransactionService';
@@ -32,8 +36,6 @@ import { ParseDataMonth } from '../../Utils/ParseDataMonth';
 
 // Styles
 import './Transactions.css';
-import TransactionHeader from './TransactionsHeader';
-import { Objects } from '../../models';
 
 const Transactions = (): JSX.Element => {
   // Context
@@ -75,12 +77,11 @@ const Transactions = (): JSX.Element => {
             type: 'SELECT-WALLET',
             payload: { selectedWallet: firstSelectedWallet || ({ _id: '-1' } as Objects.Wallet) },
           });
-          setLoaded(true);
         })
         .catch(() => {
           // console.log(err.response);
-          setLoaded(true);
-        });
+        })
+        .finally(() => setLoaded(true));
 
       // Gets all the categories
       categoryService.getCategories().then((catRes) => {
@@ -135,7 +136,7 @@ const Transactions = (): JSX.Element => {
                   )}
                 </div>
                 {/*Add wallet button*/}
-                <Button accent round className="Wallets__AddFloat" onClick={() => setAddModal(true)}>
+                <Button accent round className="Transactions__AddFloat" onClick={() => setAddModal(true)}>
                   <FaIcons.FaPlus />
                 </Button>
                 {/*Add wallet form*/}
