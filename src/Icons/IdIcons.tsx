@@ -73,6 +73,14 @@ const IdIcons = (props: iconIdProps): JSX.Element => {
       return Icon30(props);
     case 31:
       return Icon31(props);
+    case 32:
+      return Icon32(props);
+    case 33:
+      return Icon33(props);
+    case 34:
+      return Icon34(props);
+    case 35:
+      return Icon35(props);
     default:
       return defaultIcon(props);
   }
@@ -1511,6 +1519,183 @@ const Icon31 = (props: SVGProps<SVGSVGElement>) => (
       <circle cx={33} cy={58} r={5} />
       <circle className="Recurso_42_svg__cls-5" cx={33} cy={58} r={2} />
     </g>
+  </svg>
+);
+
+const Icon32 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_38_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>{'.Recurso_38_svg__cls-1{fill:#fff}.Recurso_38_svg__cls-3{fill:#f2f2f2}'}</style>
+    </defs>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#28285b',
+      }}
+      id="Recurso_38_svg__Capa_1-2"
+    />
+    <g id="Recurso_38_svg__Capa_2-2">
+      <path
+        className="Recurso_38_svg__cls-3"
+        d="M21 64h-2.01c-.57 0-1.05-.42-1.12-.99l-.72-5.74c-.08-.67.44-1.27 1.12-1.27h3.44c.68 0 1.2.59 1.12 1.27l-.72 5.74c-.07.56-.55.99-1.12.99ZM39 64h-2.01c-.57 0-1.05-.42-1.12-.99l-.72-5.74c-.08-.67.44-1.27 1.12-1.27h3.44c.68 0 1.2.59 1.12 1.27l-.72 5.74c-.07.56-.55.99-1.12.99ZM63 64h-2.01c-.57 0-1.05-.42-1.12-.99l-.72-5.74c-.08-.67.44-1.27 1.12-1.27h3.44c.68 0 1.2.59 1.12 1.27l-.72 5.74c-.07.56-.55.99-1.12.99ZM81 64h-2.01c-.57 0-1.05-.42-1.12-.99l-.72-5.74c-.08-.67.44-1.27 1.12-1.27h3.44c.68 0 1.2.59 1.12 1.27l-.72 5.74c-.07.56-.55.99-1.12.99Z"
+      />
+      <path className="Recurso_38_svg__cls-1" d="M50 32 6.7 58h86.6L50 32zM50 68l-9.15 10h18.3L50 68z" />
+      <rect className="Recurso_38_svg__cls-3" x={46.5} y={18} width={7} height={60} rx={3.5} ry={3.5} />
+    </g>
+  </svg>
+);
+
+const Icon33 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#a7b51a',
+      }}
+    />
+    <path
+      d="M30 45a9 9 0 0 1 9 9v17H21V54a9 9 0 0 1 9-9Z"
+      style={{
+        fill: '#b42518',
+      }}
+    />
+    <path
+      d="M70 57c2.48 0 4.5 2.02 4.5 4.5V70h-9v-8.5c0-2.48 2.02-4.5 4.5-4.5Z"
+      style={{
+        fill: '#5d4394',
+      }}
+    />
+    <path
+      style={{
+        fill: '#343d91',
+      }}
+      d="m50 71 9-26H41l9 26z"
+    />
+    <ellipse
+      cx={30}
+      cy={36}
+      rx={7}
+      ry={8}
+      style={{
+        fill: '#9f6200',
+      }}
+    />
+    <ellipse
+      cx={50}
+      cy={36}
+      rx={7}
+      ry={8}
+      style={{
+        fill: '#ffda9f',
+      }}
+    />
+    <ellipse
+      cx={69.91}
+      cy={52}
+      rx={4.09}
+      ry={4}
+      style={{
+        fill: '#ffa63f',
+      }}
+    />
+  </svg>
+);
+
+const Icon34 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    id="Recurso_40_svg__Capa_2"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <defs>
+      <style>{'.Recurso_40_svg__cls-1{fill:#ff6}'}</style>
+    </defs>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#574998',
+      }}
+      id="Recurso_40_svg__Capa_1-2"
+    />
+    <g id="Recurso_40_svg__Capa_2-2">
+      <circle className="Recurso_40_svg__cls-1" cx={50} cy={50} r={28.5} />
+      <path
+        d="M50 23c14.89 0 27 12.11 27 27S64.89 77 50 77 23 64.89 23 50s12.11-27 27-27m0-3c-16.57 0-30 13.43-30 30s13.43 30 30 30 30-13.43 30-30-13.43-30-30-30Z"
+        style={{
+          fill: '#fc0',
+        }}
+      />
+      <path className="Recurso_40_svg__cls-1" d="M48 20.07C32.36 21.1 20 34.1 20 50s12.36 28.9 28 29.93V20.07Z" />
+      <text
+        transform="translate(37.18 67.75)"
+        style={{
+          fontFamily: "MyriadPro-Regular,'Myriad Pro'",
+          fontSize: 50,
+          stroke: '#dfbc00',
+          strokeMiterlimit: 10,
+          fill: '#fc0',
+        }}
+      >
+        <tspan x={0} y={0}>
+          {'$'}
+        </tspan>
+      </text>
+    </g>
+  </svg>
+);
+
+const Icon35 = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" {...props}>
+    <circle
+      cx={50}
+      cy={50}
+      r={50}
+      style={{
+        fill: '#b49ecc',
+      }}
+    />
+    <path
+      d="M82 61c0 16-14.33 29-32 29S18 77 18 61c0-11.3 11.74-29.33 22.6-37.16.53-.38.62-1.14.17-1.61l-9.89-10.42c-.65-.68-.16-1.81.78-1.81h2c.33 0 .65.15.84.42.68.94 1.99 1.58 3.51 1.58s2.83-.64 3.51-1.58c.19-.27.51-.42.84-.42h3.3c.33 0 .65.15.84.42.68.94 1.99 1.58 3.51 1.58s2.83-.64 3.51-1.58c.19-.27.51-.42.84-.42h5.3c.33 0 .65.15.84.42.68.94 1.99 1.58 3.51 1.58s2.83-.64 3.51-1.58c.19-.27.51-.42.84-.42.94 0 1.42 1.12.78 1.81l-9.79 10.32c-.45.48-.36 1.23.17 1.61C71.03 32.04 82.01 52 82.01 61Z"
+      style={{
+        fill: '#dab081',
+      }}
+    />
+    <path
+      d="M40.38 24h19.47c-.12-.09-.23-.18-.35-.26-.53-.38-.62-1.14-.17-1.61l.12-.12H40.54l.21.23c.45.48.37 1.23-.17 1.61-.07.05-.14.11-.21.16Z"
+      style={{
+        fill: '#8a603b',
+      }}
+    />
+    <text
+      transform="translate(37.18 72.75)"
+      style={{
+        fill: '#00ab36',
+        fontFamily: "MyriadPro-Regular,'Myriad Pro'",
+        fontSize: 50,
+        stroke: '#006837',
+        strokeMiterlimit: 10,
+      }}
+    >
+      <tspan x={0} y={0}>
+        {'$'}
+      </tspan>
+    </text>
   </svg>
 );
 
