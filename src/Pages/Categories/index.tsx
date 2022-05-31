@@ -32,7 +32,7 @@ const Categories = (): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [type, setType] = useState(0);
-  const [showAddModal, setAddModal] = useState(false);
+  //const [showAddModal, setAddModal] = useState(false);
 
   // Main API call
   useEffect(() => {
@@ -59,7 +59,8 @@ const Categories = (): JSX.Element => {
     <Page loading={!loaded} selected="Categories" header={header}>
       <>
         {/*Add wallet button*/}
-        <Button accent round className="Categories__AddFloat" onClick={() => setAddModal(true)}>
+        {/* <Button accent round className="Categories__AddFloat" onClick={() => setAddModal(true)}> */}
+        <Button accent round className="Categories__AddFloat">
           <FaIcons.FaPlus />
         </Button>
         <div className="Categories">
