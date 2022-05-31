@@ -66,17 +66,28 @@ const TransactionCard = (props: Props): JSX.Element => {
       return (
         <>
           {props.transaction.from_wallet && (
-            <IdIcons iconid={getWalletIconId(props.transaction.from_wallet)} className="TransactionCard__Icon__Sub" />
+            <IdIcons.Variable
+              iconid={getWalletIconId(props.transaction.from_wallet)}
+              className="TransactionCard__Icon__Sub"
+            />
           )}
           {props.transaction.to_wallet && (
-            <IdIcons iconid={getWalletIconId(props.transaction.to_wallet)} className="TransactionCard__Icon__Sub r" />
+            <IdIcons.Variable
+              iconid={getWalletIconId(props.transaction.to_wallet)}
+              className="TransactionCard__Icon__Sub r"
+            />
           )}
         </>
       );
     }
 
     if (transactionState.selectedWallet._id !== props.transaction.wallet_id) {
-      return <IdIcons iconid={getWalletIconId(props.transaction.wallet_id)} className="TransactionCard__Icon__Sub r" />;
+      return (
+        <IdIcons.Variable
+          iconid={getWalletIconId(props.transaction.wallet_id)}
+          className="TransactionCard__Icon__Sub r"
+        />
+      );
     }
 
     return <></>;
@@ -88,7 +99,7 @@ const TransactionCard = (props: Props): JSX.Element => {
     <>
       <div className="TransactionCard" onClick={() => setEdit(true)}>
         <div className="TransactionCard__Icon">
-          <IdIcons iconid={getTransactionIconId()} className="TransactionCard__Icon__Main" />
+          <IdIcons.Variable iconid={getTransactionIconId()} className="TransactionCard__Icon__Main" />
           {getWalletIcons()}
         </div>
         <div className="TransactionCard__Content">

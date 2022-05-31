@@ -30,6 +30,7 @@ import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
 // Styles
 import './Wallets.css';
 import Button from '../../Components/Button';
+import IconSelector from '../../Components/IconSelector';
 
 interface Props {
   set: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,7 +56,7 @@ const WalletForm = (props: Props): JSX.Element => {
     name: props.initialWallet?.name || '',
     money: ((props.initialWallet?.money || 0) / 100).toString(),
     currency: props.initialWallet?.currency || 'MXN',
-    iconid: props.initialWallet?.icon_id || 0,
+    icon_id: props.initialWallet?.icon_id || 0,
   });
 
   // Functions
@@ -153,7 +154,13 @@ const WalletForm = (props: Props): JSX.Element => {
           <div className="NewWalletForm__MainWallet">
             {/* Form */}
             <div className="NewWalletForm__MainWallet__FirstRow">
-              <IdIcons iconid={walletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" />
+              <IconSelector
+                className="NewWalletForm__MainWallet__FirstRow__Icon"
+                name="icon_id"
+                value={walletForm.values.icon_id}
+                onChange={walletForm.onChange}
+              />
+              {/* <IdIcons iconid={walletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" /> */}
               <div className="NewWalletForm__MainWallet__FirstRow__Name">
                 <Input
                   error={errors.name ? true : false}
@@ -359,7 +366,12 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
       >
         <>
           <div className="NewWalletForm__MainWallet__FirstRow">
-            <IdIcons iconid={subWalletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" />
+            <IconSelector
+              className="NewWalletForm__MainWallet__FirstRow__Icon"
+              name="icon_id"
+              value={subWalletForm.values.icon_id}
+              onChange={subWalletForm.onChange}
+            />
 
             <div className="NewWalletForm__MainWallet__FirstRow__Name">
               <Input
@@ -416,7 +428,7 @@ const SubWalletCard = (props: SubWalletCardProps): JSX.Element => {
   return (
     <>
       <div className="SubWalletCard" onClick={() => setEdit(true)}>
-        <IdIcons iconid={props.wallet.icon_id} className="SubWalletCard__Icon" />
+        <IdIcons.Variable iconid={props.wallet.icon_id} className="SubWalletCard__Icon" />
         <div className="SubWalletCard__Info">
           <div className="SubWalletCard__Info__Name">{props.wallet.name}</div>
           <div className="SubWalletCard__Info__Money">

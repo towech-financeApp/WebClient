@@ -421,7 +421,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
         className={props.error ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'}
         onClick={() => setShowModal(true)}
       >
-        <IdIcons iconid={selectedWallet?.icon_id || 0} className="NewTransactionForm__WalletSelector__Icon" />
+        <IdIcons.Variable iconid={selectedWallet?.icon_id || 0} className="NewTransactionForm__WalletSelector__Icon" />
         <div className="NewTransactionForm__WalletSelector__Name">{selectedWallet?.name || 'Select Wallet'}</div>
         <div className="NewTransactionForm__WalletSelector__Triangle" />
       </div>
@@ -530,7 +530,10 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
         className={props.error ? 'NewTransactionForm__CategorySelector error' : 'NewTransactionForm__CategorySelector'}
         onClick={() => setShowModal(true)}
       >
-        <IdIcons iconid={selectedCategory?.icon_id || 0} className="NewTransactionForm__CategorySelector__Icon" />
+        <IdIcons.Variable
+          iconid={selectedCategory?.icon_id || 0}
+          className="NewTransactionForm__CategorySelector__Icon"
+        />
         <div className="NewTransactionForm__CategorySelector__Name">{selectedCategory?.name || 'Select Category'}</div>
         <div className="NewTransactionForm__CategorySelector__Triangle" />
       </div>
@@ -558,7 +561,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key="-2"
                   onClick={() => setCategoryCallback('-2')}
                 >
-                  <IdIcons
+                  <IdIcons.Variable
                     iconid={-2}
                     className={getSelectedCategoryClass({
                       parent_id: '-1',
@@ -581,7 +584,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <IdIcons iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
+                  <IdIcons.Variable iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
                   <div
                     className={
                       cat.parent_id === '-1'
@@ -604,7 +607,7 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   key={cat._id}
                   onClick={() => setCategoryCallback(cat._id)}
                 >
-                  <IdIcons iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
+                  <IdIcons.Variable iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
                   <div
                     className={
                       cat.parent_id === '-1'

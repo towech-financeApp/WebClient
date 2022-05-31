@@ -29,7 +29,7 @@ const WalletCard = (props: WalletCardProps): JSX.Element => {
   return (
     <>
       <div className="WalletCard" onClick={() => setEdit(true)}>
-        <IdIcons iconid={props.wallet.icon_id} className="WalletCard__Icon" />
+        <IdIcons.Variable iconid={props.wallet.icon_id} className="WalletCard__Icon" />
         <div className="WalletCard__Info">
           <div className="WalletCard__Info__Name">{props.wallet.name}</div>
           <div className="WalletCard__Info__Money">
