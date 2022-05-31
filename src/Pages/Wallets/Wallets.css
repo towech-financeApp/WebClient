@@ -149,6 +149,13 @@
   padding: 20px;
 }
 
+.NewWalletForm__Subwallets__Content__Unassigned {
+  border-bottom: 2px solid var(--yellow);
+  color: var(--gray3);
+  font-weight: 700;
+  padding: 10px;
+}
+
 .NewWalletForm__Subwallets__Add {
   align-items: center;
   color: var(--gray3);

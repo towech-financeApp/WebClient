@@ -202,8 +202,8 @@ const WalletForm = (props: Props): JSX.Element => {
                 <div className="NewWalletForm__Subwallets__Content">
                   <div>
                     {(props.initialWallet.child_id?.length || 0) > 0 && (
-                      <div>
-                        Unasigned: {props.initialWallet.currency}&nbsp;{calculateFree()}
+                      <div className="NewWalletForm__Subwallets__Content__Unassigned">
+                        Unasigned:&nbsp;&nbsp;&nbsp;{calculateFree()}
                       </div>
                     )}
                     {props.initialWallet.child_id?.map((x) => (
