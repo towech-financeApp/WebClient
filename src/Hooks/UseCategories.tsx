@@ -13,6 +13,7 @@ import { Objects } from '../models';
 export interface CategoryState {
   Income: Objects.Category[];
   Expense: Objects.Category[];
+  Archived: Objects.Category[];
 }
 
 export interface CategoryAction {
@@ -20,6 +21,7 @@ export interface CategoryAction {
   payload: {
     Income: Objects.Category[];
     Expense: Objects.Category[];
+    Archived: Objects.Category[];
   };
 }
 
@@ -64,10 +66,11 @@ const reducer = (state: CategoryState, action: CategoryAction): CategoryState =>
       item = {
         Income: cleanAndSort(action.payload.Income),
         Expense: cleanAndSort(action.payload.Expense),
+        Archived: cleanAndSort(action.payload.Archived),
       };
       return item;
     case 'UPDATE':
-      item = { Income: state.Income, Expense: state.Expense };
+      item = { Income: state.Income, Expense: state.Expense, Archived: cleanAndSort(action.payload.Archived) };
 
       action.payload.Income.map((cat) => {
         const index = state.Income.findIndex((x) => x._id === cat._id);
@@ -99,7 +102,7 @@ const reducer = (state: CategoryState, action: CategoryAction): CategoryState =>
  */
 const useCategories = (initial?: CategoryState): [CategoryState, React.Dispatch<CategoryAction>] => {
   // The initial state is an empty array
-  const initialState: CategoryState = initial || { Income: [], Expense: [] };
+  const initialState: CategoryState = initial || { Income: [], Expense: [], Archived: [] };
 
   // Reducer creation and returnal
   const [categories, dispatch] = useReducer(reducer, initialState);

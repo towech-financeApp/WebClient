@@ -18,6 +18,7 @@ import CategoryService from '../../Services/CategoryService';
 import CategoryCard from './CategoryCard';
 import Button from '../../Components/Button';
 import Page from '../../Components/Page';
+import CategoryForm from './CategoryForm';
 
 // Styles
 import './Categories.css';
@@ -32,7 +33,7 @@ const Categories = (): JSX.Element => {
   // Hooks
   const [loaded, setLoaded] = useState(false);
   const [type, setType] = useState(0);
-  //const [showAddModal, setAddModal] = useState(false);
+  const [showAddModal, setAddModal] = useState(false);
 
   // Main API call
   useEffect(() => {
@@ -58,11 +59,14 @@ const Categories = (): JSX.Element => {
   return (
     <Page loading={!loaded} selected="Categories" header={header}>
       <>
-        {/*Add wallet button*/}
-        {/* <Button accent round className="Categories__AddFloat" onClick={() => setAddModal(true)}> */}
-        <Button accent round className="Categories__AddFloat">
+        {/*Add category button*/}
+        <Button accent round className="Categories__AddFloat" onClick={() => setAddModal(true)}>
           <FaIcons.FaPlus />
         </Button>
+
+        {/* Add/edit category Form */}
+        <CategoryForm state={showAddModal} set={setAddModal} />
+
         <div className="Categories">
           <div className="Categories__Container">
             {/* Selector for the items */}
@@ -73,25 +77,24 @@ const Categories = (): JSX.Element => {
               <div className={type === 1 ? 'selected' : ''} onClick={() => setType(1)}>
                 Expense
               </div>
+              <div className={type === 2 ? 'selected' : ''} onClick={() => setType(2)}>
+                Archived
+              </div>
             </div>
             <div className="Categories__Container__List">
               {/* Income categories */}
               {type === 0 &&
                 categories.Income.map((cat) => (
-                  <CategoryCard
-                    key={cat._id}
-                    category={cat}
-                    disabled={authToken.role === 'user' && cat.user_id !== authToken._id}
-                  />
+                  <CategoryCard key={cat._id} category={cat} disabled={cat.user_id !== authToken._id} />
                 ))}
               {/* Expense categories */}
               {type === 1 &&
                 categories.Expense.map((cat) => (
-                  <CategoryCard
-                    key={cat._id}
-                    category={cat}
-                    disabled={authToken.role === 'user' && cat.user_id !== authToken._id}
-                  />
+                  <CategoryCard key={cat._id} category={cat} disabled={cat.user_id !== authToken._id} />
+                ))}
+              {type === 2 &&
+                categories.Archived.map((cat) => (
+                  <CategoryCard key={cat._id} category={cat} disabled={cat.user_id !== authToken._id} />
                 ))}
             </div>
           </div>

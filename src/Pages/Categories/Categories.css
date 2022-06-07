@@ -81,3 +81,20 @@
   font-weight: 700;
   margin-left: 10px;
 }
+
+.CategoryForm__FirstRow {
+  display: flex;
+  align-items: center;
+}
+
+.CategoryForm__FirstRow__Icon {
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.CategoryForm__FirstRow__Name {
+  margin-left: 20px;
+  flex: 1;
+}
