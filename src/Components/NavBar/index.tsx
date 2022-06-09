@@ -68,6 +68,14 @@ const NavBar = (props: Props): JSX.Element => {
           >
             <FaIcons.FaWallet />
           </MenuItem>
+          {/* <MenuItem
+            link="/categories"
+            label="Categories"
+            onClick={() => setSidebar(false)}
+            selected={props.selected === 'Categories'}
+          >
+            <FaIcons.FaCubes />
+          </MenuItem> */}
           <MenuItem
             link="/settings"
             label="Settings"

@@ -160,7 +160,6 @@ const WalletForm = (props: Props): JSX.Element => {
                 value={walletForm.values.icon_id}
                 onChange={walletForm.onChange}
               />
-              {/* <IdIcons iconid={walletForm.values.icon_id} className="NewWalletForm__MainWallet__FirstRow__Icon" /> */}
               <div className="NewWalletForm__MainWallet__FirstRow__Name">
                 <Input
                   error={errors.name ? true : false}
