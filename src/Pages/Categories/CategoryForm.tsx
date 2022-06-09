@@ -4,14 +4,14 @@
  *
  * The component shown when adding or editing a Category, it is a modal
  */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Components
-import { MainStore } from '../../Hooks/ContextStore';
-import { IdIcons } from '../../Icons';
-import Button from '../../Components/Button';
-import Errorbox from '../../Components/ErrorBox';
+// import { MainStore } from '../../Hooks/ContextStore';
+// import { IdIcons } from '../../Icons';
+// import Button from '../../Components/Button';
+// import Errorbox from '../../Components/ErrorBox';
 import IconSelector from '../../Components/IconSelector';
 import Input from '../../Components/Input';
 import Modal from '../../Components/Modal';
@@ -23,10 +23,10 @@ import UseForm from '../../Hooks/UseForm';
 import { Objects } from '../../models';
 
 // Services
-import CategoryService from '../../Services/CategoryService';
+// import CategoryService from '../../Services/CategoryService';
 
 // Utilities
-import CheckNested from '../../Utils/CheckNested';
+// import CheckNested from '../../Utils/CheckNested';
 
 // Styles
 import './Categories.css';
@@ -40,10 +40,10 @@ interface Props {
 
 const CategoryForm = (props: Props): JSX.Element => {
   // Context
-  const { authToken, dispatchAuthToken, dispatchCategories } = useContext(MainStore);
+  // const { authToken, dispatchAuthToken, dispatchCategories } = useContext(MainStore);
 
   // Hooks
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({} as any);
   const [deleteWarn, setDeleteWarn] = useState(false);
 
@@ -79,7 +79,7 @@ const CategoryForm = (props: Props): JSX.Element => {
       <Modal
         showModal={props.state}
         setModal={props.set}
-        loading={loading}
+        // loading={loading}
         title={props.initialCategory ? 'Edit Category' : 'New Category'}
         accept={acceptIcon}
         onClose={() => {

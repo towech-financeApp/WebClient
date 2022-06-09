@@ -7,8 +7,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// TODO: 404 Error page
-
 const NotFound = (): JSX.Element => {
   return (
     <>

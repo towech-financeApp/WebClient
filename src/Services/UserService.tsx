@@ -14,7 +14,7 @@ import CustomAxios from './CustomAxios';
 import { TokenAction, TokenState } from '../Hooks/UseToken';
 
 // Models
-import { Objects } from '../models';
+import { Objects, Requests } from '../models';
 
 export default class UserService {
   private token: TokenState;
@@ -36,6 +36,16 @@ export default class UserService {
     return await this.instance.put(`${this.SERVICE_URL}/users/password`, values, loading);
   }
 
+  /** deleteUser
+   * Deletes the user from the DB, only admins can do this
+   */
+  async deleteUser(
+    id: string,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Objects.User.BaseUser>> {
+    return await this.instance.delete(`${this.SERVICE_URL}/users/${id}`, loading);
+  }
+
   /** editUser
    * Sends a patch request that edits the user
    */
@@ -45,6 +55,15 @@ export default class UserService {
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.patch(`${this.SERVICE_URL}/users/${id}`, user, loading);
+  }
+
+  /** getUsers
+   * Gets the basic info of all users in the DB, it will only work for admin users
+   */
+  async getUsers(
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Objects.User.BaseUser[]>> {
+    return await this.instance.get(`${this.SERVICE_URL}/users`, loading);
   }
 
   /** generateResetPassword Token
@@ -65,6 +84,16 @@ export default class UserService {
     loading?: React.Dispatch<React.SetStateAction<boolean>>,
   ): Promise<AxiosResponse<any>> {
     return await this.instance.get(`${this.SERVICE_URL}/users/reset/${token}`, loading);
+  }
+
+  /** registerUser
+   * Adds a user to the db, only admins can get a valid response
+   */
+  async registerUser(
+    user: Requests.WorkerRegisterUser,
+    loading?: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<AxiosResponse<Objects.User.BaseUser>> {
+    return await this.instance.post(`${this.SERVICE_URL}/users/register`, user, loading);
   }
 
   /** setResetNewPassword

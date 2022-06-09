@@ -24,3 +24,33 @@
 .Settings__EditName__Modal__Text {
   padding: 10px;
 }
+
+.ManageUsers {
+  background-color: var(--gray1);
+  border-radius: 20px;
+  padding: 5px 0;
+}
+
+.ManageUsers__UserCard {
+  align-items: center;
+  display: flex;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 15px 15px;
+}
+
+.ManageUsers__UserCard:not(:first-child) {
+  border-top: 2px solid var(--yellow);
+  padding-top: 15px;
+}
+
+.ManageUsers__AddFloat {
+  position: absolute;
+  z-index: 1;
+  bottom: 40px;
+  right: 25px;
+}
+
+.UserForm__FirstRow {
+  display: flex;
+}
