@@ -39,7 +39,6 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
   // Start useEffect, only updates the when the form is visible
   useEffect(() => {
     if (props.visible && props.value !== (selectedCategory?._id || '-1')) {
-      // TODO: When categories are editable, fetch to check if there are new ones
       searchAndSetView(props.value || '-1');
     }
   }, [props.visible]);
