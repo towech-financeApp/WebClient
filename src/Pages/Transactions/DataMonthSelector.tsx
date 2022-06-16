@@ -43,6 +43,12 @@ const displayDataMonth = (dataMonth: string): string => {
   return `${dataMonth.substring(0, 4)}/${dataMonth.substring(4, 6)}`;
 };
 
+const isCurrentMonth = (selectedDataMonth: string): boolean => {
+  const currDataMonth = `${new Date().getFullYear()}${('0' + (new Date().getMonth() + 1)).slice(-2)}`;
+
+  return currDataMonth !== selectedDataMonth;
+};
+
 const DataMonthSelector = (): JSX.Element => {
   const { transactionState, dispatchTransactionState } = useContext(TransactionPageStore);
 
@@ -69,18 +75,40 @@ const DataMonthSelector = (): JSX.Element => {
     navigate(`/home?wallet=${walletId}&month=${addMonths(transactionState.dataMonth, amount)}`);
   };
 
-  // TODO: Go to current month
+  const goToToday = (): void => {
+    const currentDataMonth = `${new Date().getFullYear()}${('0' + (new Date().getMonth() + 1)).slice(-2)}`;
+
+    // sets the buttons state
+    setNextMonth(addMonths(currentDataMonth, 1));
+    dispatchTransactionState({
+      type: 'SELECT-DATAMONTH',
+      payload: { dataMonth: currentDataMonth },
+    });
+    setPrevMonth(addMonths(currentDataMonth, -1));
+
+    // redirects to the current datamonth
+    const walletId = GetParameters(location.search, 'wallet') || '-1';
+    navigate(`/home?wallet=${walletId}&month=${currentDataMonth}`);
+  };
+
   return (
     <div className="Transactions__MonthSelector">
-      <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(-1)}>
-        {displayDataMonth(prevMonth)}
-      </Button>
-      <Button className="Transactions__MonthSelector__Button selected">
-        {displayDataMonth(transactionState.dataMonth)}
-      </Button>
-      <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(1)}>
-        {displayDataMonth(nextMonth)}
-      </Button>
+      <div className="Transactions__MonthSelector__Top">
+        <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(-1)}>
+          {displayDataMonth(prevMonth)}
+        </Button>
+        <Button className="Transactions__MonthSelector__Button selected">
+          {displayDataMonth(transactionState.dataMonth)}
+        </Button>
+        <Button className="Transactions__MonthSelector__Button" onClick={() => setCurrentMonth(1)}>
+          {displayDataMonth(nextMonth)}
+        </Button>
+      </div>
+      {isCurrentMonth(transactionState.dataMonth) && (
+        <Button accent className="Transactions__MonthSelector__GoTo" onClick={() => goToToday()}>
+          Go to current month
+        </Button>
+      )}
     </div>
   );
 };

@@ -145,7 +145,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin: 0 20px;
+  margin: 0 13px;
 }
 
 .Transactions__Content__Loading {
@@ -170,10 +170,13 @@
   background-color: var(--black);
   border-bottom: none;
   border-radius: 20px 20px 0 0;
-  display: flex;
-  justify-content: space-between;
   margin-top: 30px;
   width: 100%;
+}
+
+.Transactions__MonthSelector__Top {
+  display: flex;
+  justify-content: space-between;
 }
 
 .Transactions__MonthSelector__Button {
@@ -186,6 +189,15 @@
 
 .Transactions__MonthSelector__Button.selected {
   color: var(--yellow);
+}
+
+.Transactions__MonthSelector__GoTo {
+  border: 0;
+  border-radius: 0;
+  font-weight: 900;
+  height: 40px;
+  margin: 0;
+  width: 100%;
 }
 
 .Transactions__Empty {
