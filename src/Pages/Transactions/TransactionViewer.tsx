@@ -20,9 +20,7 @@ const TransactionViewer = (): JSX.Element => {
   const { transactionState } = useContext(TransactionPageStore);
 
   return (
-    <div
-      className={transactionState.transactions.length == 0 ? 'Transactions__Viewer emptytrans' : 'Transactions__Viewer'}
-    >
+    <div className="Transactions__Viewer">
       {transactionState.transactions.length == 0 ? (
         <div className="Transactions__Empty">
           <h1>There are no transactions for this period</h1>
