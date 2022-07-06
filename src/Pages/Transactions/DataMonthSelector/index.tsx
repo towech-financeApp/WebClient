@@ -4,18 +4,18 @@
  * Component that handles the selection of months to display
  */
 // Libraries
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import GetParameters from '../../Utils/GetParameters';
+import GetParameters from '../../../Utils/GetParameters';
 
 // Hooks
-import { TransactionPageStore } from '../../Hooks/ContextStore';
+import { TransactionPageStore } from '../../../Hooks/ContextStore';
 
 // Styles
-import './Transactions.css';
+import './DataMonthSelector.css';
 
 // Components
-import Button from '../../Components/Button';
+import Button from '../../../Components/Button';
 
 const addMonths = (dataMonth: string, amount: number): string => {
   let year = parseInt(dataMonth.substring(0, 4));
@@ -104,11 +104,18 @@ const DataMonthSelector = (): JSX.Element => {
           {displayDataMonth(nextMonth)}
         </Button>
       </div>
-      {isCurrentMonth(transactionState.dataMonth) && (
-        <Button accent className="Transactions__MonthSelector__GoTo" onClick={() => goToToday()}>
-          Go to current month
-        </Button>
-      )}
+      {/* Go to current month button, only visible when in a different month */}
+      <Button
+        accent
+        className={
+          isCurrentMonth(transactionState.dataMonth)
+            ? 'Transactions__MonthSelector__GoTo active'
+            : 'Transactions__MonthSelector__GoTo'
+        }
+        onClick={() => goToToday()}
+      >
+        Go to current month
+      </Button>
     </div>
   );
 };
