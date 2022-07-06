@@ -82,6 +82,9 @@
   height: var(--header-size);
   line-height: calc(var(--header-size) + 5px);
 }
+.Modal__header__button:hover {
+  background: none;
+}
 
 .Modal__header__button.right {
   margin-left: auto;
