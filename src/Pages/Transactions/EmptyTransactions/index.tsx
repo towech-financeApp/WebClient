@@ -7,12 +7,12 @@
 //Libraries
 import { Link } from 'react-router-dom';
 // Styles
-import './Transactions.css';
+import './EmptyTransactions.css';
 
 export default class EmptyTransactions {
   static RedirectToWallets = (): JSX.Element => {
     return (
-      <div className="NoWallets">
+      <div className="NoTransactions">
         <h1>
           You have no wallets, add one in <Link to="/wallets">Wallets</Link>
         </h1>

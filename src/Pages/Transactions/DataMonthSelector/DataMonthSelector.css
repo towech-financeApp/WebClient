@@ -39,8 +39,8 @@
   padding: 0;
   position: relative;
   top: 0px;
-  transition: top 350ms, height 200ms, visibility 400ms;
-  visibility: visible;
+  transition: top 350ms, height 200ms, visibility 350ms;
+  visibility: hidden;
   width: 100%;
 }
 

@@ -7,20 +7,26 @@
 import { useContext } from 'react';
 
 // Models
-import { Objects } from '../../models';
+import { Objects } from '../../../models';
 
 // Hooks
-import { TransactionPageStore } from '../../Hooks/ContextStore';
+import { TransactionPageStore } from '../../../Hooks/ContextStore';
 
 // Styles
-import './Transactions.css';
+import './TransactionViewer.css';
+
+// Components
 import TransactionCard from './TransactionCard';
 
-const TransactionViewer = (): JSX.Element => {
+interface Props {
+  hidden: boolean;
+}
+
+const TransactionViewer = (props: Props): JSX.Element => {
   const { transactionState } = useContext(TransactionPageStore);
 
   return (
-    <div className="Transactions__Viewer">
+    <div className={props.hidden ? 'Transactions__Viewer inactive' : 'Transactions__Viewer'}>
       {transactionState.transactions.length == 0 ? (
         <div className="Transactions__Empty">
           <h1>There are no transactions for this period</h1>

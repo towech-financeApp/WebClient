@@ -1,0 +1,37 @@
+.Transactions__Viewer {
+  background-color: var(--black);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  visibility: visible;
+  width: 100%;
+}
+
+.Transactions__Viewer.inactive {
+  height: 0;
+  visibility: hidden;
+}
+
+
+.Transactions__Empty {
+  background-color: var(--gray2);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  padding: 150px 50px;
+  text-align: center;
+  z-index: 0;
+}
+
+.Transactions__Viewer__List {
+  background-color: var(--background-color);
+  border: 3px solid var(--color-dark);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  overflow: auto;
+  flex: 1;
+}
+
+.Transactions__Viewer__Filler {
+  height: 120px;
+}

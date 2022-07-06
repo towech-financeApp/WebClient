@@ -4,18 +4,19 @@
  * Componet that shows the sum of income and expense of the transactions
  */
 // Utils
-import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+import ParseMoneyAmount from '../../../Utils/ParseMoneyAmount';
 
 // Styles
-import './Transactions.css';
+import './WalletTotals.css';
 
 interface Props {
   totals: { earnings: number; expenses: number };
+  hidden?: boolean;
 }
 
 const WalletTotals = (props: Props): JSX.Element => {
   return (
-    <div className="Transactions__Totals">
+    <div className={props.hidden ? 'Transactions__Totals inactive' : 'Transactions__Totals'}>
       <div className="Transactions__Totals__Items">
         <div>In: </div>
         <div>Out: </div>
