@@ -75,15 +75,20 @@
 }
 
 .Modal__header__button {
+  align-items: center;
+  background-color: none;
   border: none;
-  background: none;
+  border-radius: 50%;
+  display: flex;
   font-weight: 700;
   font-size: 45px;
-  height: var(--header-size);
-  line-height: calc(var(--header-size) + 5px);
+  height: 40px;
+  margin: 15px;
+  width: 40px;
 }
+
 .Modal__header__button:hover {
-  background: none;
+  background: var(--gray1);
 }
 
 .Modal__header__button.right {
