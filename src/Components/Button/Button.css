@@ -27,6 +27,7 @@
 
 .button.warn {
   --background-color: var(--red);
+  --hover-color: var(--redhover);
 }
 
 .button.round {
