@@ -19,6 +19,9 @@ import { Objects } from '../../models';
 // Utilities
 import { IdIcons } from '../../Icons';
 
+// Styles
+import './CategorySelector.css';
+
 interface CategorySelectorProps {
   error?: boolean;
   value?: string;
@@ -79,37 +82,20 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
     setShowModal(false);
   };
 
-  const getSelectedCategoryClass = (category: Objects.Category): string => {
-    let output =
-      category.parent_id === '-1'
-        ? 'NewTransactionForm__CategorySelector__Category__Icon'
-        : 'NewTransactionForm__CategorySelector__SubCategory__Icon';
-
-    if (category._id === selectedCategory?._id) {
-      output += ' selected';
-    }
-
-    return output;
-  };
-
   return (
     <div className={props.transfer ? 'loading' : ''}>
-      <div
-        className={props.error ? 'NewTransactionForm__CategorySelector error' : 'NewTransactionForm__CategorySelector'}
-        onClick={() => setShowModal(true)}
-      >
-        <IdIcons.Variable
-          iconid={selectedCategory?.icon_id || 0}
-          className="NewTransactionForm__CategorySelector__Icon"
-        />
-        <div className="NewTransactionForm__CategorySelector__Name">{selectedCategory?.name || 'Select Category'}</div>
-        <div className="NewTransactionForm__CategorySelector__Triangle" />
+      <div className={props.error ? 'CategorySelector error' : 'CategorySelector'} onClick={() => setShowModal(true)}>
+        <IdIcons.Variable iconid={selectedCategory?.icon_id || 0} className="CategorySelector__Icon" />
+        <div className="CategorySelector__Name">{selectedCategory?.name || 'Select Category'}</div>
+        <div className="CategorySelector__Open">
+          <div className="CategorySelector__Triangle" />
+        </div>
       </div>
 
       <Modal setModal={setShowModal} showModal={showModal}>
         <>
           {/* Header selector */}
-          <div className="NewTransactionForm__CategorySelector__Container">
+          <div className="CategorySelector__Container__Header">
             {!props.edit && !props.parentSelector && (
               <div className={categoryType === 0 ? 'selected' : ''} onClick={() => setCategoryType(0)}>
                 Other
@@ -123,11 +109,11 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
             </div>
           </div>
           {/* Categories */}
-          <div className="NewTransactionForm__CategorySelector__ListContainer">
+          <div className="CategorySelector__Container__List">
             {/* None selector */}
-            {props.parentSelector && (
+            {/* {props.parentSelector && (
               <div
-                className="NewTransactionForm__CategorySelector__Category"
+                className="CategorySelector__Container__List__Category"
                 onClick={() => setCategoryCallback(categoryType === 1 ? '-3' : '-4')}
               >
                 <IdIcons.Variable
@@ -143,77 +129,81 @@ const CategorySelector = (props: CategorySelectorProps): JSX.Element => {
                   {categoryType === 1 ? 'None (Income)' : 'None (Expense)'}
                 </div>
               </div>
-            )}
+            )} */}
             {/* Other Categories */}
             {categoryType === 0 ? (
-              <>
-                <div
-                  className="NewTransactionForm__CategorySelector__Category"
-                  key="-2"
-                  onClick={() => setCategoryCallback('-2')}
-                >
-                  <IdIcons.Variable
-                    iconid={-2}
-                    className={getSelectedCategoryClass({
-                      parent_id: '-1',
-                      _id: '-2',
-                      icon_id: -2,
-                      name: 'transfer',
-                    } as Objects.Category)}
-                  />
-                  <div className="NewTransactionForm__CategorySelector__Category__Name">Transfer</div>
-                </div>
-              </>
+              <CategoryCard
+                key="-2"
+                category={{
+                  _id: '-2',
+                  icon_id: -2,
+                  name: 'transfer',
+                  parent_id: '-1',
+                  type: 'Expense',
+                  user_id: '-1',
+                }}
+                selectedCategory={selectedCategory}
+                setCategory={setCategoryCallback}
+              />
             ) : categoryType === 1 ? (
               categories.Income.map((cat: Objects.Category) => (
-                <div
-                  className={
-                    cat.parent_id === '-1'
-                      ? 'NewTransactionForm__CategorySelector__Category'
-                      : 'NewTransactionForm__CategorySelector__SubCategory'
-                  }
+                <CategoryCard
                   key={cat._id}
-                  onClick={() => setCategoryCallback(cat._id)}
-                >
-                  <IdIcons.Variable iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
-                  <div
-                    className={
-                      cat.parent_id === '-1'
-                        ? 'NewTransactionForm__CategorySelector__Category__Name'
-                        : 'NewTransactionForm__CategorySelector__SubCategory__Name'
-                    }
-                  >
-                    {cat.name}
-                  </div>
-                </div>
+                  category={cat}
+                  selectedCategory={selectedCategory}
+                  setCategory={setCategoryCallback}
+                />
               ))
             ) : (
               categories.Expense.map((cat: Objects.Category) => (
-                <div
-                  className={
-                    cat.parent_id === '-1'
-                      ? 'NewTransactionForm__CategorySelector__Category'
-                      : 'NewTransactionForm__CategorySelector__SubCategory'
-                  }
+                <CategoryCard
                   key={cat._id}
-                  onClick={() => setCategoryCallback(cat._id)}
-                >
-                  <IdIcons.Variable iconid={cat.icon_id} className={getSelectedCategoryClass(cat)} />
-                  <div
-                    className={
-                      cat.parent_id === '-1'
-                        ? 'NewTransactionForm__CategorySelector__Category__Name'
-                        : 'NewTransactionForm__CategorySelector__SubCategory__Name'
-                    }
-                  >
-                    {cat.name}
-                  </div>
-                </div>
+                  category={cat}
+                  selectedCategory={selectedCategory}
+                  setCategory={setCategoryCallback}
+                />
               ))
             )}
           </div>
         </>
       </Modal>
+    </div>
+  );
+};
+
+interface CategoryCardProps {
+  category: Objects.Category;
+  selectedCategory: Objects.Category | null;
+  setCategory: (id: string) => void;
+}
+
+const CategoryCard = (props: CategoryCardProps): JSX.Element => {
+  const getSelectedCategoryClass = (category: Objects.Category): string => {
+    let output = 'CategorySelector__CategoryCard__Icon';
+    
+    if (category.parent_id !== '-1') {
+      output += ' SubCategory'
+    }
+
+    if (category._id === props.selectedCategory?._id) {
+      output += ' selected';
+    }
+
+    return output;
+  };
+
+  return (
+    <div className="CategorySelector__CategoryCard" onClick={() => props.setCategory(props.category._id)}>
+      <div
+        className={
+          props.category.parent_id === '-1'
+            ? 'CategorySelector__CategoryCard__Main'
+            : 'CategorySelector__CategoryCard__Main SubCategory'
+        }
+      >
+        <IdIcons.Variable iconid={props.category.icon_id} className={getSelectedCategoryClass(props.category)} />
+        <div>{props.category.name}</div>
+      </div>
     </div>
   );
 };
