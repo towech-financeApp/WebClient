@@ -31,3 +31,7 @@
   font-size: 15px;
   margin-left: auto;
 }
+
+.errorBox__close:hover {
+  background: none;
+}
