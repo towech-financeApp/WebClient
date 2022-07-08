@@ -93,7 +93,7 @@
 .TransactionForm__WalletSelector__Container {
   background-color: var(--gray1);
   border-radius: 25px 25px 0 0;
-  height: calc(100% - 20px);
+  height: calc(100% - 10px);
   overflow: auto;
   padding-top: 8px;
 }

@@ -20,7 +20,7 @@ import TransactionViewer from './TransactionViewer';
 import WalletTotals from './WalletTotals';
 import TransactionForm from './TransactionForm';
 import Loading from '../../Components/Loading';
-import TransactionHeader from './TransactionsHeader';
+import WalletSelector from './WalletSelector';
 import EmptyTransactions from './EmptyTransactions';
 
 // Models
@@ -111,7 +111,7 @@ const Transactions = (): JSX.Element => {
   };
 
   // Extracted HTML components
-  const header = loaded && wallets.length > 0 ? <TransactionHeader /> : <></>;
+  const header = loaded && wallets.length > 0 ? <WalletSelector /> : <></>;
 
   return (
     <TransactionPageStore.Provider value={{ transactionState, dispatchTransactionState }}>
@@ -129,7 +129,7 @@ const Transactions = (): JSX.Element => {
                     totals={transactionState.report}
                     hidden={!(!loadingTransactions && transactionState.transactions.length > 0)}
                   />
-                  <TransactionViewer hidden={loadingTransactions}/>
+                  <TransactionViewer hidden={loadingTransactions} />
                   {loadingTransactions && (
                     <div className="Transactions__Content__Loading">
                       <Loading className="Transactions__Spinner" />
