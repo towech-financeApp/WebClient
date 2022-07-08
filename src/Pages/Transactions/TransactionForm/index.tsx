@@ -8,27 +8,30 @@ import React, { useContext, useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Components
-import Button from '../../Components/Button';
-import CategorySelector from '../../Components/CategorySelector';
-import Input from '../../Components/Input';
-import Datepicker from '../../Components/Datepicker';
-import Modal from '../../Components/Modal';
+import Button from '../../../Components/Button';
+import CategorySelector from '../../../Components/CategorySelector';
+import Input from '../../../Components/Input';
+import Datepicker from '../../../Components/Datepicker';
+import Modal from '../../../Components/Modal';
 
 // Hooks
-import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
-import UseForm from '../../Hooks/UseForm';
+import { MainStore, TransactionPageStore } from '../../../Hooks/ContextStore';
+import UseForm from '../../../Hooks/UseForm';
 
 // Models
-import { Objects } from '../../models';
+import { Objects } from '../../../models';
 
 // Services
-import TransactionService from '../../Services/TransactionService';
+import TransactionService from '../../../Services/TransactionService';
 
 // Utilities
-import CheckNested from '../../Utils/CheckNested';
-import Errorbox from '../../Components/ErrorBox';
-import Checkbox from '../../Components/Checkbox';
-import { IdIcons } from '../../Icons';
+import CheckNested from '../../../Utils/CheckNested';
+import Errorbox from '../../../Components/ErrorBox';
+import Checkbox from '../../../Components/Checkbox';
+import { IdIcons } from '../../../Icons';
+
+// Styles
+import './TransactionForm.css';
 
 interface Props {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,6 +64,24 @@ const TransactionForm = (props: Props): JSX.Element => {
     to_id: '-1',
   });
 
+  // Use Effect that resets the initial option for wallet if the selected wallet changes
+  useEffect(() => {
+    if (
+      props.state &&
+      !props.initialTransaction &&
+      transactionState.selectedWallet._id !== transactionForm.values.wallet_id
+    ) {
+      transactionForm.onChange({
+        target: {
+          type: 'custom-select',
+          name: 'wallet_id',
+          value: transactionState.selectedWallet._id,
+        },
+      });
+    }
+  }, [props.state]);
+
+  // Callbacks for each type of HTTP operation
   async function newTransactionCallback() {
     try {
       // If no wallet was entered, returns an error
@@ -74,7 +95,6 @@ const TransactionForm = (props: Props): JSX.Element => {
         setErrors({ category_id: 'Select a category' });
         return;
       }
-
       // Sends the transaction to the API
       const res = await transactionService.newTransaction(transactionForm.values, setLoading);
       setErrors([]);
@@ -216,9 +236,9 @@ const TransactionForm = (props: Props): JSX.Element => {
           setErrors([]);
         }}
       >
-        <div className="NewTransactionForm">
+        <div className="TransactionForm">
           {/* Main Transaction data */}
-          <div className="NewTransactionForm__Content">
+          <div className="TransactionForm__Content">
             {/* Form */}
             <Input
               error={errors.amount ? true : false}
@@ -241,8 +261,8 @@ const TransactionForm = (props: Props): JSX.Element => {
 
             {/* Wallet selector and date picker for regular transactions */}
             {transactionForm.values.category_id !== '-2' && (
-              <div className="NewTransactionForm__Content__Splitted">
-                <div className="NewTransactionForm__Content__Splitted__Wallet">
+              <div className="TransactionForm__Content__Splitted">
+                <div className="TransactionForm__Content__Splitted__Wallet">
                   <WalletSelector
                     onChange={transactionForm.onChange}
                     name="wallet_id"
@@ -250,7 +270,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                     visible={props.state}
                     error={errors.wallet_id}
                     disabled={props.initialTransaction?.transfer_id ? true : false}
-                  ></WalletSelector>
+                  />
                 </div>
 
                 {/* Date field */}
@@ -266,12 +286,12 @@ const TransactionForm = (props: Props): JSX.Element => {
             {/* Wallet selectors and datepicker for transference transactions */}
             {transactionForm.values.category_id === '-2' && (
               <>
-                <div className="NewTransactionForm__Content__Splitted">
-                  <div className="NewTransactionForm__Content__Splitted__Label">From</div>
-                  <div className="NewTransactionForm__Content__Splitted__Label">To</div>
+                <div className="TransactionForm__Content__Splitted">
+                  <div className="TransactionForm__Content__Splitted__Label">From</div>
+                  <div className="TransactionForm__Content__Splitted__Label">To</div>
                 </div>
-                <div className="NewTransactionForm__Content__Splitted">
-                  <div className="NewTransactionForm__Content__Splitted__Wallet">
+                <div className="TransactionForm__Content__Splitted">
+                  <div className="TransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.from_id}
                       name="from_id"
@@ -280,7 +300,7 @@ const TransactionForm = (props: Props): JSX.Element => {
                       visible={props.state}
                     />
                   </div>
-                  <div className="NewTransactionForm__Content__Splitted__Wallet">
+                  <div className="TransactionForm__Content__Splitted__Wallet">
                     <WalletSelector
                       error={errors.to_id}
                       name="to_id"
@@ -326,9 +346,9 @@ const TransactionForm = (props: Props): JSX.Element => {
           {/* Delete Transaction button */}
           {props.initialTransaction && (
             <div>
-              <Button warn className="NewTransactionForm__Delete" onClick={() => setDeleteWarn(true)}>
+              <Button warn className="TransactionForm__Delete" onClick={() => setDeleteWarn(true)}>
                 <>
-                  <div className="NewTransactionForm__Delete__Icon">
+                  <div className="TransactionForm__Delete__Icon">
                     <FaIcons.FaTrashAlt />
                   </div>
                   Delete Transaction
@@ -381,7 +401,7 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
     if (props.visible && props.value !== (selectedWallet?._id || '-1')) {
       searchAndSetView(props.value || '-1');
     }
-  }, [props.visible]);
+  }, [props.visible, props.value]);
 
   // Functions
   const searchAndSetView = (id: string): void => {
@@ -404,10 +424,11 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
   };
 
   const getSelectedWalletClass = (wallet: Objects.Wallet): string => {
-    let output =
-      wallet.parent_id === undefined || wallet.parent_id === null
-        ? 'NewTransactionForm__WalletSelector__Wallet__Icon'
-        : 'NewTransactionForm__WalletSelector__SubWallet__Icon';
+    let output = 'TransactionForm__WalletSelector__WalletCard__Icon';
+
+    if (wallet.parent_id !== undefined && wallet.parent_id !== null) {
+      output += ' SubWallet';
+    }
 
     if (wallet._id === props.value) {
       output += ' selected';
@@ -419,37 +440,33 @@ const WalletSelector = (props: WalletSelectorProps): JSX.Element => {
   return (
     <div className={props.disabled ? 'loading' : ''}>
       <div
-        className={props.error ? 'NewTransactionForm__WalletSelector error' : 'NewTransactionForm__WalletSelector'}
+        className={props.error ? 'TransactionForm__WalletSelector error' : 'TransactionForm__WalletSelector'}
         onClick={() => setShowModal(true)}
       >
-        <IdIcons.Variable iconid={selectedWallet?.icon_id || 0} className="NewTransactionForm__WalletSelector__Icon" />
-        <div className="NewTransactionForm__WalletSelector__Name">{selectedWallet?.name || 'Select Wallet'}</div>
-        <div className="NewTransactionForm__WalletSelector__Triangle" />
+        <IdIcons.Variable iconid={selectedWallet?.icon_id || 0} className="TransactionForm__WalletSelector__Icon" />
+        <div className="TransactionForm__WalletSelector__Name">{selectedWallet?.name || 'Select Wallet'}</div>
+        <div className="TransactionForm__WalletSelector__Open">
+          <div className="TransactionForm__WalletSelector__Triangle" />
+        </div>
       </div>
 
       <Modal showModal={showModal} setModal={setShowModal} title="Select Wallet">
-        <div className="NewTransactionForm__WalletSelector__Container">
+        <div className="TransactionForm__WalletSelector__Container">
           {wallets.map((wallet: Objects.Wallet) => (
             <div
               key={wallet._id}
-              className={
-                wallet.parent_id === undefined || wallet.parent_id === null
-                  ? 'NewTransactionForm__WalletSelector__Wallet'
-                  : 'NewTransactionForm__WalletSelector__SubWallet'
-              }
+              className="TransactionForm__WalletSelector__WalletCard"
               onClick={() => setWalletCallback(wallet._id)}
             >
-              <div className="NewTransactionForm__WalletSelector__Wallet__Container">
+              <div
+                className={
+                  wallet.parent_id === undefined || wallet.parent_id === null
+                    ? 'TransactionForm__WalletSelector__WalletCard__Main'
+                    : 'TransactionForm__WalletSelector__WalletCard__Main SubWallet'
+                }
+              >
                 <IdIcons.Variable iconid={wallet.icon_id} className={getSelectedWalletClass(wallet)} />
-                <div
-                  className={
-                    wallet.parent_id === undefined || wallet.parent_id === null
-                      ? 'NewTransactionForm__WalletSelector__Wallet__Name'
-                      : 'NewTransactionForm__WalletSelector__SubWallet__Name'
-                  }
-                >
-                  {wallet.name}
-                </div>
+                <div className="TransactionForm__WalletSelector__WalletCard__Name">{wallet.name}</div>
               </div>
             </div>
           ))}

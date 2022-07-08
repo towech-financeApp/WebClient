@@ -21,56 +21,86 @@ interface Props {
 }
 
 const Input = (props: Props): JSX.Element => {
-  const [display, setDisplay] = useState(`${props.value}`);
-
-  // This useEffect is used when something external changes the value of the input
-  useEffect(() => {
-    if (props.type !== 'number') {
-      setDisplay(`${props.value}`);
-      return;
-    }
-
-    const formatSplit = props.value.split('.');
-    const valueFormatted =
-      formatSplit.length > 1
-        ? `${formatSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${formatSplit[1]}`
-        : `${formatSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-
-    setDisplay(`${valueFormatted}`);
-  }, [props.value]);
+  // const inputRef = useRef(new HTMLInputElement);
+  const [value, setValue] = useState(props.value || '');
 
   // Checks the the alternate theme flags and applies it with following hierarchy
-  // Accent
-  // Dark
-  // Light
   let theme = 'input';
 
   // Adds the error outline if triggered
   if (props.error) theme += ' error';
 
-  const change = (e?: React.ChangeEvent<HTMLInputElement>): void => {
-    if (!e) return;
+  // This useEffect is used when something external changes the value of the input
+  useEffect(() => {
+    let newValue = props.value || '';
 
-    // If the input is not of type number, it gets passed regularly
-    if (props.type !== 'number') {
-      props.onChange(e);
-      return;
+    if (props.type === 'number') {
+      const [formatted] = formatNumber(newValue);
+      newValue = formatted;
     }
 
-    const initial = display === '0' ? e.target.value.replace('0', '') : e.target.value;
+    // Doesn't trigger a rerender if there are no changes
+    if (newValue === value) return;
 
-    // First removes all letters and commas and dots after the first
-    const splitted = initial.split('.');
-    let value = splitted.length > 1 ? `${splitted.shift()}.${splitted.join('')}` : `${splitted[0]}`;
-    value = value.replace(/[^0-9.]/g, '');
-    if (value.trim() === '') value = '0';
+    setValue(newValue);
+  }, [props.value]);
 
-    if (value === display) return;
-    e.target.value = value;
+  // Formats a given string into a number and a string with commas
+  const formatNumber = (input: string): string[] => {
+    const output = ['0', '0'];
 
-    props.onChange(e);
+    // If the current value is 0, it gets replaced to nothing
+    let workingValue = value === '0' ? input.replace('0', '') : input;
+
+    // First removes dots after the first
+    const splitted = workingValue.split('.');
+    workingValue = splitted.length > 1 ? `${splitted.shift()}.${splitted.join('')}` : `${splitted[0]}`;
+
+    // Then removes all symbols that are not numbers or dots
+    workingValue = workingValue.replace(/[^0-9.]/g, '');
+
+    // If there is an empty value, a 0 is returned
+    if (workingValue.trim() === '') workingValue = '0';
+
+    // Changes the e.target.value to this number, as it is what will be passed down
+    output[1] = workingValue;
+
+    // Finally, formats the newValue to contain the commas in the correct positions
+    const formatSplit = workingValue.split('.');
+    output[0] =
+      formatSplit.length > 1
+        ? `${formatSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${formatSplit[1]}`
+        : `${formatSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+
+    return output;
   };
 
+  // Function that runs everytime the input content changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    let newValue = e.target.value;
+
+    // Number filter
+    if (props.type === 'number') {
+      // Runs the filter
+      const [formatted, pure] = formatNumber(newValue);
+
+      // Changes the e.target.value to this number, as it is what will be passed down
+      e.target.value = pure;
+
+      // Sets the formatted number as the new value
+      newValue = formatted;
+    }
+
+    // Doesn't trigger a rerender if there are no changes
+    if (newValue === value) return;
+
+    setValue(newValue);
+    if (props.onChange) {
+      props.onChange(e);
+    }
+  };
+
+  // Sets the correct type of input
   const getType = (): string => {
     if (!props.type) return 'text';
     if (props.type === 'number') return 'text';
@@ -80,14 +110,13 @@ const Input = (props: Props): JSX.Element => {
   return (
     <div className={theme}>
       <input
-        // className="input__field"
         className={props.type === 'number' ? 'input__field number' : 'input__field'}
         disabled={props.disabled}
         name={props.name}
-        onChange={change}
+        onChange={handleChange}
         placeholder={props.placeholder ? props.placeholder : ' '}
         type={getType()}
-        value={display}
+        value={value}
       />
       {props.label && <label className="input__label">{props.label}</label>}
     </div>

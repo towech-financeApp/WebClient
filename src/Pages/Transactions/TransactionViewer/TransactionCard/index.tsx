@@ -8,15 +8,18 @@
 import { useContext, useState } from 'react';
 
 // Components
-import NewTransactionForm from './TransactionForm';
+import NewTransactionForm from '../../TransactionForm';
 
 // Hooks
-import { MainStore, TransactionPageStore } from '../../Hooks/ContextStore';
-import { FrontendTransaction } from '../../Hooks/UseTransactions';
+import { MainStore, TransactionPageStore } from '../../../../Hooks/ContextStore';
+import { FrontendTransaction } from '../../../../Hooks/UseTransactions';
 
 // Utils
-import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
-import { IdIcons } from '../../Icons';
+import ParseMoneyAmount from '../../../../Utils/ParseMoneyAmount';
+import { IdIcons } from '../../../../Icons';
+
+// Styles
+import './TransactionCard.css';
 
 interface Props {
   transaction: FrontendTransaction;
@@ -98,26 +101,27 @@ const TransactionCard = (props: Props): JSX.Element => {
   return (
     <>
       <div className="TransactionCard" onClick={() => setEdit(true)}>
-        <div className="TransactionCard__Icon">
-          <IdIcons.Variable iconid={getTransactionIconId()} className="TransactionCard__Icon__Main" />
-          {getWalletIcons()}
-        </div>
-        <div className="TransactionCard__Content">
-          <div className="TransactionCard__Content__Top">
-            <div className="Transaction__Content__Top__Category">{props.transaction.category.name}</div>
-            <div className={getAmountClass()}>{displayAmount()}</div>
+        <div className="TransactionCard__Main">
+          <div className="TransactionCard__Icon">
+            <IdIcons.Variable iconid={getTransactionIconId()} className="TransactionCard__Icon__Main" />
+            {getWalletIcons()}
           </div>
-          <div className="TransactionCard__Content__Bottom">
-            <div className="TransactionCard__Content__Bottom__Concept">{props.transaction.concept}</div>
-            <div className="TransactionCard__Content__Bottom__Date">
-              {transDate.getUTCDate().toString().padStart(2, '0')}/
-              {(transDate.getUTCMonth() + 1).toString().padStart(2, '0')}/
-              {transDate.getUTCFullYear().toString().padStart(4, '0')}
+          <div className="TransactionCard__Content">
+            <div className="TransactionCard__Content__Top">
+              <div className="Transaction__Content__Top__Category">{props.transaction.category.name}</div>
+              <div className={getAmountClass()}>{displayAmount()}</div>
+            </div>
+            <div className="TransactionCard__Content__Bottom">
+              <div className="TransactionCard__Content__Bottom__Concept">{props.transaction.concept}</div>
+              <div className="TransactionCard__Content__Bottom__Date">
+                {transDate.getUTCDate().toString().padStart(2, '0')}/
+                {(transDate.getUTCMonth() + 1).toString().padStart(2, '0')}/
+                {transDate.getUTCFullYear().toString().padStart(4, '0')}
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       {/* Edit Wallet Modal */}
       <NewTransactionForm state={showEdit} setState={setEdit} initialTransaction={props.transaction} />
     </>

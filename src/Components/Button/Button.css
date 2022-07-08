@@ -9,21 +9,25 @@
 
   --background-color: var(--black);
   --text-color: var(--white);
+  --hover-color: var(--gray2);
 
   border-radius: var(--size-radius);
 }
 
 .button.dark {
   --background-color: var(--gray2);
+  --hover-color: var(--gray1);
 }
 
 .button.accent {
   --background-color: var(--yellow);
   --text-color: var(--black);
+  --hover-color: var(--yellowhover);
 }
 
 .button.warn {
   --background-color: var(--red);
+  --hover-color: var(--redhover);
 }
 
 .button.round {
@@ -46,4 +50,9 @@
   letter-spacing: 0.5px;
   margin: 0 5px;
   padding: 5px 10px;
+}
+
+.button:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
 }

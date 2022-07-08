@@ -13,7 +13,7 @@ interface Props {
 const SettingCard = (props: Props): JSX.Element => {
   return (
     <div className="Settings__Card" onClick={props.onClick}>
-      {props.title}
+      <div className="Settings__Card__Main">{props.title}</div>
     </div>
   );
 };
