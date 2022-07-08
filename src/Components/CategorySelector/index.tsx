@@ -180,9 +180,9 @@ interface CategoryCardProps {
 const CategoryCard = (props: CategoryCardProps): JSX.Element => {
   const getSelectedCategoryClass = (category: Objects.Category): string => {
     let output = 'CategorySelector__CategoryCard__Icon';
-    
+
     if (category.parent_id !== '-1') {
-      output += ' SubCategory'
+      output += ' SubCategory';
     }
 
     if (category._id === props.selectedCategory?._id) {

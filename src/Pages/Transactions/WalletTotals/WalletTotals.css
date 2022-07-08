@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.Transactions__Totals.inactive > div > div{
+.Transactions__Totals.inactive > div > div {
   border: none !important;
 }
 

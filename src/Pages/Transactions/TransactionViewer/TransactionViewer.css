@@ -12,7 +12,6 @@
   visibility: hidden;
 }
 
-
 .Transactions__Empty {
   background-color: var(--gray2);
   display: flex;
