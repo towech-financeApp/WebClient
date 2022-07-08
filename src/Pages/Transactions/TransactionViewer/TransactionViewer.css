@@ -2,8 +2,8 @@
   background-color: var(--black);
   display: flex;
   flex-direction: column;
-  height: 100%;
   visibility: visible;
+  overflow: auto;
   width: 100%;
 }
 
@@ -27,7 +27,6 @@
   border: 3px solid var(--color-dark);
   border-top: none;
   border-radius: 0 0 4px 4px;
-  overflow: auto;
   flex: 1;
 }
 
