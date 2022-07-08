@@ -8,29 +8,29 @@ import React, { useContext, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 
 // Components
-import { MainStore } from '../../Hooks/ContextStore';
-import { IdIcons } from '../../Icons';
-import Errorbox from '../../Components/ErrorBox';
-import Input from '../../Components/Input';
-import Modal from '../../Components/Modal';
+import { MainStore } from '../../../Hooks/ContextStore';
+import { IdIcons } from '../../../Icons';
+import Button from '../../../Components/Button';
+import Errorbox from '../../../Components/ErrorBox';
+import IconSelector from '../../../Components/IconSelector';
+import Input from '../../../Components/Input';
+import Modal from '../../../Components/Modal';
 
 // Hooks
-import UseForm from '../../Hooks/UseForm';
+import UseForm from '../../../Hooks/UseForm';
 
 // Models
-import { Objects } from '../../models';
+import { Objects } from '../../../models';
 
 // Services
-import TransactionService from '../../Services/TransactionService';
+import TransactionService from '../../../Services/TransactionService';
 
 // Utilities
-import CheckNested from '../../Utils/CheckNested';
-import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+import CheckNested from '../../../Utils/CheckNested';
+import ParseMoneyAmount from '../../../Utils/ParseMoneyAmount';
 
 // Styles
-import './Wallets.css';
-import Button from '../../Components/Button';
-import IconSelector from '../../Components/IconSelector';
+import './WalletForm.css';
 
 interface Props {
   set: React.Dispatch<React.SetStateAction<boolean>>;
@@ -149,18 +149,18 @@ const WalletForm = (props: Props): JSX.Element => {
           setErrors([]);
         }}
       >
-        <div className="NewWalletForm">
+        <div className="WalletForm">
           {/* Main Wallet data */}
-          <div className="NewWalletForm__MainWallet">
+          <div className="WalletForm__Main">
             {/* Form */}
-            <div className="NewWalletForm__MainWallet__FirstRow">
+            <div className="WalletForm__Main__FirstRow">
               <IconSelector
-                className="NewWalletForm__MainWallet__FirstRow__Icon"
+                className="WalletForm__Main__FirstRow__Icon"
                 name="icon_id"
                 value={walletForm.values.icon_id}
                 onChange={walletForm.onChange}
               />
-              <div className="NewWalletForm__MainWallet__FirstRow__Name">
+              <div className="WalletForm__Main__FirstRow__Name">
                 <Input
                   error={errors.name ? true : false}
                   label="Name"
@@ -171,8 +171,8 @@ const WalletForm = (props: Props): JSX.Element => {
                 />
               </div>
             </div>
-            <div className="NewWalletForm__MainWallet__SecondRow">
-              <div className="NewWalletForm__MainWallet__SecondRow__Money">
+            <div className="WalletForm__Main__SecondRow">
+              <div className="WalletForm__Main__SecondRow__Money">
                 <Input
                   error={errors.amount ? true : false}
                   name="money"
@@ -183,7 +183,7 @@ const WalletForm = (props: Props): JSX.Element => {
                   onChange={walletForm.onChange}
                 />
               </div>
-              <div className="NewWalletForm__MainWallet__SecondRow__Currency">
+              <div className="WalletForm__Main__SecondRow__Currency">
                 <Input
                   error={errors.currency ? true : false}
                   name="currency"
@@ -203,30 +203,35 @@ const WalletForm = (props: Props): JSX.Element => {
           {props.initialWallet && (
             <>
               {/* Subwallets */}
-              <div className="NewWalletForm__Subwallets">
-                <div className="NewWalletForm__Subwallets__Title">Subwallets</div>
-                <div className="NewWalletForm__Subwallets__Content">
-                  <div>
-                    {(props.initialWallet.child_id?.length || 0) > 0 && (
-                      <div className="NewWalletForm__Subwallets__Content__Unassigned">
-                        Unasigned:&nbsp;&nbsp;&nbsp;{calculateFree()}
-                      </div>
-                    )}
-                    {props.initialWallet.child_id?.map((x) => (
-                      <SubWalletCard
-                        key={x._id}
-                        parentWallet={props.initialWallet || ({} as Objects.Wallet)}
-                        wallet={x}
-                      />
-                    ))}
-                  </div>
+              <div className="WalletForm__Subwallets">
+                <div className="WalletForm__Subwallets__Title">Subwallets</div>
+                <div className="WalletForm__Subwallets__Container">
+                  {/* Money in the wallet that it hasn't bee asigned to a subwallet */}
+                  {(props.initialWallet.child_id?.length || 0) > 0 && (
+                    <div className="WalletForm__Subwallets__Unassigned">
+                      Unasigned:&nbsp;&nbsp;&nbsp;{calculateFree()}
+                    </div>
+                  )}
+                  {/* SubWallets */}
+                  {props.initialWallet.child_id?.map((x) => (
+                    <SubWalletCard
+                      key={x._id}
+                      parentWallet={props.initialWallet || ({} as Objects.Wallet)}
+                      wallet={x}
+                    />
+                  ))}
+                  {/* Add SubWallet Button */}
                   <div
-                    className="NewWalletForm__Subwallets__Add"
+                    className={
+                      props.initialWallet.child_id?.length === 0
+                        ? 'WalletForm__Subwallets__Add alone'
+                        : 'WalletForm__Subwallets__Add'
+                    }
                     onClick={() => {
                       setShowSubWallets(true);
                     }}
                   >
-                    <div className="NewWalletForm__Subwallets__Add__Icon">
+                    <div className="WalletForm__Subwallets__Add__Icon">
                       <FaIcons.FaPlusCircle />
                     </div>
                     <div>Add new subwallet</div>
@@ -238,10 +243,10 @@ const WalletForm = (props: Props): JSX.Element => {
 
               {/* Delete wallet button */}
               <div>
-                <Button warn className="NewWalletForm__Delete" onClick={() => setDeleteWarn(true)}>
+                <Button warn className="WalletForm__Delete" onClick={() => setDeleteWarn(true)}>
                   <>
                     {/* <div className="NewWalletForm__Delete__Icon"> */}
-                    <FaIcons.FaTrashAlt className="NewWalletForm__Delete__Icon" />
+                    <FaIcons.FaTrashAlt className="WalletForm__Delete__Icon" />
                     {/* </div> */}
                     Delete Wallet
                   </>
@@ -364,15 +369,15 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
         }}
       >
         <>
-          <div className="NewWalletForm__MainWallet__FirstRow">
+          <div className="WalletForm__Main__FirstRow">
             <IconSelector
-              className="NewWalletForm__MainWallet__FirstRow__Icon"
+              className="WalletForm__Main__FirstRow__Icon"
               name="icon_id"
               value={subWalletForm.values.icon_id}
               onChange={subWalletForm.onChange}
             />
 
-            <div className="NewWalletForm__MainWallet__FirstRow__Name">
+            <div className="WalletForm__Main__FirstRow__Name">
               <Input
                 error={errors.name ? true : false}
                 label="Name"
@@ -387,7 +392,7 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
           {/* Delete subwallet button */}
           {props.initialWallet && (
             <div>
-              <Button warn className="NewWalletForm__Delete" onClick={() => setDelete(true)}>
+              <Button warn className="WalletForm__Delete" onClick={() => setDelete(true)}>
                 <>
                   {/* <div className="NewWalletForm__Delete__Icon"> */}
                   <FaIcons.FaTrashAlt className="NewWalletForm__Delete__Icon" />
@@ -427,13 +432,15 @@ const SubWalletCard = (props: SubWalletCardProps): JSX.Element => {
   return (
     <>
       <div className="SubWalletCard" onClick={() => setEdit(true)}>
-        <IdIcons.Variable iconid={props.wallet.icon_id} className="SubWalletCard__Icon" />
-        <div className="SubWalletCard__Info">
-          <div className="SubWalletCard__Info__Name">{props.wallet.name}</div>
-          <div className="SubWalletCard__Info__Money">
-            {props.wallet.currency}:&nbsp;
-            <div className={(props.wallet.money || 0) >= 0 ? '' : 'SubWalletCard__Info__Money__Amount'}>
-              {ParseMoneyAmount(props.wallet.money)}
+        <div className="SubWalletCard__Main">
+          <IdIcons.Variable iconid={props.wallet.icon_id} className="SubWalletCard__Icon" />
+          <div className="SubWalletCard__Info">
+            <div className="SubWalletCard__Info__Name">{props.wallet.name}</div>
+            <div className="SubWalletCard__Info__Money">
+              {props.wallet.currency}:&nbsp;
+              <div className={(props.wallet.money || 0) >= 0 ? '' : 'negative'}>
+                {ParseMoneyAmount(props.wallet.money)}
+              </div>
             </div>
           </div>
         </div>
