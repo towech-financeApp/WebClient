@@ -32,13 +32,15 @@ const WalletCard = (props: WalletCardProps): JSX.Element => {
   return (
     <>
       <div className="WalletCard" onClick={() => setEdit(true)}>
-        <IdIcons.Variable iconid={props.wallet.icon_id} className="WalletCard__Icon" />
-        <div className="WalletCard__Info">
-          <div className="WalletCard__Info__Name">{props.wallet.name}</div>
-          <div className="WalletCard__Info__Money">
-            {props.wallet.currency}:&nbsp;
-            <div className={(props.wallet.money || 0) >= 0 ? '' : 'WalletCard__Info__Money__Amount'}>
-              {ParseMoneyAmount(props.wallet.money)}
+        <div className="WalletCard__Main">
+          <IdIcons.Variable iconid={props.wallet.icon_id} className="WalletCard__Icon" />
+          <div className="WalletCard__Info">
+            <div className="WalletCard__Info__Name">{props.wallet.name}</div>
+            <div className="WalletCard__Info__Money">
+              {props.wallet.currency}:&nbsp;
+              <div className={(props.wallet.money || 0) >= 0 ? '' : 'negative'}>
+                {ParseMoneyAmount(props.wallet.money)}
+              </div>
             </div>
           </div>
         </div>

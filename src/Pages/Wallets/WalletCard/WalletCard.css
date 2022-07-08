@@ -1,14 +1,18 @@
 .WalletCard {
+  padding: 0 20px;
+}
+
+.WalletCard__Main {
   align-items: center;
   display: flex;
-  padding: 12px 20px;
+  padding: 12px 0;
 }
 
 .WalletCard:hover {
   background-color: var(--gray1);
 }
 
-.WalletCard:not(:first-child) {
+.WalletCard:not(:first-child) > div {
   border-top: 2px solid var(--yellow);
 }
 
