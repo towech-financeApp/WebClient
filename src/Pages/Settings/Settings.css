@@ -3,22 +3,26 @@
 .Settings__Container {
   background-color: var(--black);
   border-radius: 20px;
-  padding: 10px;
   margin: 13px;
 }
 
 .Settings__Card {
-  align-items: center;
-  display: flex;
-  margin: 12px;
+  padding: 0 20px;
+}
+
+.Settings__Card:hover {
+  background-color: var(--gray1);
+}
+
+.Settings__Card:not(:first-child) > div {
+  border-top: 2px solid var(--yellow);
+}
+
+.Settings__Card__Main {
   font-size: 19pt;
   font-weight: 600;
   line-height: 1.5;
-}
-
-.Settings__Card:not(:first-child) {
-  border-top: 1px solid var(--yellow);
-  padding-top: 12px;
+  padding: 12px 0;
 }
 
 .Settings__EditName__Modal__Text {
