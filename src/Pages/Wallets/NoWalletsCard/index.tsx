@@ -5,7 +5,7 @@
  * The Componet for what is shown when the user has no Wallets
  */
 // Styles
-import './Wallets.css';
+import './NoWalletsCard.css';
 
 const NoWalletsCard = (): JSX.Element => {
   return (
