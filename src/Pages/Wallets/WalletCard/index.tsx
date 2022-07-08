@@ -7,16 +7,19 @@
 import { useState } from 'react';
 
 // Hooks
-import WalletForm from './WalletForm';
+import WalletForm from '../WalletForm';
 
 // Models
-import { Objects } from '../../models';
+import { Objects } from '../../../models';
 
 // Components
-import { IdIcons } from '../../Icons';
+import { IdIcons } from '../../../Icons';
 
 // Utils
-import ParseMoneyAmount from '../../Utils/ParseMoneyAmount';
+import ParseMoneyAmount from '../../../Utils/ParseMoneyAmount';
+
+// Styles
+import './WalletCard.css';
 
 interface WalletCardProps {
   wallet: Objects.Wallet;

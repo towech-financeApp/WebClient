@@ -1,0 +1,42 @@
+.WalletCard {
+  align-items: center;
+  display: flex;
+  padding: 12px 20px;
+}
+
+.WalletCard:hover {
+  background-color: var(--gray1);
+}
+
+.WalletCard:not(:first-child) {
+  border-top: 2px solid var(--yellow);
+}
+
+.WalletCard__Icon {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.WalletCard__Info {
+  padding-left: 16px;
+  font-size: 24pt;
+  font-weight: 900;
+  max-width: calc(100% - 100px);
+}
+
+.WalletCard__Info__Name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.WalletCard__Info__Money {
+  font-size: 14pt;
+  display: flex;
+  color: var(--gray2);
+}
+
+.WalletCard__Info__Money > div.negative {
+  color: var(--red);
+}
