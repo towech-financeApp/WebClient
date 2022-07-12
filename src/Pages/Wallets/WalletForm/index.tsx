@@ -206,7 +206,7 @@ const WalletForm = (props: Props): JSX.Element => {
               <div className="WalletForm__Subwallets">
                 <div className="WalletForm__Subwallets__Title">Subwallets</div>
                 <div className="WalletForm__Subwallets__Container">
-                  {/* Money in the wallet that it hasn't bee asigned to a subwallet */}
+                  {/* Money in the wallet that it hasn't been asigned to a subwallet */}
                   {(props.initialWallet.child_id?.length || 0) > 0 && (
                     <div className="WalletForm__Subwallets__Unassigned">
                       Unasigned:&nbsp;&nbsp;&nbsp;{calculateFree()}
@@ -368,7 +368,7 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
           setErrors([]);
         }}
       >
-        <>
+        <div className="WalletForm">
           <div className="WalletForm__Main__FirstRow">
             <IconSelector
               className="WalletForm__Main__FirstRow__Icon"
@@ -402,7 +402,7 @@ const SubWalletForm = (props: SubWalletProps): JSX.Element => {
               </Button>
             </div>
           )}
-        </>
+        </div>
       </Modal>
 
       {props.initialWallet && (

@@ -44,3 +44,18 @@
 .WalletCard__Info__Money > div.negative {
   color: var(--red);
 }
+
+@media screen and (min-width: 481px) {
+  .WalletCard {
+    padding: 0 30px;
+  }
+
+  .WalletCard__Main {
+    padding: 24px 0;
+  }
+
+  .WalletCard__Icon {
+    height: 70px;
+    width: 70px;
+  }
+}

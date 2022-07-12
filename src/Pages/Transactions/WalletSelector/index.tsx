@@ -97,14 +97,16 @@ const TransactionHeader = (): JSX.Element => {
 
       {/* Selector */}
       <Modal setModal={setModal} showModal={showModal} title="Select a wallet">
-        <div className="Transactions__WalletSelector__Container__Total">
-          <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
-        </div>
-        <div className="Transactions__walletSelector__Container__Head"/>
-        <div className="Transactions__WalletSelector__Container">
-          {wallets.map((wallet: Objects.Wallet) => (
-            <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
-          ))}
+        <div className="Transactions__WalletSelector__Modal">
+          <div className="Transactions__WalletSelector__Container__Total">
+            <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
+          </div>
+          <div className="Transactions__walletSelector__Container__Head" />
+          <div className="Transactions__WalletSelector__Container">
+            {wallets.map((wallet: Objects.Wallet) => (
+              <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
+            ))}
+          </div>
         </div>
       </Modal>
     </div>
