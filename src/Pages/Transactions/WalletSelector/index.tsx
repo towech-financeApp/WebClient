@@ -100,6 +100,7 @@ const TransactionHeader = (): JSX.Element => {
         <div className="Transactions__WalletSelector__Container__Total">
           <TransactionHeaderWallet onClick={selectWallet} total={displayed.total} key="-1" />
         </div>
+        <div className="Transactions__walletSelector__Container__Head"/>
         <div className="Transactions__WalletSelector__Container">
           {wallets.map((wallet: Objects.Wallet) => (
             <TransactionHeaderWallet onClick={selectWallet} wallet={wallet} key={wallet._id} />
@@ -112,7 +113,7 @@ const TransactionHeader = (): JSX.Element => {
 
 const TransactionHeaderWallet = (props: WalletProps): JSX.Element => {
   return (
-    <div className="Transactions__WalletSelector__WalletCard">
+    <div className="Transactions__WalletSelector__WalletCard" onClick={() => props.onClick(props.wallet)}>
       <div
         className={
           props.wallet?.parent_id === undefined || props.wallet?.parent_id === null

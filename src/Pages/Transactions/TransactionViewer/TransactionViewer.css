@@ -2,6 +2,7 @@
   background-color: var(--black);
   display: flex;
   flex-direction: column;
+  
   visibility: visible;
   overflow: auto;
   width: 100%;
@@ -15,7 +16,7 @@
 .Transactions__Empty {
   background-color: var(--gray2);
   display: flex;
-  height: 100%;
+  height: 100vh;
   justify-content: center;
   padding: 150px 50px;
   text-align: center;
@@ -27,7 +28,7 @@
   border: 3px solid var(--color-dark);
   border-top: none;
   border-radius: 0 0 4px 4px;
-  flex: 1;
+  height: 100vh;
 }
 
 .Transactions__Viewer__Filler {
