@@ -93,3 +93,50 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media screen and (min-width: 481px) {
+  .TransactionCard {
+    padding: 0 18px;
+  }
+
+  .TransactionCard__Main {
+    padding: 20px 0;
+  }
+
+  .TransactionCard__Icon {
+    height: 65px;
+    margin-right: 20px;
+    width: 65px;
+  }
+
+  .TransactionCard__Icon__Main {
+    height: 65px;
+    width: 65px;
+  }
+
+  .TransactionCard__Icon__Sub {
+    height: 30px;
+    top: 45px;
+    width: 30px;
+  }
+
+  .TransactionCard__Icon__Sub.r {
+    left: 45px;
+  }
+
+  .TransactionCard__Content {
+    max-width: calc(100% - 100px);
+  }
+
+  .TransactionCard__Content__Top {
+    font-size: 24px;
+  }
+
+  .TransactionCard__Content__Bottom {
+    font-size: 18px;
+  }
+
+  .TransactionCard__Content__Bottom__Concept {
+    padding-right: 20px;
+  }
+}

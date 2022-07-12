@@ -2,7 +2,7 @@
   background-color: var(--black);
   display: flex;
   flex-direction: column;
-  
+
   visibility: visible;
   overflow: auto;
   width: 100%;
@@ -14,11 +14,12 @@
 }
 
 .Transactions__Empty {
+  align-items: center;
   background-color: var(--gray2);
   display: flex;
   height: 100vh;
   justify-content: center;
-  padding: 150px 50px;
+  padding: 50px;
   text-align: center;
   z-index: 0;
 }

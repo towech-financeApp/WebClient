@@ -51,3 +51,13 @@
   padding: inherit;
   visibility: visible;
 }
+
+@media screen and (min-width: 481px) {
+  .Transactions__MonthSelector__Button {
+    font-size: 22px;
+  }
+
+  .Transactions__MonthSelector__GoTo.active {
+    font-size: 19px;
+  }
+}

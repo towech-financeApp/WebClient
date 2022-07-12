@@ -113,6 +113,11 @@
   margin-left: auto;
 }
 
+@media screen and (min-width: 481px) {
+  .Modal__spinner {
+    left: 35%;
+  }
+}
 /* @media screen and (min-width: 768px) {
   .Modal__background {
     align-items: flex-start;
