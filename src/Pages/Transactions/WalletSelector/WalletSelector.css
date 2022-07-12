@@ -71,12 +71,16 @@
   background: none;
 }
 
+.Transactions__walletSelector__Container__Head {
+  background-color: var(--gray1);
+  border-radius: 25px 25px 0 0;
+  height: 30px;
+}
+
 .Transactions__WalletSelector__Container {
   background-color: var(--black);
-  border-radius: 25px 25px 0 0;
-  height: calc(100% - 125px);
+  height: calc(100% - 130px);
   overflow: auto;
-  padding-top: 25px;
 }
 
 .Transactions__WalletSelector__WalletCard {
