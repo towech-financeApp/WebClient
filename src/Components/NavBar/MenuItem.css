@@ -23,7 +23,7 @@
 }
 
 .MenuItem:hover {
-  background-color: var(--gray2);
+  background-color: var(--gray1);
 }
 .MenuItem.selected > * {
   color: var(--yellow);
