@@ -32,7 +32,7 @@
   background-color: var(--black);
   border-radius: 25px;
   margin: var(--cardContainerMargin);
-  max-width: calc(100% - 2 * var(--cardContainerMargin));
+  width: calc(100% - 2 * var(--cardContainerMargin));
 }
 
 /* @media screen and (min-width: 768px) {
