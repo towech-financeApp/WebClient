@@ -64,28 +64,35 @@
   margin-top: auto;
 }
 
-/* @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .navBar {
     border: 3px solid var(--text-color);
     border-radius: 4px;
     height: auto;
+    justify-content: flex-start;
   }
 
   .navBar__selector {
     display: none;
   }
 
-  .navBar__Menu {
-    border: none;
-    height: 100vh;
-    margin-top: var(--header-size);
+  .navBar__outside {
+    height: auto;
+    margin-top: 0;
     position: static;
-    transition: left 0;
     width: 100%;
   }
 
-  .navBar__Menu.active {
+  .navBar__outside.active {
     left: 0;
     transition: left 0;
   }
-} */
+
+  .navBar__Menu {
+    width: auto;
+  }
+
+  .navBar__Menu > div:first-child {
+    padding-top: calc(var(--header-size) + 20px);
+  }
+}

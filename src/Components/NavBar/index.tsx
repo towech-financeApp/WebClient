@@ -52,6 +52,7 @@ const NavBar = (props: Props): JSX.Element => {
       {/*Navigation bar*/}
       <div className={sidebar ? 'navBar__outside active' : 'navBar__outside'} onClick={() => setSidebar(false)}>
         <nav ref={menuRef} className="navBar__Menu">
+          <div></div>
           <MenuItem
             link="/home"
             label="Transactions"
