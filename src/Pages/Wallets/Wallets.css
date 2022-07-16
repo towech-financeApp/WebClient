@@ -36,6 +36,10 @@
   width: calc(100% - 2 * var(--cardContainerMargin));
 }
 
+.Wallets__Container__Section::-webkit-scrollbar-track-piece:start {
+  margin-top: 22px;
+}
+
 @media screen and (min-width: 769px) {
   .Wallets__Container__Section {
     height: calc(100vh - 130px);
