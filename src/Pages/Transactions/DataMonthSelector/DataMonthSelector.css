@@ -54,7 +54,7 @@
 
 @media screen and (min-width: 481px) {
   .Transactions__MonthSelector {
-    max-width: 800px;
+    max-width: var(--max-container-size);
   }
 
   .Transactions__MonthSelector__Button {

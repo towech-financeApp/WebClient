@@ -54,6 +54,6 @@
   }
 
   .Transactions__Content__Loading {
-    max-width: 800px;
+    max-width: var(--max-container-size);
   }
 }

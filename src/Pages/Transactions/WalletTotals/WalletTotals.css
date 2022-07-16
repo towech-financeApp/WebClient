@@ -53,6 +53,6 @@
 @media screen and (min-width: 481px) {
   .Transactions__Totals {
     font-size: 33px;
-    max-width: 800px;
+    max-width: var(--max-container-size);
   }
 }

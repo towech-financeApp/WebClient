@@ -38,6 +38,6 @@
 
 @media screen and (min-width: 769px) {
   .Transactions__Viewer {
-    max-width: 800px;
+    max-width: var(--max-container-size);
   }
 }

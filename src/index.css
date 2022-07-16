@@ -21,6 +21,7 @@
   --redhover: #88002b;
 
   --header-size: 70px;
+  --max-container-size: 800px;
 }
 
 body {
