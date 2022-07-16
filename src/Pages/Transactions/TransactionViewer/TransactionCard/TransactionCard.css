@@ -1,5 +1,6 @@
 .TransactionCard {
   padding: 0 12px;
+  cursor: auto;
 }
 
 .TransactionCard:hover {
@@ -50,7 +51,7 @@
 .TransactionCard__Content {
   flex: 1;
   padding-right: 15px;
-  max-width: calc(100% - 80px);
+  /* max-width: calc(100% - 80px); */
 }
 
 .TransactionCard__Content__Top {
@@ -81,9 +82,11 @@
 
 .TransactionCard__Content__Bottom {
   color: var(--gray3);
-  display: flex;
+  display: inline-grid;
+  grid-template-columns: 1fr auto;
   font-size: 16px;
   padding-top: 3px;
+  width: 100%;
 }
 
 .TransactionCard__Content__Bottom__Concept {
@@ -138,5 +141,11 @@
 
   .TransactionCard__Content__Bottom__Concept {
     padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .TransactionCard {
+    cursor: pointer;
   }
 }
