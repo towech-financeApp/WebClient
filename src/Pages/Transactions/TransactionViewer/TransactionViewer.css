@@ -35,3 +35,9 @@
 .Transactions__Viewer__Filler {
   height: 120px;
 }
+
+@media screen and (min-width: 769px) {
+  .Transactions__Viewer {
+    max-width: 800px;
+  }
+}

@@ -52,4 +52,8 @@
   .Transactions__AddFloat {
     display: none !important;
   }
+
+  .Transactions__Content__Loading {
+    max-width: 800px;
+  }
 }

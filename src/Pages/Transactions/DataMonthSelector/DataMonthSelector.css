@@ -53,6 +53,10 @@
 }
 
 @media screen and (min-width: 481px) {
+  .Transactions__MonthSelector {
+    max-width: 800px;
+  }
+
   .Transactions__MonthSelector__Button {
     font-size: 22px;
   }
