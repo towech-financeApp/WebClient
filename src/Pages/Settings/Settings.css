@@ -74,4 +74,8 @@
     width: auto;
     min-width: 70%;
   }
+
+  .Settings__Card {
+    cursor: pointer;
+  }
 }
