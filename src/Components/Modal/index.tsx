@@ -70,7 +70,11 @@ const Modal = (props: Props): JSX.Element => {
 
   return (
     <div className={props.showModal ? 'Modal active' : 'Modal'}>
-      <div className="Modal__background" ref={modalRef as any} onClick={closeModalRef}>
+      <div
+        className={props.showModal ? 'Modal__background active' : 'Modal__background'}
+        ref={modalRef as any}
+        onClick={closeModalRef}
+      >
         <div className={props.float ? 'ModalFloat__Content' : 'Modal__Content'}>
           {!props.float && (
             <div className={props.loading ? 'Modal__header loading' : 'Modal__header'}>
