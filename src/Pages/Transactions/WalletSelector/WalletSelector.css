@@ -7,6 +7,7 @@
 }
 
 .Transactions__WalletSelector__Main {
+  cursor: auto;
   display: flex;
   padding: 10px;
   width: calc(100% - 40px);
@@ -80,7 +81,7 @@
 }
 
 .Transactions__walletSelector__Container__Head {
-  background-color: var(--gray1);
+  background-color: var(--yellow);
   border-radius: 25px 25px 0 0;
   height: 30px;
 }
@@ -93,6 +94,7 @@
 
 .Transactions__WalletSelector__WalletCard {
   padding: 0 12px;
+  cursor: auto;
 }
 
 .Transactions__WalletSelector__WalletCard:hover {
@@ -133,7 +135,7 @@
   color: var(--white);
   flex: 1;
   font-weight: 900;
-  max-width: calc(100% - 100px);
+  max-width: calc(100% - 65px);
 }
 
 .Transactions__WalletSelector__WalletCard__Text__Name {
@@ -143,6 +145,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .Transactions__WalletSelector__WalletCard__Text__Name.SubWallet {
   font-size: 18px;
   padding-top: 4px;
@@ -198,6 +201,7 @@
   .Transactions__WalletSelector__WalletCard__Text__Name {
     font-size: 24px;
   }
+
   .Transactions__WalletSelector__WalletCard__Text__Name.SubWallet {
     font-size: 20px;
   }
@@ -208,5 +212,19 @@
 
   .Transactions__WalletSelector__WalletCard__Text__Money.SubWallet {
     font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .Transactions__WalletSelector__Container {
+    height: calc(100% - 155px);
+  }
+
+  .Transactions__WalletSelector__Main {
+    cursor: pointer;
+  }
+
+  .Transactions__WalletSelector__WalletCard {
+    cursor: pointer;
   }
 }

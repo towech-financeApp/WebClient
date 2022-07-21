@@ -12,6 +12,7 @@
   --hover-color: var(--gray2);
 
   border-radius: var(--size-radius);
+  cursor: auto;
 }
 
 .button.dark {
@@ -55,4 +56,10 @@
 .button:hover {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
+}
+
+@media screen and (min-width: 769px) {
+  .button {
+    cursor: pointer;
+  }
 }

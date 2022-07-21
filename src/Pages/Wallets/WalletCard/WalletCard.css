@@ -23,10 +23,11 @@
 }
 
 .WalletCard__Info {
-  padding-left: 16px;
+  display: inline-grid;
   font-size: 24pt;
   font-weight: 900;
-  max-width: calc(100% - 100px);
+  max-width: calc(100% - 80px);
+  padding-left: 16px;
 }
 
 .WalletCard__Info__Name {
@@ -57,5 +58,11 @@
   .WalletCard__Icon {
     height: 70px;
     width: 70px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .WalletCard {
+    cursor: pointer;
   }
 }

@@ -13,9 +13,9 @@
   width: auto;
 }
 
-/* @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .VerifyAccount {
     margin: 45px auto;
     max-width: 500px;
   }
-} */
+}

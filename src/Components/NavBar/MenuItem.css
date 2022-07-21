@@ -20,22 +20,22 @@
   font-size: 25px;
   font-weight: 900;
   padding-left: 25px;
-  line-height: 90px;
 }
 
 .MenuItem:hover {
-  background-color: var(--gray2);
+  background-color: var(--gray1);
 }
 .MenuItem.selected > * {
   color: var(--yellow);
   text-decoration: underline;
 }
 
-/* @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .MenuItem {
     flex-direction: column;
     justify-content: center;
-    padding: 15px 0;
+    padding: 15px 0 5px;
+    height: 70px;
   }
 
   .MenuItem > p {
@@ -43,4 +43,4 @@
     font-weight: 400;
     padding: 0;
   }
-} */
+}

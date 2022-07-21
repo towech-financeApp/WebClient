@@ -2,6 +2,10 @@
   height: 100%;
 }
 
+.Transactions__AddTop {
+  display: none;
+}
+
 .Transactions__AddFloat {
   position: absolute;
   z-index: 1;
@@ -33,4 +37,23 @@
   opacity: 0.6;
   height: var(--spinner-size);
   width: var(--spinner-size);
+}
+
+@media screen and (min-width: 769px) {
+  .Transactions__Content {
+    margin: 0 25px;
+  }
+
+  .Transactions__AddTop {
+    display: inline;
+    margin: 0 40px 0 auto;
+  }
+
+  .Transactions__AddFloat {
+    display: none !important;
+  }
+
+  .Transactions__Content__Loading {
+    max-width: var(--max-container-size);
+  }
 }

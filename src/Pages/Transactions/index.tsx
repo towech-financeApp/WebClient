@@ -111,7 +111,17 @@ const Transactions = (): JSX.Element => {
   };
 
   // Extracted HTML components
-  const header = loaded && wallets.length > 0 ? <WalletSelector /> : <></>;
+  const header =
+    loaded && wallets.length > 0 ? (
+      <>
+        <WalletSelector />{' '}
+        <Button accent className="Transactions__AddTop" onClick={() => setAddModal(true)}>
+          New Transaction
+        </Button>
+      </>
+    ) : (
+      <></>
+    );
 
   return (
     <TransactionPageStore.Provider value={{ transactionState, dispatchTransactionState }}>
@@ -136,7 +146,7 @@ const Transactions = (): JSX.Element => {
                     </div>
                   )}
                 </div>
-                {/*Add wallet button*/}
+                {/*Add wallet button - mobile only*/}
                 <Button accent round className="Transactions__AddFloat" onClick={() => setAddModal(true)}>
                   <FaIcons.FaPlus />
                 </Button>

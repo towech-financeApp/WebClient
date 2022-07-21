@@ -118,15 +118,27 @@
     left: 35%;
   }
 }
-/* @media screen and (min-width: 768px) {
+
+@media screen and (min-width: 769px) {
   .Modal__background {
-    align-items: flex-start;
+    transition: background-color 10ms;
+  }
+
+  .Modal__background.active {
+    background-color: #c4c4c4a4;
+    transition: background-color 500ms ease-in;
   }
 
   .Modal__Content {
-    border-radius: 10px;
-    margin-top: 120px;
-    max-height: 700px;
-    width: 800px;
+    align-self: center;
+    border-radius: 25px;
+    margin-left: 105px;
+    grid-template-rows: 1fr auto;
+    max-height: 80%;
+    width: 70%;
   }
-} */
+
+  .ModalFloat__Content {
+    width: 50%;
+  }
+}

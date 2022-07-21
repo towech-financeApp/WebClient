@@ -30,7 +30,7 @@ const MenuItem = (props: Props): JSX.Element => {
   return (
     <div onClick={props.onClick}>
       <Link className={theme} to={props.link || '/'}>
-        {props.children}
+        <div>{props.children}</div>
         <p>{props.label}</p>
       </Link>
     </div>
