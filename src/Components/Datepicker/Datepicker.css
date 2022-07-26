@@ -101,7 +101,12 @@
 }
 
 .Datepicker__Container__Content__Title__Button {
+  cursor: pointer;
   flex: 1;
+}
+
+.Datepicker__Container__Content__Title__Button:hover {
+  background-color: var(--gray2);
 }
 
 .Datepicker__Container__Content__Title__Name {
@@ -132,6 +137,7 @@
   align-items: center;
   aspect-ratio: 1 / 1;
   background: transparent;
+  border-radius: 50%;
   display: flex;
   flex: 1 0 0%;
   font-size: 20px;
@@ -148,9 +154,12 @@
   color: var(--gray2);
 }
 
+.Datepicker__Container__Content__Month__Week__Day.outside:hover {
+  color: var(--gray3);
+}
+
 .Datepicker__Container__Content__Month__Week__Day.selected {
   background-color: var(--yellow);
-  border-radius: 50%;
   color: var(--black);
   font-weight: 900;
 }
@@ -186,7 +195,6 @@
 }
 
 .Datepicker__Container__Content__Bottom > div {
-  flex: 1;
   padding: 0 10px;
 }
 
@@ -194,8 +202,23 @@
   text-align: left;
 }
 
+.Datepicker__Container__Content__Bottom__Item {
+  cursor: pointer;
+}
+
+.Datepicker__Container__Content__Bottom__Spacer {
+  cursor: auto;
+  flex: 1;
+}
+
 @media screen and (min-width: 481px) {
   .Datepicker__Container__Content__Month__Week__Day {
     font-size: 24px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .Datepicker__Container__Content {
+    width: auto;
   }
 }

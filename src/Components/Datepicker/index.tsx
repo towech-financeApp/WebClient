@@ -223,8 +223,19 @@ const Datepicker = (props: Props): JSX.Element => {
               </>
             )}
             <div className="Datepicker__Container__Content__Bottom">
-              <div onClick={() => dispatch({ type: 'SET-TODAY', payload: {} })}>Today</div>
-              <div onClick={() => dispatch({ type: 'SET-PICKER', payload: { bool: false } })}>Close</div>
+              <div
+                className="Datepicker__Container__Content__Bottom__Item"
+                onClick={() => dispatch({ type: 'SET-TODAY', payload: {} })}
+              >
+                Today
+              </div>
+              <div className="Datepicker__Container__Content__Bottom__Spacer"></div>
+              <div
+                className="Datepicker__Container__Content__Bottom__Item"
+                onClick={() => dispatch({ type: 'SET-PICKER', payload: { bool: false } })}
+              >
+                Close
+              </div>
             </div>
           </div>
         </div>
