@@ -134,7 +134,7 @@ const Datepicker = (props: Props): JSX.Element => {
     <>
       {/* Input field */}
       <div className="Datepicker" onClick={() => dispatch({ type: 'SET-PICKER', payload: { bool: true } })}>
-        <input className="Datepicker__field" disabled={true} value={displayDate(state.selectedDate)} />
+        <input className="Datepicker__field" value={displayDate(state.selectedDate)} />
         {props.label && <label className="Datepicker__label">{props.label}</label>}
       </div>
 
